@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FZL Coin</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .coin {
+            width: 200px;
+            height: 200px;
+            background: gold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            margin: 50px auto;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            user-select: none;
+        }
+        .coin:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <h1>FZL Coin</h1>
+    <h2 id="score">Coins: 0</h2>
+    <div class="coin" onclick="tapCoin()">TAP</div>
+
+    <script>
+        let count = 0;
+        function tapCoin() {
+            count++;
+            document.getElementById('score').innerText = 'Coins: ' + count;
+        }
+    </script>
+</body>
+</html>
 
