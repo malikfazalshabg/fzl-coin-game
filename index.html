@@ -3,59 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Coin Bot</title>
+    <title>Secure Mining & Referral App</title>
     <style>
-        body {
-            background-color: #0b0e14;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .header {
+        .container {
             width: 100%;
+            max-width: 480px;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #334155;
+        }
+        header {
+            background: #0f172a;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            box-sizing: border-box;
-            background: #121620;
+            border-bottom: 1px solid #334155;
         }
-        .user-info {
-            background: #1a2233;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+        header h1 {
+            font-size: 1.2rem;
+            color: #38bdf8;
         }
-        .admin-btn {
-            background: #e91e63;
+        .admin-btn, .gmail-btn {
+            background: #3b82f6;
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
             border: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .logout-btn {
-            background: #333;
-            color: #bbb;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            border: none;
-        }
-        .score-container {
-            font-size: 40px;
+            font-size: 0.9rem;
             font-weight: bold;
-            color: #f3ba2f;
-            margin: auto;
+            transition: background 0.2s;
+        }
+        .admin-btn:hover, .gmail-btn:hover {
+            background: #2563eb;
+        }
+        .content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            color: #cbd5e1;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+        .nav-tabs {
+            display: flex;
+            background: #0f172a;
+            border-top: 1px solid #334155;
+        }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+            text-align: center;
+        }
+        .tab-btn.active {
+            color: #38bdf8;
+            background: #1e293b;
+            border-top: 2px solid #38bdf8;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .action-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .action-btn:hover {
+            background: #059669;
         }
         /* Modal Styles */
         .modal {
@@ -68,237 +134,180 @@
             z-index: 1000;
         }
         .modal-content {
-            background: #121620;
-            border: 2px solid #f3ba2f;
-            border-radius: 15px;
-            padding: 20px;
-            width: 85%;
-            max-width: 350px;
-            position: relative;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            color: #f3ba2f;
-        }
-        /* Navigation Footer */
-        .nav-footer {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
             display: flex;
-            justify-content: space-around;
-            width: 100%;
-            background: #121620;
-            padding: 10px 0;
-            border-top: 1px solid #222;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid #334155;
         }
-        .nav-item {
-            background: none;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            font-size: 12px;
-            text-align: center;
-        }
-        .nav-item:hover {
-            color: #f3ba2f;
-        }
-        /* Social Buttons */
-        .social-btn {
-            display: block;
-            width: 100%;
+        .modal-content input {
             padding: 10px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: none;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background: #0f172a;
             color: white;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: left;
+            font-size: 1rem;
         }
-        .btn-tg { background: #0088cc; }
-        .btn-yt { background: #ff0000; }
-        .btn-wa { background: #25d366; }
-        .btn-tw { background: #1da1f2; }
-        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .btn-fb { background: #1877f2; }
-        .btn-tk { background: #000000; border: 1px solid #333; }
-        .btn-dc { background: #5865f2; }
-        
-        /* Friends List Styles */
-        .friend-list {
-            max-height: 110px;
-            overflow-y: auto;
-            background: #1a2233;
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 13px;
-        }
-        .friend-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #2a3447;
-        }
-        .friend-item:last-child {
-            border-bottom: none;
-        }
-        .whatsapp-share-btn {
-            display: block;
-            width: 100%;
-            background: #25d366;
+        .close-modal {
+            background: #ef4444;
             color: white;
             border: none;
             padding: 8px;
             border-radius: 6px;
-            font-weight: bold;
             cursor: pointer;
-            text-align: center;
-            margin-top: 8px;
-            font-size: 13px;
-            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="user-info">✅ malikfezalshabg</div>
-        <div>
-            <!-- Admin button with lock icon -->
-            <button class="admin-btn" onclick="checkAdminPassword()">🔒 Admin</button>
-            <button class="logout-btn" onclick="alert('Logged out successfully')">Logout</button>
+    <div class="container">
+        <header>
+            <h1>Mining & Rewards</h1>
+            <div style="display: flex; gap: 8px;">
+                <button class="gmail-btn" onclick="openGmailModal()">📧 Gmail</button>
+                <button class="admin-btn" onclick="openAdminModal()">🔒 Admin</button>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- Tab 1: Home / Mining -->
+            <div id="tab-home" class="tab-content active">
+                <div class="card">
+                    <h3>Your Balance</h3>
+                    <div class="stat-value" id="balance">0.00 COIN</div>
+                </div>
+                <button class="action-btn" onclick="startMining()">Start Mining</button>
+            </div>
+
+            <!-- Tab 2: Friends (Referral) -->
+            <div id="tab-friends" class="tab-content">
+                <div class="card">
+                    <h3>Friends Invited</h3>
+                    <div class="stat-value" id="friend-count">0</div>
+                </div>
+                <button class="action-btn" onclick="shareRefLink()">Share Invite Link</button>
+            </div>
+
+            <!-- Tab 3: Mine Cards -->
+            <div id="tab-mine" class="tab-content">
+                <div class="card">
+                    <h3>Active Mining Cards</h3>
+                    <p style="color: #94a3b8; margin-top: 5px;">Boost your speed with unlocked cards.</p>
+                </div>
+            </div>
+
+            <!-- Tab 4: Exchange -->
+            <div id="tab-exchange" class="tab-content">
+                <div class="card">
+                    <h3>Exchange Market</h3>
+                    <p style="color: #94a3b8; margin-top: 5px;">Trade your coins securely here.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar (Open for Everyone) -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('home', this)">🏠 Home</button>
+            <button class="tab-btn" onclick="switchTab('friends', this)">👥 Friends</button>
+            <button class="tab-btn" onclick="switchTab('mine', this)">⛏️ Mine</button>
+            <button class="tab-btn" onclick="switchTab('exchange', this)">🏛️ Exchange</button>
         </div>
     </div>
 
-    <div class="score-container">301,021</div>
-
-    <!-- Navigation Bar -->
-    <div class="nav-footer">
-        <button class="nav-item" onclick="openModal('exchangeModal')">🏛️<br>Exchange</button>
-        <button class="nav-item" onclick="openModal('mineModal')">⛏️<br>Mine</button>
-        <button class="nav-item" onclick="openModal('friendsModal')">👥<br>Friends</button>
-        <button class="nav-item" onclick="openModal('earnModal')">🪙<br>Earn</button>
-        <button class="nav-item" onclick="openModal('socialsModal')">🌐<br>Socials</button>
-    </div>
-
-    <!-- 1. Admin Modal (Image 859.jpg) -->
+    <!-- Admin Modal -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('adminModal')">✕</span>
-            <h3>🛡️ Admin Live Analytics Panel</h3>
-            <p>👥 Total Platform Visitors: 121 People</p>
-            <p>🌐 Total Google Logins: 0 Users</p>
-            <p>👤 Current Active User: Not Logged In</p>
-            <hr style="border-color: #333;">
-            <h4>📋 Live Visitors / Logins Database:</h4>
-            <div style="background:#1a2233; padding:8px; border-radius:5px; font-size:13px; color:#aaa;">• No Google logins recorded yet.</div>
-            <button style="width:100%; background:#ff3366; color:white; border:none; padding:10px; border-radius:5px; margin-top:15px; cursor:pointer; font-weight:bold;">Clear Logged Users Data</button>
+            <h3>Admin Panel Login</h3>
+            <input type="password" id="adminPasswordInput" placeholder="Enter Admin Password">
+            <button class="action-btn" onclick="verifyAdmin()">Login</button>
+            <button class="close-modal" onclick="closeModals()">Cancel</button>
         </div>
     </div>
 
-    <!-- 2. Exchange Modal -->
-    <div id="exchangeModal" class="modal">
+    <!-- Gmail Verification Modal -->
+    <div id="gmailModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('exchangeModal')">✕</span>
-            <h3>🏛️ Exchange Market</h3>
-            <p style="color: #ccc; font-size: 14px; line-height: 1.5;">Market trading and listing updates coming soon on Binance and OKX.</p>
-        </div>
-    </div>
-
-    <!-- 3. Mine Modal -->
-    <div id="mineModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('mineModal')">✕</span>
-            <h3>⛏️ Mine Cards</h3>
-            <p style="color: #ccc; font-size: 14px; line-height: 1.5;">Upgrade cards to increase your hourly coin generation profit.</p>
-        </div>
-    </div>
-
-    <!-- 4. Friends Modal -->
-    <div id="friendsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('friendsModal')">✕</span>
-            <h3>👥 Referral Friends</h3>
-            <p style="color: #ccc; font-size: 12px; line-height: 1.3; margin-bottom: 8px;">Invite friends and earn extra bonus coins for each referral[span_2](start_span)[span_2](end_span).</p>
-            
-            <!-- Invite Link Section -->
-            <div>
-                <input type="text" id="inviteLink" value="https://t.me/FZLCoinBot?start=ref_malik" readonly style="width: 62%; padding: 5px; background: #1a2233; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 11px;">
-                <button onclick="copyInviteLink()" style="width: 32%; padding: 5px; background: #f3ba2f; color: #000; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px;">Copy Link</button>
-            </div>
-
-            <!-- WhatsApp Share Button -->
-            <a href="https://api.whatsapp.com/send?text=Join%20FZL%20Coin%20Bot%20and%20earn%20coins%20with%20me!%20https://t.me/FZLCoinBot?start=ref_malik" target="_blank" class="whatsapp-share-btn">
-                💬 Share on WhatsApp
-            </a>
-
-            <!-- Friends List Display -->
-            <h4 style="margin: 10px 0 4px 0; font-size: 12px; color: #f3ba2f;">Your Friends (2):</h4>
-            <div class="friend-list">
-                <div class="friend-item">
-                    <span>👤 Ali Khan</span>
-                    <span style="color: #f3ba2f;">+5,000 Coins</span>
-                </div>
-                <div class="friend-item">
-                    <span>👤 Ahmed Raza</span>
-                    <span style="color: #f3ba2f;">+5,000 Coins</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. Earn Modal -->
-    <div id="earnModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('earnModal')|">✕</span>
-            <h3>🪙 Earn More Coins</h3>
-            <p style="color: #ccc; font-size: 14px;">Complete daily tasks and watch videos to earn more rewards.</p>
-        </div>
-    </div>
-
-    <!-- 6. Socials Modal -->
-    <div id="socialsModal" class="modal">
-        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
-            <span class="close-btn" onclick="closeModal('socialsModal')">✕</span>
-            <h3>🌐 Worldwide Social Networks</h3>
-            <p style="font-size: 13px; color: #aaa;">Hamare tamam official platforms ko join karein:</p>
-            <button class="social-btn btn-tg">📢 Telegram</button>
-            <button class="social-btn btn-yt">▶️ YouTube</button>
-            <button class="social-btn btn-wa">💬 WhatsApp</button>
-            <button class="social-btn btn-tw">✖️ Twitter/X</button>
-            <button class="social-btn btn-ig">📸 Instagram</button>
-            <button class="social-btn btn-fb">📘 Facebook</button>
-            <button class="social-btn btn-tk">🎵 TikTok</button>
-            <button class="social-btn btn-dc">🎮 Discord</button>
+            <h3>Gmail Verification</h3>
+            <input type="email" id="userEmailInput" placeholder="Enter your Gmail">
+            <button class="action-btn" onclick="sendGmailCode()">Send Code</button>
+            <input type="text" id="userCodeInput" placeholder="Enter 6-digit Code" style="display:none;">
+            <button id="verifyCodeBtn" class="action-btn" style="display:none;" onclick="verifyGmailCode()">Verify Code</button>
+            <button class="close-modal" onclick="closeModals()">Close</button>
         </div>
     </div>
 
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        function copyInviteLink() {
-            var copyText = document.getElementById("inviteLink");
-            copyText.select();
-            document.execCommand("copy");
-            alert("Invite link copied to clipboard!");
+        // Tab Switching Logic
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            element.classList.add('active');
         }
 
-        // Password Protection Function for Admin Panel (Password set to: malik786)
-        function checkAdminPassword() {
-            let password = prompt("Enter Admin Password:");
-            if (password === "malik786") {
-                openModal('adminModal');
-            } else if (password !== null) {
-                alert("Incorrect Password! Access Denied.");
+        // Modals Control
+        function openAdminModal() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function openGmailModal() {
+            document.getElementById('gmailModal').style.display = 'flex';
+        }
+
+        function closeModals() {
+            document.getElementById('adminModal').style.display = 'none';
+            document.getElementById('gmailModal').style.display = 'none';
+        }
+
+        // Admin Security Logic
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPasswordInput').value;
+            if (pass === 'malik786') {
+                alert('Welcome to Admin Panel, Boss!');
+                closeModals();
+                // Admin features can be unlocked here
+            } else {
+                alert('Wrong Password! Access Denied.');
             }
+        }
+
+        // Gmail Verification Simulation Logic
+        let sentCode = '';
+        function sendGmailCode() {
+            const email = document.getElementById('userEmailInput').value;
+            if(!email) {
+                alert('Please enter a valid email.');
+                return;
+            }
+            sentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            alert('Verification code sent to ' + email + '\n(For testing, your code is: ' + sentCode + ')');
+            document.getElementById('userCodeInput').style.display = 'block';
+            document.getElementById('verifyCodeBtn').style.display = 'block';
+        }
+
+        function verifyGmailCode() {
+            const enteredCode = document.getElementById('userCodeInput').value;
+            if (enteredCode === sentCode) {
+                alert('Gmail Verified Successfully!');
+                closeModals();
+            } else {
+                alert('Invalid Code! No bypass allowed. Try again.');
+            }
+        }
+
+        function startMining() {
+            alert('Mining started successfully!');
+        }
+
+        function shareRefLink() {
+            alert('Invite link copied to clipboard!');
         }
     </script>
 </body>
-</html>
+                </html>
+                
