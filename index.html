@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Kombat - Real Coin Audio & Binance Ready</title>
+    <title>FZL Kombat - Loud Audio & Binance Ready</title>
     <style>
         * {
             box-sizing: border-box;
@@ -46,7 +46,7 @@
             display: flex;
             gap: 5px;
         }
-        .login-btn, .admin-btn, .vip-btn, .ton-btn {
+        .admin-btn, .vip-btn, .ton-btn {
             background: #f3ba2f;
             color: #090a0f;
             border: none;
@@ -269,9 +269,6 @@
         </div>
     </div>
 
-    <!-- Real Coin Drop Sound Effect -->
-    <audio id="coinSound" src="https://www.soundjay.com/buttons/sounds/coin-drop-4.mp3" preload="auto"></audio>
-
     <script>
         let score = parseInt(localStorage.getItem('fzl_score')) || 500;
         let energy = 1000;
@@ -281,9 +278,51 @@
         const scoreEl = document.getElementById('score');
         const energyEl = document.getElementById('energy');
         const coinBtn = document.getElementById('coinBtn');
-        const coinAudio = document.getElementById('coinSound');
 
         scoreEl.innerText = score.toLocaleString();
+
+        // High Volume Web Audio API Coin Clink Sound Generator
+        let audioCtx = null;
+
+        function playCoinSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                let osc1 = audioCtx.createOscillator();
+                let osc2 = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
+
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+
+                // Sharp high frequencies for coin ring
+                osc1.frequency.setValueAtTime(1400, audioCtx.currentTime);
+                osc1.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.15);
+
+                osc2.frequency.setValueAtTime(2800, audioCtx.currentTime);
+                osc2.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
+
+                // Increased Volume (Gain set to maximum loud level)
+                gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+                osc1.connect(gainNode);
+                osc2.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc1.start();
+                osc2.start();
+                osc1.stop(audioCtx.currentTime + 0.15);
+                osc2.stop(audioCtx.currentTime + 0.15);
+            } catch (e) {
+                console.log("Audio error:", e);
+            }
+        }
 
         coinBtn.addEventListener('click', (e) => {
             if (energy > 0) {
@@ -293,9 +332,8 @@
                 energyEl.innerText = energy;
                 localStorage.setItem('fzl_score', score);
                 
-                // Play Real Coin Drop Sound
-                coinAudio.currentTime = 0;
-                coinAudio.play().catch(err => console.log("Audio play blocked by browser"));
+                // Play Loud Sound
+                playCoinSound();
 
                 let floatText = document.createElement('div');
                 floatText.innerText = "+1";
@@ -408,5 +446,5 @@
         }
     </script>
 </body>
-    </html>
+                </html>
     
