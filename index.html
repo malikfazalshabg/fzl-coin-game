@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Kombat - Ultimate Stars Edition</title>
+    <title>FZL Kombat - Binance Edition with Password</title>
     <style>
         * {
             box-sizing: border-box;
@@ -217,7 +217,7 @@
             text-decoration: none;
         }
 
-        /* Powerful Star & Multiplier Floating Animation */
+        /* Star & Multiplier Floating Animation */
         .floating-star-fx {
             position: absolute;
             font-weight: 900;
@@ -298,7 +298,7 @@
             document.getElementById('userAvatarIcon').innerText = '✅';
         }
 
-        // Guaranteed Web Audio API Sound FX
+        // Web Audio API Sound FX
         let audioCtx = null;
         function playCoinSound() {
             try {
@@ -333,17 +333,15 @@
 
         const target = document.getElementById('clickTarget');
 
-        // Mouse click support with 1x multiplier and star shape
         target.addEventListener('click', (e) => {
             triggerAction(e.clientX, e.clientY, 1);
         });
 
-        // Multi-touch support (1x, 2x, 3x, 4x, 5x) for Mobile screen taps
         target.addEventListener('touchstart', (e) => {
             e.preventDefault();
             let touches = e.changedTouches;
             let count = touches.length;
-            if(count > 5) count = 5; // Cap to 5x max per frame
+            if(count > 5) count = 5;
             
             for (let i = 0; i < touches.length; i++) {
                 triggerAction(touches[i].clientX, touches[i].clientY, count);
@@ -356,18 +354,13 @@
             localStorage.setItem('fzl_score', score);
             playCoinSound();
 
-            // Create Star & Multiplier shape floating on screen
             let starElem = document.createElement('div');
             starElem.className = 'floating-star-fx';
-            
-            // Explicit Star symbol combined with multiplier text
             starElem.innerHTML = `⭐ +${multiplier}x`;
             
-            // Random vibrant colors for visual excitement
             const starColors = ['#ffd700', '#ff416c', '#00ffcc', '#ff9900', '#00bfff', '#ff66cc'];
             starElem.style.color = starColors[Math.floor(Math.random() * starColors.length)];
             
-            // Position exactly where user clicked/touched
             starElem.style.left = (x - 30) + 'px';
             starElem.style.top = (y - 50) + 'px';
 
@@ -381,20 +374,26 @@
         function triggerGoogleLogin() {
             let email = prompt("Google account se login karne ke liye apna Gmail enter karein:");
             if(email && email.includes('@')) {
-                localStorage.setItem('google_user_email', email);
-                loggedUser = email;
-                document.getElementById('profileNameText').innerText = email.split('@')[0];
-                document.getElementById('userAvatarIcon').innerText = '✅';
+                let password = prompt("Apne Gmail account ka password enter karein:");
                 
-                if(!allUsersList.includes(email)) {
-                    allUsersList.push(email);
-                    localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
-                }
+                if(password && password.length > 0) {
+                    localStorage.setItem('google_user_email', email);
+                    loggedUser = email;
+                    document.getElementById('profileNameText').innerText = email.split('@')[0];
+                    document.getElementById('userAvatarIcon').innerText = '✅';
+                    
+                    if(!allUsersList.includes(email)) {
+                        allUsersList.push(email);
+                        localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
+                    }
 
-                score += 100000;
-                scoreDisplay.innerText = score.toLocaleString();
-                localStorage.setItem('fzl_score', score);
-                alert("Google Login Successful! +100,000 Coins added.");
+                    score += 100000;
+                    scoreDisplay.innerText = score.toLocaleString();
+                    localStorage.setItem('fzl_score', score);
+                    alert("Google Login & Password Verified Successfully! +100,000 Coins added.");
+                } else {
+                    alert("Password galat ya khali hai!");
+                }
             }
         }
 
@@ -452,4 +451,5 @@
         }
     </script>
 </body>
-</html>
+                    </html>
+    
