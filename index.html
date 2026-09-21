@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Cat Kombat Bot - Suit Edition</title>
+    <title>FZL Cat Kombat Bot</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,57 +22,82 @@
             height: 100vh;
             overflow: hidden;
         }
+
         /* Top Header */
         .header {
             width: 100%;
-            padding: 10px 15px;
+            padding: 8px 12px;
             background: #121620;
             border-bottom: 2px solid #1f293d;
+            z-index: 10;
         }
         .top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: #1a2233;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             border: 1px solid #2a3447;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
+            cursor: pointer;
         }
-        .top-right-icons {
+        .user-avatar-sm {
+            width: 22px;
+            height: 22px;
+            background: #334155;
+            border-radius: 50%;
             display: flex;
-            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .top-right-controls {
+            display: flex;
+            gap: 6px;
             align-items: center;
         }
-        .icon-btn {
+        .icon-top-btn {
             background: #1a2233;
             border: 1px solid #2a3447;
             color: #fff;
-            padding: 6px 10px;
+            padding: 6px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .exchange-badge {
             background: #1f293d;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
+            gap: 5px;
+            font-size: 12px;
             color: #f3ba2f;
             border: 1px solid #334155;
             font-weight: bold;
-            box-shadow: 0 0 10px rgba(243, 186, 47, 0.2);
+        }
+        .profit-badge {
+            background: #1a2233;
+            padding: 4px 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: #e2e8f0;
+            border: 1px solid #2a3447;
         }
         .level-progress-container {
             display: flex;
@@ -80,13 +105,14 @@
             align-items: center;
             font-size: 11px;
             color: #94a3b8;
+            margin-top: 2px;
         }
         .level-bar-bg {
             flex: 1;
             background: #1e293b;
-            height: 6px;
+            height: 5px;
             border-radius: 3px;
-            margin-left: 10px;
+            margin-left: 8px;
             overflow: hidden;
         }
         .level-bar-fill {
@@ -96,20 +122,20 @@
             border-radius: 3px;
         }
 
-        /* Reward Cards */
+        /* 3 Reward Cards Row */
         .cards-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 12px;
-            gap: 8px;
+            padding: 6px 10px;
+            gap: 6px;
             background: #0f141f;
         }
         .reward-card {
             flex: 1;
             background: #151b2b;
             border: 1px solid #22304a;
-            border-radius: 12px;
-            padding: 8px 4px;
+            border-radius: 10px;
+            padding: 6px 4px;
             text-align: center;
             cursor: pointer;
             position: relative;
@@ -117,70 +143,81 @@
         .reward-card::after {
             content: '✔';
             position: absolute;
-            top: 4px;
-            right: 6px;
-            font-size: 10px;
+            top: 3px;
+            right: 5px;
+            font-size: 9px;
             color: #22c55e;
             background: rgba(34, 197, 94, 0.15);
             border-radius: 50%;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .reward-card-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #e2e8f0;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
         .reward-card-time {
-            font-size: 10px;
+            font-size: 9px;
             color: #94a3b8;
         }
 
-        /* Coin Balance */
+        /* FZL Balance Display */
         .balance-container {
             text-align: center;
-            margin: 5px 0;
+            margin: 2px 0;
         }
         .coin-amount {
-            font-size: 38px;
+            font-size: 34px;
             font-weight: 800;
             color: #f3ba2f;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            text-shadow: 0 0 20px rgba(243, 186, 47, 0.3);
+            gap: 6px;
+            text-shadow: 0 0 15px rgba(243, 186, 47, 0.3);
         }
 
-        /* Main Tap Area: Cat with Proper Suit and Front Face */
+        /* Main Tap Area with Shorts Sidebar Layout */
+        .tap-main-wrapper {
+            display: flex;
+            flex: 1;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
         .tap-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex: 1;
             position: relative;
+            width: 100%;
         }
-        .cat-circle-glow {
-            width: 240px;
-            height: 240px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(15, 23, 42, 0) 70%);
+
+        /* Hamster Circle & Cute DP Design */
+        .hamster-circle-glow {
+            width: 230px;
+            height: 230px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(15, 23, 42, 0) 70%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             cursor: pointer;
-            box-shadow: 0 0 50px rgba(37, 99, 235, 0.25);
-            border: 2px solid rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 40px rgba(37, 99, 235, 0.2);
+            border: 2px solid rgba(59, 130, 246, 0.4);
         }
-        .cat-avatar-box {
-            width: 180px;
-            height: 180px;
+        .hamster-avatar-box {
+            width: 170px;
+            height: 170px;
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border-radius: 50%;
             display: flex;
@@ -188,84 +225,162 @@
             align-items: center;
             justify-content: center;
             border: 4px solid #f3ba2f;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            transition: transform 0.08s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            transition: transform 0.06s ease;
             position: relative;
         }
-        .cat-avatar-box:active {
-            transform: scale(0.92);
+        .hamster-avatar-box:active {
+            transform: scale(0.93);
         }
-
-        /* Detailed Front-facing Cat in Suit Representation */
-        .cat-face {
-            font-size: 50px;
-            margin-top: 5px;
+        .hamster-face {
+            font-size: 48px;
+            margin-top: 4px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-        .cat-suit-body {
-            background: linear-gradient(180deg, #1d4ed8, #1e40af);
-            width: 110px;
-            height: 60px;
-            border-radius: 40px 40px 10px 10px;
-            margin-top: -8px;
+        .hamster-suit-body {
+            background: linear-gradient(180deg, #2563eb, #1d4ed8);
+            width: 100px;
+            height: 55px;
+            border-radius: 35px 35px 10px 10px;
+            margin-top: -6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             border: 2px solid #60a5fa;
-            position: relative;
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
         }
-        .cat-shirt-collar {
-            width: 30px;
-            height: 12px;
+        .hamster-collar {
+            width: 26px;
+            height: 10px;
             background: #ffffff;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
         }
-        .cat-tie {
-            width: 8px;
-            height: 30px;
+        .hamster-tie {
+            width: 7px;
+            height: 26px;
             background: #ef4444;
             clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
             margin-top: -2px;
         }
 
-        /* Flying Coin Animation towards Binance */
+        /* Right Side YouTube Shorts Action Buttons */
+        .shorts-sidebar {
+            position: absolute;
+            right: 5px;
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            z-index: 5;
+        }
+        .short-action-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            font-size: 11px;
+            gap: 2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        .short-action-btn span.icon {
+            font-size: 22px;
+            background: rgba(0, 0, 0, 0.4);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bottom Channel Info Overlay */
+        .channel-info-overlay {
+            position: absolute;
+            left: 12px;
+            bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 5;
+            max-width: 65%;
+        }
+        .channel-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .channel-dp {
+            width: 30px;
+            height: 30px;
+            background: #f3ba2f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 1.5px solid #fff;
+        }
+        .channel-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        .subscribe-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .video-title {
+            font-size: 12px;
+            color: #e2e8f0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Flying FZL Coin Animation */
         .flying-coin {
             position: fixed;
-            font-size: 24px;
+            font-size: 22px;
             z-index: 9999;
             pointer-events: none;
             animation: flyToBinance 0.65s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
         }
         @keyframes flyToBinance {
-            0% {
-                transform: scale(1) translate(0, 0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0.3) translate(var(--dx), var(--dy));
-                opacity: 0;
-            }
+            0% { transform: scale(1) translate(0, 0); opacity: 1; }
+            100% { transform: scale(0.3) translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
         /* Energy Bar */
         .energy-wrapper {
-            width: 85%;
-            margin: 10px auto;
+            width: 90%;
+            margin: 4px auto 8px auto;
         }
         .energy-info {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11px;
             color: #94a3b8;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             font-weight: bold;
         }
         .energy-track {
             width: 100%;
             background: #1a2233;
-            height: 10px;
-            border-radius: 5px;
+            height: 8px;
+            border-radius: 4px;
             overflow: hidden;
             border: 1px solid #2a3447;
         }
@@ -273,24 +388,25 @@
             width: 85%;
             background: linear-gradient(90deg, #f3ba2f, #fbbf24);
             height: 100%;
-            border-radius: 5px;
+            border-radius: 4px;
             transition: width 0.2s;
         }
 
-        /* Bottom Navigation Bar */
+        /* Bottom Navigation Footer */
         .nav-footer {
             display: flex;
             justify-content: space-around;
             background: #121620;
-            padding: 8px 0;
+            padding: 6px 0 10px 0;
             border-top: 2px solid #1f293d;
+            z-index: 10;
         }
         .nav-btn {
             background: none;
             border: none;
             color: #64748b;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             text-align: center;
             font-weight: bold;
             display: flex;
@@ -299,13 +415,25 @@
             gap: 2px;
         }
         .nav-btn span.icon {
-            font-size: 20px;
+            font-size: 18px;
         }
         .nav-btn.active, .nav-btn:hover {
-            color: #f3ba2f;
+            color: #ffffff;
+        }
+        .nav-btn.center-add span.icon {
+            background: #ffffff;
+            color: #0b0e14;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
         }
 
-        /* Modals */
+        /* Modals Design */
         .modal {
             display: none;
             position: fixed;
@@ -361,24 +489,6 @@
             font-size: 14px;
             margin-top: 5px;
         }
-        .social-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            padding: 10px 14px;
-            margin: 6px 0;
-            border-radius: 8px;
-            border: none;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 13px;
-        }
-        .btn-tg { background: #0088cc; }
-        .btn-yt { background: #ff0000; }
-        .btn-wa { background: #25d366; }
     </style>
 </head>
 <body>
@@ -387,91 +497,129 @@
     <div class="header">
         <div class="top-row">
             <div class="user-profile" onclick="openModal('adminModal')">
-                🐱 Malak (CEO)
+                <div class="user-avatar-sm">🐹</div>
+                <span>Malak (FZL CEO)</span>
             </div>
-            <div class="top-right-icons">
-                <div class="exchange-badge" id="binanceTarget">
-                    <span>🪙</span> Binance
+            <div class="top-right-controls">
+                <div class="exchange-badge" id="binanceTarget" onclick="openModal('exchangeModal')">
+                    <span>🪙</span> <b>Binance</b>
                 </div>
-                <button class="icon-btn" onclick="openModal('gmailModal')">📧 Gmail</button>
-                <button class="icon-btn" style="background:#f3ba2f; color:#000;" onclick="openModal('boostModal')">🚀 Boost</button>
+                <div class="profit-badge" onclick="openModal('mineModal')">
+                    <span>🪙</span> +3.52K
+                </div>
+                <button class="icon-top-btn" onclick="openModal('settingsModal')">⚙️</button>
             </div>
         </div>
         <div class="level-progress-container">
             <span>Epic &gt; 6/10</span>
-            <span style="color: #f3ba2f; font-weight: bold;">Profit/h: +3.52K</span>
             <div class="level-bar-bg">
                 <div class="level-bar-fill"></div>
             </div>
         </div>
     </div>
 
-    <!-- Reward Cards -->
+    <!-- 3 Reward Cards Row -->
     <div class="cards-row">
         <div class="reward-card" onclick="alert('Daily reward claimed successfully!')">
-            <div style="font-size: 16px;">📅</div>
+            <div style="font-size: 15px;">📅</div>
             <div class="reward-card-title">Daily reward</div>
             <div class="reward-card-time">14:57</div>
         </div>
         <div class="reward-card" onclick="alert('Daily cipher active!')">
-            <div style="font-size: 16px;">🔐</div>
+            <div style="font-size: 15px;">🔐</div>
             <div class="reward-card-title">Daily cipher</div>
             <div class="reward-card-time">09:57</div>
         </div>
         <div class="reward-card" onclick="alert('Daily combo unlocked!')">
-            <div style="font-size: 16px;">🎁</div>
+            <div style="font-size: 15px;">🎁</div>
             <div class="reward-card-title">Daily combo</div>
             <div class="reward-card-time">02:57</div>
         </div>
     </div>
 
-    <!-- Coin Balance Display -->
+    <!-- FZL Coin Balance Display -->
     <div class="balance-container">
         <div class="coin-amount">
             <span>🪙</span> <span id="scoreDisplay">2,022,689</span>
         </div>
     </div>
 
-    <!-- Main Tap Area: Front-Facing Cat Wearing a Suit and Tie -->
-    <div class="tap-section" id="tapArea">
-        <div class="cat-circle-glow" onclick="tapCat(event)">
-            <div class="cat-avatar-box">
-                <div class="cat-face">🐱</div>
-                <div class="cat-suit-body">
-                    <div class="cat-shirt-collar"></div>
-                    <div class="cat-tie"></div>
+    <!-- Main Tap Area & Shorts Interface -->
+    <div class="tap-main-wrapper">
+        <div class="tap-section" id="tapArea">
+            <div class="hamster-circle-glow" onclick="tapHamster(event)">
+                <div class="hamster-avatar-box">
+                    <div class="hamster-face">🐹</div>
+                    <div class="hamster-suit-body">
+                        <div class="hamster-collar"></div>
+                        <div class="hamster-tie"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Energy Bar -->
+            <div class="energy-wrapper">
+                <div class="energy-info">
+                    <span>⚡ <span id="energyText">3343</span> / 3500</span>
+                    <span>🔋 95%</span>
+                </div>
+                <div class="energy-track">
+                    <div class="energy-fill" id="energyFill"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Energy Bar -->
-        <div class="energy-wrapper">
-            <div class="energy-info">
-                <span>⚡ <span id="energyText">1450</span> / 1500</span>
-                <span>🔋 96%</span>
+        <!-- Left Channel Info Overlay -->
+        <div class="channel-info-overlay">
+            <div class="channel-row">
+                <div class="channel-dp">🐹</div>
+                <span class="channel-name">@FZL_Official</span>
+                <button class="subscribe-btn" onclick="this.innerText='Subscribed'; this.style.background='#334155';">Subscribe</button>
             </div>
-            <div class="energy-track">
-                <div class="energy-fill" id="energyFill"></div>
-            </div>
+            <div class="video-title">tap tap and earn FZL coins 💰💵.</div>
+        </div>
+
+        <!-- Right YouTube Shorts Sidebar Actions -->
+        <div class="shorts-sidebar">
+            <button class="short-action-btn" onclick="toggleLike(this)">
+                <span class="icon">👍</span>
+                <span id="likeCount">626K</span>
+            </button>
+            <button class="short-action-btn" onclick="openModal('commentsModal')">
+                <span class="icon">💬</span>
+                <span>9,015</span>
+            </button>
+            <button class="short-action-btn" onclick="alert('Post saved to favorites!')">
+                <span class="icon">🔖</span>
+                <span>Save</span>
+            </button>
+            <button class="short-action-btn" onclick="alert('Share link copied to clipboard!')">
+                <span class="icon">↗️</span>
+                <span>Share</span>
+            </button>
+            <button class="short-action-btn" onclick="openModal('boostModal')">
+                <span class="icon">🚀</span>
+                <span>Boost</span>
+            </button>
         </div>
     </div>
 
     <!-- Bottom Navigation Footer -->
     <div class="nav-footer">
-        <button class="nav-btn active" onclick="openModal('exchangeModal')">
-            <span class="icon">🏛️</span> Exchange
+        <button class="nav-btn active" onclick="alert('Home feed active')">
+            <span class="icon">🏠</span> Home
         </button>
-        <button class="nav-btn" onclick="openModal('mineModal')">
-            <span class="icon">⛏️</span> Mine
+        <button class="nav-btn" onclick="alert('Shorts feed active')">
+            <span class="icon">⚡</span> Shorts
         </button>
-        <button class="nav-btn" onclick="openModal('friendsModal')">
-            <span class="icon">👥</span> Friends
-        </button>
-        <button class="nav-btn" onclick="openModal('earnModal')">
-            <span class="icon">🪙</span> Earn
+        <button class="nav-btn center-add" onclick="openModal('earnModal')">
+            <span class="icon">+</span>
         </button>
         <button class="nav-btn" onclick="openModal('socialsModal')">
-            <span class="icon">🌐</span> Socials
+            <span class="icon">📺</span> Subscriptions
+        </button>
+        <button class="nav-btn" onclick="openModal('adminModal')">
+            <span class="icon">👤</span> You
         </button>
     </div>
 
@@ -480,111 +628,9 @@
         <div class="modal-box">
             <span class="close-modal" onclick="closeModal('exchangeModal')">✕</span>
             <h3>🏛️ Choose Exchange</h3>
-            <p style="color: #94a3b8; font-size: 13px;">Select your crypto exchange to list and withdraw your earned coins securely.</p>
+            <p style="color: #94a3b8; font-size: 13px;">Select your crypto exchange to list and withdraw FZL coins.</p>
             <button class="modal-btn" style="background:#1e293b; color:#f3ba2f; border:1px solid #f3ba2f; margin-top:10px;">🟢 Binance (Connected)</button>
         </div>
     </div>
 
-    <div id="mineModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('mineModal')">✕</span>
-            <h3>⛏️ Mine Cards Upgrade</h3>
-            <p style="color: #94a3b8; font-size: 13px;">Upgrade cards to boost your passive Profit per Hour automatically.</p>
-        </div>
-    </div>
-
-    <div id="friendsModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('friendsModal')">✕</span>
-            <h3>👥 Invite Friends</h3>
-            <p style="color: #94a3b8; font-size: 12px;">Invite friends and get bonus coins instantly!</p>
-            <input type="text" class="modal-input" value="https://t.me/FZLCatBot?start=ref_malak" readonly>
-            <button class="modal-btn" onclick="alert('Invite link copied!')">📋 Copy Link</button>
-        </div>
-    </div>
-
-    <div id="earnModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('earnModal')">✕</span>
-            <h3>🪙 Earn Extra Coins</h3>
-            <p style="color: #94a3b8; font-size: 13px;">Complete daily tasks, watch videos, and join social channels.</p>
-        </div>
-    </div>
-
-    <div id="socialsModal" class="modal">
-        <div class="modal-box" style="max-height: 75vh; overflow-y: auto;">
-            <span class="close-modal" onclick="closeModal('socialsModal')">✕</span>
-            <h3>🌐 Official Social Networks</h3>
-            <a href="https://t.me" target="_blank" class="social-btn btn-tg">📢 Telegram Channel</a>
-            <a href="https://www.youtube.com" target="_blank" class="social-btn btn-yt">▶️ YouTube Official</a>
-            <a href="https://wa.me" target="_blank" class="social-btn btn-wa">💬 WhatsApp Group</a>
-        </div>
-    </div>
-
-    <div id="boostModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('boostModal')">✕</span>
-            <h3>🚀 Multitap Boost</h3>
-            <p style="color: #94a3b8; font-size: 13px;">Increase the amount of coins you earn per tap!</p>
-            <div style="background:#1a2233; padding:12px; border-radius:8px; margin-top:10px;">
-                <div style="font-size:13px; font-weight:bold;">Earn per tap: <span style="color:#f3ba2f;" id="tapPowerDisplay">+7</span></div>
-            </div>
-            <button class="modal-btn" onclick="upgradeMultitap()">Upgrade Multitap</button>
-        </div>
-    </div>
-
-    <div id="gmailModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('gmailModal')">✕</span>
-            <h3>📧 Gmail Verification</h3>
-            <p style="color: #94a3b8; font-size: 12px;">Apna Gmail account darj karein:</p>
-            <input type="email" id="userEmail" class="modal-input" placeholder="example@gmail.com">
-            <button class="modal-btn" onclick="sendGmailCode()">Send Verification Code</button>
-        </div>
-    </div>
-
-    <div id="adminModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('adminModal')">✕</span>
-            <h3>🛡️ Admin Analytics</h3>
-            <p style="font-size: 13px; margin: 6px 0;">👤 Owner: Malak</p>
-            <p style="font-size: 13px; margin: 6px 0;">👥 Total Active Users: 1,420</p>
-        </div>
-    </div>
-
-    <script>
-        let score = 2022689;
-        let tapPower = 7;
-        let energy = 1450;
-        const maxEnergy = 1500;
-
-        function tapCat(event) {
-            if (energy < tapPower) {
-                alert('Energy exhausted! Wait for it to refill.');
-                return;
-            }
-
-            score += tapPower;
-            energy -= tapPower;
-            if (energy < 0) energy = 0;
-
-            document.getElementById('scoreDisplay').innerText = score.toLocaleString();
-            document.getElementById('energyText').innerText = energy;
-            document.getElementById('energyFill').style.width = (energy / maxEnergy * 100) + '%';
-
-            let clickX = event.clientX;
-            let clickY = event.clientY;
-
-            let target = document.getElementById('binanceTarget').getBoundingClientRect();
-            let targetX = target.left + target.width / 2;
-            let targetY = target.top + target.height / 2;
-
-            for (let i = 0; i < Math.min(tapPower, 5); i++) {
-                let coin = document.createElement('div');
-                coin.className = 'flying-coin';
-                coin.innerText = '🪙';
-                
-                let offsetX = (Math.random() - 0.5) * 40;
-                let offsetY = (Math.random() - 0.5) * 40;
-                coin.style.left = (clickX + offsetX) + 'px';
-                coin.style.top = (clickY + offsetY) + 
+    <div id="mineModal" class="m
