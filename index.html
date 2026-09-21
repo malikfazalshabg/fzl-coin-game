@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Kombat - Ultimate Fixed Edition</title>
+    <title>FZL Kombat - Direct Start</title>
     <style>
         * {
             box-sizing: border-box;
@@ -15,7 +15,7 @@
         body {
             background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0f101d 50%, #06070a 100%);
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: sans-serif;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -26,7 +26,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 11, 18, 0.98);
-            z-index: 9999;
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -37,97 +37,28 @@
         .start-btn {
             background: linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%);
             color: #000;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 900;
-            padding: 15px 40px;
-            border-radius: 30px;
+            padding: 16px 45px;
+            border-radius: 35px;
             border: none;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(243, 186, 47, 0.6);
+            box-shadow: 0 0 35px rgba(243, 186, 47, 0.8);
             margin-top: 20px;
         }
         .top-container {
-            padding: 10px 14px;
-            background: rgba(26, 29, 45, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 12px 15px;
+            background: rgba(26, 29, 45, 0.9);
         }
         .user-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-        }
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .user-avatar {
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 0 10px rgba(243, 186, 47, 0.5);
         }
         .user-name {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 800;
             color: #ffd700;
-        }
-        .header-actions {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-        .admin-btn {
-            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
-            color: #fff;
-            padding: 4px 9px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 800;
-            border: none;
-            cursor: pointer;
-        }
-        .google-login-btn {
-            background: #ffffff;
-            color: #000;
-            padding: 4px 9px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
-        .metric-card {
-            background: rgba(22, 26, 41, 0.8);
-            border-radius: 8px;
-            padding: 6px 4px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .metric-title {
-            font-size: 8px;
-            color: #94a3b8;
-            margin-bottom: 2px;
-            text-transform: uppercase;
-        }
-        .metric-value {
-            font-size: 11px;
-            font-weight: 800;
-            color: #f3ba2f;
         }
         .game-content {
             display: flex;
@@ -135,390 +66,82 @@
             align-items: center;
             justify-content: center;
             flex-grow: 1;
-            position: relative;
         }
         .balance-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 38px;
+            font-size: 40px;
             font-weight: 900;
             margin-bottom: 20px;
-            text-shadow: 0 0 25px rgba(243, 186, 47, 0.5);
-        }
-        .balance-icon {
-            font-size: 30px;
-        }
-        .hamster-outer {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(243,186,47,0.25) 0%, rgba(79, 70, 229, 0.1) 50%, transparent 75%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
+            color: #f3ba2f;
         }
         .hamster-btn {
-            width: 190px;
-            height: 190px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             background: radial-gradient(circle, #f3ba2f 0%, #b8860b 100%);
-            box-shadow: 0 15px 40px rgba(184, 134, 11, 0.5), inset 0 6px 15px rgba(255,255,255,0.5);
+            box-shadow: 0 15px 40px rgba(184, 134, 11, 0.6);
             border: 6px solid #ffeaa7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 80px;
-            transition: transform 0.05s ease;
+            font-size: 90px;
+            cursor: pointer;
         }
         .hamster-btn:active {
-            transform: scale(0.85);
-        }
-        .tap-star {
-            position: absolute;
-            font-weight: 900;
-            color: #00ffcc;
-            font-size: 24px;
-            pointer-events: none;
-            text-shadow: 0 0 12px rgba(0, 255, 204, 0.9);
-            animation: starUp 0.7s ease-out forwards;
-            z-index: 999;
-        }
-        @keyframes starUp {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
-            100% { opacity: 0; transform: translate(-50%, -110px) scale(1.3); }
-        }
-        .footer-info {
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 0 18px 10px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .energy-status {
-            font-size: 13px;
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .boost-btn-original {
-            background: linear-gradient(135deg, #252b42 0%, #1a1f33 100%);
-            border: 1px solid rgba(243, 186, 47, 0.4);
-            padding: 7px 14px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #f3ba2f;
-            cursor: pointer;
+            transform: scale(0.9);
         }
         .nav-menu {
             display: flex;
             justify-content: space-around;
             background: rgba(18, 20, 32, 0.95);
-            padding: 8px 0 12px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 0;
         }
         .nav-item {
             background: none;
             border: none;
+            color: #94a3b8;
+            font-size: 12px;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            font-size: 10px;
-            color: #94a3b8;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .nav-item.active {
-            color: #f3ba2f;
-        }
-        .nav-item span:first-child {
-            font-size: 18px;
-        }
-        .modal-bg {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 10, 0.85);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-box {
-            background: linear-gradient(135deg, #1c2035 0%, #121522 100%);
-            width: 90%;
-            max-width: 380px;
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(243, 186, 47, 0.3);
-            max-height: 82vh;
-            overflow-y: auto;
-            text-align: left;
-        }
-        .modal-close {
-            float: right;
-            font-size: 18px;
-            cursor: pointer;
-            color: #94a3b8;
-        }
-        .social-btn-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 12px;
-        }
-        .soc-btn {
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            color: #fff;
-        }
-        .admin-panel-box {
-            background: #0f101d;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 8px;
-            border: 1px solid rgba(255,65,108,0.3);
-            font-size: 12px;
+            gap: 4px;
         }
     </style>
 </head>
 <body>
 
     <div id="startOverlay">
-        <h1 style="color: #ffd700; font-size: 26px; margin-bottom: 10px;">🦁 FZL KOMBAT</h1>
-        <p style="color: #94a3b8; font-size: 14px;">گیم کو شروع کرنے کے لیے نیچے دیے گئے بٹن پر کلک کریں:</p>
-        <button class="start-btn" onclick="launchGame()">START GAME 🚀</button>
+        <h1 style="color: #ffd700; font-size: 28px; margin-bottom: 10px;">🦁 FZL KOMBAT</h1>
+        <p style="color: #94a3b8; font-size: 15px;">گیم شروع کرنے کے لیے نیچے بٹن پر کلک کریں:</p>
+        <button class="start-btn" onclick="document.getElementById('startOverlay').style.display='none';">START GAME 🚀</button>
     </div>
 
     <div class="top-container">
         <div class="user-row">
-            <div class="user-profile" onclick="switchTab('airdrop')">
-                <div class="user-avatar" id="userAvatarIcon">🦁</div>
-                <span class="user-name" id="profileNameText">FZL CEO</span>
-            </div>
-            <div class="header-actions">
-                <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
-                <button class="google-login-btn" onclick="triggerGoogleLogin()">🌐 Google</button>
-            </div>
-        </div>
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-title">Profit / hour</div>
-                <div class="metric-value">+250.5K</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Binance Launch</div>
-                <div class="metric-value" style="color:#00ffcc">Q4 2027</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Keys & Combo</div>
-                <div class="metric-value">🔑 4 / 4</div>
-            </div>
+            <span class="user-name">FZL CEO</span>
+            <span style="color: #00ffcc; font-size: 12px;">Online</span>
         </div>
     </div>
 
     <div class="game-content">
-        <div class="balance-container">
-            <span class="balance-icon">🪙</span>
-            <span id="score">1250400</span>
-        </div>
-
-        <div class="hamster-outer" id="hamsterArea">
-            <div class="hamster-btn" id="hamsterBtn">🦁</div>
-        </div>
-    </div>
-
-    <div class="footer-info">
-        <div class="energy-status">
-            ⚡ <span id="energy">950</span> / <span id="maxEnergy">1000</span>
-        </div>
-        <div class="boost-btn-original" onclick="openBoost()">
-            🚀 Turbo Boost
-        </div>
+        <div class="balance-container" id="scoreDisplay">1,250,400</div>
+        <div class="hamster-btn" onclick="addScore()">🦁</div>
     </div>
 
     <div class="nav-menu">
-        <button class="nav-item active" onclick="switchTab('exchange')">
-            <span>🪙</span><span>Exchange</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('mine')">
-            <span>⛏️</span><span>Mine</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('friends')">
-            <span>👥</span><span>Friends</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('earn')">
-            <span>🎁</span><span>Earn</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('airdrop')">
-            <span>🪂</span><span>Social Hub</span>
-        </button>
-    </div>
-
-    <div class="modal-bg" id="modalWindow">
-        <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">✕</span>
-            <div id="modalContentBody">Content</div>
-        </div>
+        <button class="nav-item"><span>🪙</span><span>Exchange</span></button>
+        <button class="nav-item"><span>⛏️</span><span>Mine</span></button>
+        <button class="nav-item"><span>👥</span><span>Friends</span></button>
+        <button class="nav-item"><span>🎁</span><span>Earn</span></button>
     </div>
 
     <script>
-        let score = parseInt(localStorage.getItem('hm_score')) || 1250400;
-        let energy = parseInt(localStorage.getItem('hm_energy')) || 950;
-        let maxEnergy = 1000;
-        let loggedUser = localStorage.getItem('google_user_email') || 'Not Logged In';
-        let allUsersList = JSON.parse(localStorage.getItem('fzl_all_users') || '[]');
-
-        const scoreEl = document.getElementById('score');
-        const energyEl = document.getElementById('energy');
-        const hamsterArea = document.getElementById('hamsterArea');
-        const startOverlay = document.getElementById('startOverlay');
-
-        scoreEl.innerText = score.toLocaleString();
-        energyEl.innerText = energy;
-
-        if(loggedUser !== 'Not Logged In') {
-            document.getElementById('profileNameText').innerText = loggedUser.split('@')[0];
-            document.getElementById('userAvatarIcon').innerText = '✅';
+        let score = 1250400;
+        function addScore() {
+            score += 1;
+            document.getElementById('scoreDisplay').innerText = score.toLocaleString();
         }
-
-        function launchGame() {
-            if(startOverlay) {
-                startOverlay.style.display = 'none';
-            }
-        }
-
-        function handleTap(e) {
-            if (energy >= 1) {
-                score += 1;
-                energy -= 1;
-                scoreEl.innerText = score.toLocaleString();
-                energyEl.innerText = energy;
-                
-                localStorage.setItem('hm_score', score);
-                localStorage.setItem('hm_energy', energy);
-
-                let rect = hamsterArea.getBoundingClientRect();
-                let clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left + rect.width / 2);
-                let clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : rect.top + rect.height / 2);
-
-                let star = document.createElement('div');
-                star.className = 'tap-star';
-                star.innerHTML = "+1 FZL";
-                star.style.left = (clientX - rect.left) + 'px';
-                star.style.top = (clientY - rect.top) + 'px';
-
-                hamsterArea.appendChild(star);
-                setTimeout(() => star.remove(), 700);
-            }
-        }
-
-        hamsterArea.addEventListener('click', handleTap);
-        hamsterArea.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                handleTap(e.changedTouches[i]);
-            }
-        }, { passive: false });
-
-        setInterval(() => {
-            if (energy < maxEnergy) {
-                energy += 15;
-                if (energy > maxEnergy) energy = maxEnergy;
-                energyEl.innerText = energy;
-            }
-        }, 1000);
-
-        function triggerGoogleLogin() {
-            let email = prompt("Google account se login karne ke liye apna Gmail enter karein:");
-            if(email && email.includes('@')) {
-                localStorage.setItem('google_user_email', email);
-                loggedUser = email;
-                document.getElementById('profileNameText').innerText = email.split('@')[0];
-                document.getElementById('userAvatarIcon').innerText = '✅';
-                
-                if(!allUsersList.includes(email)) {
-                    allUsersList.push(email);
-                    localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
-                }
-
-                score += 100000;
-                scoreEl.innerText = score.toLocaleString();
-                alert("Google Login Successful! +100,000 Coins added.");
-            }
-        }
-
-        function openAdminPanel() {
-            let modal = document.getElementById('modalWindow');
-            let body = document.getElementById('modalContentBody');
-            modal.style.display = 'flex';
-
-            let userCount = allUsersList.length;
-            let listHtml = allUsersList.map(u => `<li>${u}</li>`).join('') || '<li>No Google logins recorded yet.</li>';
-
-            body.innerHTML = `<h3>🛡️ Admin Live Control Panel</h3><br>
-            <p><b>Total Google Logins:</b> <span style="color:#00ffcc;">${userCount} Users</span></p>
-            <p><b>Current Active User:</b> <span style="color:#f3ba2f;">${loggedUser}</span></p>
-            <p><b>Total Score:</b> ${score.toLocaleString()} 🪙</p><br>
-            <p><b>Connected Gmail Database:</b></p>
-            <div class="admin-panel-box">
-                <ul style="padding-left: 15px; max-height: 120px; overflow-y: auto;">
-                    ${listHtml}
-                </ul>
-            </div><br>
-            <button onclick="localStorage.removeItem('fzl_all_users'); allUsersList=[]; alert('Database cleared!'); closeModal();" style="background:#ff416c; color:#fff; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Clear Logged Users Data</button>`;
-        }
-
-        function openBoost() {
-            let modal = document.getElementById('modalWindow');
-            let body = document.getElementById('modalContentBody');
-            modal.style.display = 'flex';
-            body.innerHTML = `<h3>🚀 Turbo Boost</h3><br>
-            <p>Refill your energy instantly to maximum capacity.</p><br>
-            <button onclick="energy=maxEnergy; energyEl.innerText=energy; closeModal(); alert('Energy Fully Refilled!');" style="background:linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%); color:#000; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Refill Energy (Free)</button>`;
-        }
-
-        function closeModal() {
-            let modal = document.getElementById('modalWindow');
-            if(modal) modal.style.display = 'none';
-        }
-
-        function switchTab(tab) {
-            let modal = document.getElementById('modalWindow');
-            let body = document.getElementById('modalContentBody');
-            modal.style.display = 'flex';
-
-            if (tab === 'mine') {
-                body.innerHTML = `<h3>⛏️ Mine Upgrades</h3><br>
-                <p><b>Binance Liquid Pool:</b> +50,000 PPH (Cost: 200,000 🪙)</p><br>
-                <button onclick="if(score>=200000){score-=200000; scoreEl.innerText=score.toLocaleString(); alert('Card Upgraded!'); closeModal();}else{alert('Not enough coins!');}" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Upgrade Card</button>`;
-            } else if (tab === 'friends') {
-                body.innerHTML = `<h3>👥 Invite Friends</h3><br>
-                <p>Share referral link:</p><br>
-                <input type="text" value="https://t.me/FZLKombatBot?start=ref_2027" style="width:100%; padding:8px; background:#0f101d; color:#fff; border:1px solid #323a52; border-radius:6px;" readonly>`;
-            } else if (tab === 'earn') {
-                body.innerHTML = `<h3>🎁 Earn Tasks</h3><br>
-                <p>👉 Join Binance Web3 Channel (+200k Coins)</p><br>
-                <button onclick="score+=200000; scoreEl.innerText=score.toLocaleString(); closeModal(); alert('Reward Claimed!');" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Claim Task</button>`;
-            } else if (tab === 'airdrop') {
-                body.innerHTML = `<h3>🌐 Social Hub</h3><br>
-                <p>Connect with official networks:</p>
-                <div class="social-btn-grid">
-                    <button class="soc-btn" style="background:#0088cc;" onclick="window.open('https://telegram.org','_blank')">📢 Telegram</button>
-                    <button class="soc-btn" style="background:#ff0000;" onclick="window.open('https://youtube.com','_blank')">▶️ YouTube</button>
-                    <button class="soc-btn" style="background:#25d366;" onclick="window.open('https://whatsapp.com','_blank')">💚 What
+    </script>
+</body>
+                                            </html>
+                                            
