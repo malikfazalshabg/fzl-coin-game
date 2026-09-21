@@ -2,231 +2,568 @@
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Coin - Royal Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FZL Kombat - Secure & Royal VIP Edition</title>
     <style>
         * {
             box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
-        }
-        body {
-            background: linear-gradient(180deg, #090715 0%, #160e33 50%, #090715 100%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+        }
+        body {
+            background: #10121b;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 100vh;
-            text-align: center;
             overflow: hidden;
         }
-        .header {
-            padding: 25px 10px 0;
+        /* Top Header Stats */
+        .top-container {
+            padding: 12px 16px;
+            background: #1c1f2e;
+            border-bottom: 1px solid #2d324f;
         }
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 2px;
-            color: #f3ba2f;
-            text-shadow: 0 0 15px rgba(243, 186, 47, 0.6);
-            font-weight: 800;
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
         }
-        .score-container {
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .avatar-small {
+            width: 32px;
+            height: 32px;
+            background: #f3ba2f;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 10px;
-            font-size: 38px;
-            font-weight: 900;
+            font-weight: bold;
+            color: #10121b;
+            font-size: 14px;
+        }
+        .username {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .actions-box {
+            display: flex;
+            gap: 6px;
+        }
+        .login-btn, .admin-btn {
+            background: #f3ba2f;
+            color: #10121b;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .wallet-btn {
+            background: #0088cc;
             color: #fff;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
         }
-        .score-container span:first-child {
-            margin-right: 8px;
-            font-size: 32px;
+        .admin-btn {
+            background: #e91e63;
+            color: #fff;
         }
-        .game-body {
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #141622;
+            padding: 8px 12px;
+            border-radius: 12px;
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        .stat-item:not(:last-child) {
+            border-right: 1px solid #262a3d;
+        }
+        .stat-title {
+            font-size: 10px;
+            color: #848a9c;
+            margin-bottom: 2px;
+        }
+        .stat-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #f3ba2f;
+        }
+
+        /* Main Game Area */
+        .game-main {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            flex-grow: 1;
+            padding: 0 20px;
         }
-        /* یہاں تصویر کو بالکل پرفیکٹ گول شکل دی گئی ہے بغیر کسی اضافی فریم کے تاکہ آپ کا اصلی ڈیزائن نظر آئے */
-        .coin-btn {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: #000;
-            box-shadow: 0 0 35px rgba(212, 175, 55, 0.4);
-            border: none;
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        .score-display img {
+            width: 36px;
+            height: 36px;
+        }
+
+        /* Coin Button with Royal Lion Art */
+        .coin-wrapper {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .coin-btn {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #2d2647 0%, #110c22 100%);
+            box-shadow: 0 0 50px rgba(243, 186, 47, 0.3), inset 0 0 20px rgba(243, 186, 47, 0.2);
+            border: 4px solid #f3ba2f;
             cursor: pointer;
-            transition: transform 0.06s ease, box-shadow 0.06s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
             outline: none;
-            overflow: hidden;
+            transition: transform 0.05s ease;
         }
         .coin-btn:active {
             transform: scale(0.93);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
         }
-        .coin-inner {
-            width: 100%;
-            height: 100%;
+        .coin-btn img {
+            width: 90%;
+            height: 90%;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .coin-inner img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
         }
-        .energy-container {
-            width: 82%;
-            margin-top: 30px;
-            background: rgba(20, 14, 45, 0.7);
-            padding: 12px 15px;
-            border-radius: 15px;
-            border: 1px solid rgba(243, 186, 47, 0.2);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .energy-info {
+
+        /* Energy & Bottom Stats */
+        .footer-stats {
+            width: 100%;
+            max-width: 400px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding: 0 10px;
+        }
+        .energy-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-size: 14px;
+            font-weight: 700;
+        }
+        .boost-box {
+            background: #272b3f;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #e0d9ff;
+            cursor: pointer;
         }
-        .energy-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #0b071a;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(243, 186, 47, 0.3);
+
+        /* Floating numbers on click */
+        .floating-num {
+            position: absolute;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
+            text-shadow: 0 0 5px #f3ba2f;
         }
-        .energy-fill {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, #d4af37, #f3ba2f, #ffeb3b);
-            border-radius: 10px;
-            transition: width 0.1s linear;
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
         }
-        .footer-nav {
+
+        /* Bottom Navigation Bar */
+        .nav-bar {
             display: flex;
             justify-content: space-around;
-            background-color: #0c081f;
-            padding: 14px 0;
-            border-top: 1px solid rgba(243, 186, 47, 0.15);
+            background: #141622;
+            padding: 10px 0;
+            border-top: 1px solid #23273c;
         }
-        .nav-item {
-            color: #7c73a8;
-            font-size: 12px;
-            font-weight: 500;
+        .nav-tab {
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #7b8196;
+            font-size: 11px;
             cursor: pointer;
-            transition: color 0.2s;
+            flex: 1;
         }
-        .nav-item.active {
+        .nav-tab.active {
             color: #f3ba2f;
-            text-shadow: 0 0 8px rgba(243, 186, 47, 0.4);
         }
-        .nav-icon {
-            font-size: 22px;
-            margin-bottom: 4px;
+        .nav-tab span {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        /* Admin / Leaderboard Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #1c1f2e;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #2d324f;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .user-list-item {
+            display: flex;
+            justify-content: space-between;
+            background: #141622;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>FZL COIN</h1>
-        <div class="score-container">
+    <!-- Top Stats Bar -->
+    <div class="top-container">
+        <div class="user-info">
+            <div class="user-profile">
+                <div class="avatar-small" id="userAvatar">FZ</div>
+                <div class="username" id="userName">Guest (CEO)</div>
+            </div>
+            <div class="actions-box">
+                <button class="login-btn" id="loginBtn" onclick="loginWithGoogle()">Google</button>
+                <button class="wallet-btn" id="walletBtn" onclick="connectTonWallet()">TON Wallet</button>
+                <button class="admin-btn" onclick="openAdminPanel()">Admin</button>
+            </div>
+        </div>
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-title">Earn per tap</div>
+                <div class="stat-value">+1</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-title">Coins to level up</div>
+                <div class="stat-value">1M</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-title">Active Players</div>
+                <div class="stat-value" id="activePlayersCount">1</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="game-main" id="gameArea">
+        <div class="score-display">
             <span>🪙</span>
             <span id="score">0</span>
         </div>
-    </div>
 
-    <div class="game-body">
-        <div class="coin-btn" onclick="tapCoin(event)">
-            <div class="coin-inner">
-                <!-- آپ کی بھیجی گئی اصل منڈالا لائن آرٹ والی رائل شیر کی تصویر -->
-                <img src="https://i.ibb.co/68v9N2w/lion-mandala.jpg" alt="Royal Lion Logo" id="coin-image" onerror="this.src='https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?q=80&w=600&auto=format&fit=crop'">
-            </div>
+        <div class="coin-wrapper">
+            <button class="coin-btn" id="coinBtn">
+                <img src="https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?q=80&w=600&auto=format&fit=crop" alt="Royal Lion Logo">
+            </button>
         </div>
 
-        <div class="energy-container">
-            <div class="energy-info">
-                <span>⚡ Energy</span>
-                <span id="energy-text">1000 / 1000</span>
+        <div class="footer-stats">
+            <div class="energy-box">
+                ⚡ <span id="energy">1000</span> / 1000
             </div>
-            <div class="energy-bar">
-                <div class="energy-fill" id="energy-fill"></div>
-            </div>
+            <div class="boost-box" onclick="alert('Boosters coming soon!')">🚀 Boost</div>
         </div>
     </div>
 
-    <div class="footer-nav">
-        <div class="nav-item active">
-            <div class="nav-icon">🪙</div>
-            <div>Tap</div>
+    <!-- Bottom Navigation Bar -->
+    <div class="nav-bar">
+        <div class="nav-tab active" onclick="switchTab('exchange')">
+            <span>🪙</span>
+            Exchange
         </div>
-        <div class="nav-item" onclick="alert('Earn section coming soon!')">
-            <div class="nav-icon">⛏️</div>
-            <div>Earn</div>
+        <div class="nav-tab" onclick="switchTab('mine')">
+            <span>⛏️</span>
+            Mine
         </div>
-        <div class="nav-item" onclick="alert('Friends referral system coming soon!')">
-            <div class="nav-icon">👥</div>
-            <div>Friends</div>
+        <div class="nav-tab" onclick="switchTab('friends')">
+            <span>👥</span>
+            Friends
         </div>
-        <div class="nav-item" onclick="alert('Wallet integration coming soon!')">
-            <div class="nav-icon">💼</div>
-            <div>Wallet</div>
+        <div class="nav-tab" onclick="switchTab('earn')">
+            <span>🎁</span>
+            Earn
+        </div>
+        <div class="nav-tab" onclick="switchTab('airdrop')">
+            <span>💎</span>
+            Airdrop
+        </div>
+    </div>
+
+    <!-- Admin / Stats Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👑 Admin & Player Analytics</h3>
+                <button class="close-modal" onclick="closeAdminPanel()">✕</button>
+            </div>
+            <div id="adminStatsBody">
+                <p style="margin-bottom: 10px; font-size: 12px; color: #848a9c;">یہاں آپ تمام یوزرز کی لسٹ اور ان کے کوئنز دیکھ سکتے ہیں:</p>
+                <div id="playersListContainer"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        let score = localStorage.getItem('fzl_score') ? parseInt(localStorage.getItem('fzl_score')) : 0;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playCoinSound() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            let osc = audioCtx.createOscillator();
+            let gainNode = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.08);
+            
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+
+        let userId = localStorage.getItem('fzl_user_id');
+        if (!userId) {
+            userId = 'user_' + Math.floor(Math.random() * 1000000);
+            localStorage.setItem('fzl_user_id', userId);
+        }
+
+        let score = localStorage.getItem('fzl_kombat_score_' + userId) ? parseInt(localStorage.getItem('fzl_kombat_score_' + userId)) : 0;
         let energy = 1000;
         const maxEnergy = 1000;
 
-        document.getElementById('score').innerText = score.toLocaleString();
+        const scoreEl = document.getElementById('score');
+        const energyEl = document.getElementById('energy');
+        const coinBtn = document.getElementById('coinBtn');
+        const userNameEl = document.getElementById('userName');
+        const userAvatarEl = document.getElementById('userAvatar');
+        const loginBtn = document.getElementById('loginBtn');
+        const walletBtn = document.getElementById('walletBtn');
 
-        function tapCoin(event) {
+        scoreEl.innerText = score.toLocaleString();
+
+        function updateGlobalDatabase() {
+            let allPlayers = JSON.parse(localStorage.getItem('fzl_global_players') || '{}');
+            let currentUserEmail = localStorage.getItem('fzl_user_email') || userId;
+            let currentWallet = localStorage.getItem('fzl_ton_wallet') || 'Not Connected';
+            
+            allPlayers[userId] = {
+                id: userId,
+                name: currentUserEmail,
+                score: score,
+                wallet: currentWallet,
+                lastActive: new Date().toLocaleTimeString()
+            };
+            localStorage.setItem('fzl_global_players', JSON.stringify(allPlayers));
+            document.getElementById('activePlayersCount').innerText = Object.keys(allPlayers).length;
+        }
+
+        updateGlobalDatabase();
+
+        let savedEmail = localStorage.getItem('fzl_user_email');
+        if (savedEmail) {
+            userNameEl.innerText = savedEmail.split('@')[0];
+            userAvatarEl.innerText = savedEmail.charAt(0).toUpperCase();
+            loginBtn.innerText = 'Linked';
+            loginBtn.style.background = '#4CAF50';
+            loginBtn.style.color = '#fff';
+        }
+
+        let savedWallet = localStorage.getItem('fzl_ton_wallet');
+        if (savedWallet) {
+            walletBtn.innerText = savedWallet.substring(0, 6) + '...';
+            walletBtn.style.background = '#4CAF50';
+        }
+
+        function loginWithGoogle() {
+            let email = prompt("अपना Gmail (Google Account) درج کریں:");
+            if (email && email.includes("@")) {
+                localStorage.setItem('fzl_user_email', email);
+                userNameEl.innerText = email.split('@')[0];
+                userAvatarEl.innerText = email.charAt(0).toUpperCase();
+                loginBtn.innerText = 'Linked';
+                loginBtn.style.background = '#4CAF50';
+                loginBtn.style.color = '#fff';
+                updateGlobalDatabase();
+                alert("گوگل اکاؤنٹ کامیابی سے جڑ گیا ہے!");
+            } else if (email) {
+                alert("براہ کرم درست جی میل درج کریں!");
+            }
+        }
+
+        function connectTonWallet() {
+            let walletAddress = prompt("اپنا ٹیلیگرام TON والٹ ایڈریس درج کریں (مثلاً EQD...):");
+            if (walletAddress && walletAddress.length > 10) {
+                localStorage.setItem('fzl_ton_wallet', walletAddress);
+                walletBtn.innerText = walletAddress.substring(0, 6) + '...';
+                walletBtn.style.background = '#4CAF50';
+                updateGlobalDatabase();
+                alert("ٹیلیگرام ٹن والٹ کامیابی سے کنیکٹ ہو گیا ہے!");
+            } else if (walletAddress) {
+                alert("براہ کرم درست والٹ ایڈریس درج کریں!");
+            }
+        }
+
+        let lastTapTime = 0;
+        coinBtn.addEventListener('click', function(e) {
+            let now = Date.now();
+            if (now - lastTapTime < 50 && e.clientX !== 0) {
+                return;
+            }
+            lastTapTime = now;
+
             if (energy > 0) {
                 score++;
                 energy--;
-                updateUI();
-                localStorage.setItem('fzl_score', score);
+                scoreEl.innerText = score.toLocaleString();
+                energyEl.innerText = energy;
+                
+                localStorage.setItem('fzl_kombat_score_' + userId, score);
+                updateGlobalDatabase();
+                
+                playCoinSound();
+                createFloatingText(e);
             }
+        });
+
+        function createFloatingText(e) {
+            let rect = coinBtn.getBoundingClientRect();
+            let x = e.clientX ? e.clientX - rect.left : rect.width / 2;
+            let y = e.clientY ? e.clientY - rect.top : rect.height / 2;
+
+            let floatEl = document.createElement('div');
+            floatEl.className = 'floating-num';
+            floatEl.innerText = '+1';
+            floatEl.style.left = `${x}px`;
+            floatEl.style.top = `${y}px`;
+            
+            coinBtn.appendChild(floatEl);
+            setTimeout(() => {
+                floatEl.remove();
+            }, 800);
         }
 
-        function updateUI() {
-            document.getElementById('score').innerText = score.toLocaleString();
-            document.getElementById('energy-text').innerText = `${energy} / ${maxEnergy}`;
-            document.getElementById('energy-fill').style.width = `${(energy / maxEnergy) * 100}%`;
-        }
-
-        // Energy Auto Recharge
         setInterval(() => {
             if (energy < maxEnergy) {
-                energy += 2;
+                energy += 3;
                 if (energy > maxEnergy) energy = maxEnergy;
-                updateUI();
+                energyEl.innerText = energy;
             }
         }, 1000);
+
+        const MY_SECRET_ADMIN_PASSWORD = "malik786"; 
+
+        function openAdminPanel() {
+            let pass = prompt("ایڈمن پاس ورڈ درج کریں:");
+            if (pass === MY_SECRET_ADMIN_PASSWORD) {
+                renderAdminData();
+                document.getElementById('adminModal').style.display = 'flex';
+            } else if (pass !== null) {
+                alert("غلط پاس ورڈ!");
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function renderAdminData() {
+            let container = document.getElementById('playersListContainer');
+            let allPlayers = JSON.parse(localStorage.getItem('fzl_global_players') || '{}');
+            
+            let html = '';
+            let sortedPlayers = Object.values(allPlayers).sort((a, b) => b.score - a.score);
+            
+            sortedPlayers.forEach((player, index) => {
+                html += `
+                    <div class="user-list-item">
+                        <div>
+                            <strong>#${index + 1} ${player.name}</strong><br>
+                            <span style="color: #848a9c; font-size: 10px;">Wallet: ${player.wallet}</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong style="color: #f3ba2f;">🪙 ${player.score.toLocaleString()}</strong><br>
+                            <span style="color: #848a9c; font-size: 9px;">${player.lastActive}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html || '<p>کوئی کھلاڑی موجود نہیں ہے۔</p>';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            if(tabName === 'airdrop') {
+                openAdminPanel();
+            } else if(tabName !== 'exchange') {
+                alert(tabName.toUpperCase() + ' section is loading!');
+            }
+        }
     </script>
 </body>
-    </html>
-    
+</html>
