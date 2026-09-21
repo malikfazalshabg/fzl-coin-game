@@ -34,13 +34,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 15px;
-            font-size: 36px;
+            margin-top: 12px;
+            font-size: 34px;
             font-weight: bold;
         }
         .score-container img {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             margin-right: 10px;
         }
         .game-body {
@@ -50,11 +50,11 @@
             justify-content: center;
         }
         .coin-btn {
-            width: 220px;
-            height: 220px;
+            width: 230px;
+            height: 230px;
             border-radius: 50%;
             background: radial-gradient(circle, #ffe100 0%, #f3ba2f 70%, #b8860b 100%);
-            box-shadow: 0 0 35px rgba(243, 186, 47, 0.6), inset 0 0 15px #ffffff;
+            box-shadow: 0 0 40px rgba(243, 186, 47, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.8);
             border: 8px solid #ffd700;
             display: flex;
             align-items: center;
@@ -62,15 +62,24 @@
             cursor: pointer;
             transition: transform 0.08s ease;
             position: relative;
+            overflow: hidden;
         }
         .coin-btn:active {
             transform: scale(0.92);
         }
         .coin-inner {
-            font-size: 70px;
-            font-weight: bold;
-            color: #1a103c;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .coin-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .energy-container {
             width: 80%;
@@ -134,7 +143,10 @@
 
     <div class="game-body">
         <div class="coin-btn" onclick="tapCoin(event)">
-            <div class="coin-inner">FZL</div>
+            <div class="coin-inner">
+                <!-- یہاں آپ کے پسندیدہ سنہری ٹائیگر کا لوگو لگا دیا گیا ہے -->
+                <img src="https://i.ibb.co/6803215/lion-dp.jpg" alt="Tiger Logo" id="coin-image">
+            </div>
         </div>
 
         <div class="energy-container">
@@ -195,5 +207,4 @@
         }, 1000);
     </script>
 </body>
-    </html>
-    
+</html>
