@@ -94,10 +94,10 @@
             margin-bottom: 10px;
             text-shadow: 0 0 15px rgba(243,186,47,0.4);
         }
-        /* Suit-wearing Lion Boss Character Design */
-        .lion-suit-container {
-            width: 170px;
-            height: 170px;
+        /* White Cat Suit Character Design with Visible Tail */
+        .cat-suit-container {
+            width: 175px;
+            height: 175px;
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border-radius: 50%;
             display: flex;
@@ -111,23 +111,34 @@
             transition: transform 0.08s ease;
             position: relative;
         }
-        .lion-suit-container:active {
+        .cat-suit-container:active {
             transform: scale(0.93);
         }
-        .lion-face {
-            font-size: 60px;
-            margin-bottom: -5px;
+        .cat-face {
+            font-size: 55px;
+            margin-bottom: -2px;
         }
-        .suit-collar {
-            font-size: 24px;
+        .cat-suit-badge {
+            font-size: 20px;
             background: #2563eb;
             color: white;
-            padding: 2px 15px;
+            padding: 2px 12px;
             border-radius: 10px;
             border: 2px solid #fff;
             font-weight: bold;
             letter-spacing: 1px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        /* Tail indicator */
+        .cat-tail {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 22px;
+            transform: rotate(25deg);
         }
         .energy-bar {
             width: 80%;
@@ -254,7 +265,7 @@
 <body>
 
     <div class="header">
-        <div class="user-info">🦁 FZL CEO</div>
+        <div class="user-info">🐱 FZL CEO</div>
         <div style="display: flex; gap: 6px;">
             <button class="gmail-btn" onclick="openModal('gmailModal')">📧 Gmail</button>
             <button class="admin-btn" onclick="checkAdminPassword()">🔒 Admin</button>
@@ -277,11 +288,13 @@
     </div>
 
     <div class="main-content">
-        <div class="score-container" id="scoreDisplay">87,397,425</div>
+        <div class="score-container" id="scoreDisplay">87,397,905</div>
         
-        <div class="lion-suit-container" onclick="tapLion()">
-            <div class="lion-face">🦁</div>
-            <div class="suit-collar">👔 SUIT</div>
+        <!-- White Cat Suit Character with Tail -->
+        <div class="cat-suit-container" onclick="tapCat()">
+            <div class="cat-face">🐱</div>
+            <div class="cat-suit-badge">👔 SUIT</div>
+            <div class="cat-tail">🐈‍⬛</div>
         </div>
         
         <div style="width: 75%;">
@@ -303,6 +316,7 @@
         <button class="nav-item" onclick="openModal('socialsModal')">🌐<br>Socials</button>
     </div>
 
+    <!-- Admin Modal -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('adminModal')">✕</span>
@@ -317,6 +331,7 @@
         </div>
     </div>
 
+    <!-- Gmail Verification Modal -->
     <div id="gmailModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('gmailModal')">✕</span>
@@ -333,6 +348,7 @@
         </div>
     </div>
 
+    <!-- Exchange Modal -->
     <div id="exchangeModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('exchangeModal')">✕</span>
@@ -341,6 +357,7 @@
         </div>
     </div>
 
+    <!-- Mine Modal -->
     <div id="mineModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('mineModal')">✕</span>
@@ -349,6 +366,7 @@
         </div>
     </div>
 
+    <!-- Friends Modal -->
     <div id="friendsModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('friendsModal')">✕</span>
@@ -375,6 +393,7 @@
         </div>
     </div>
 
+    <!-- Earn Modal -->
     <div id="earnModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('earnModal')">✕</span>
@@ -383,6 +402,7 @@
         </div>
     </div>
 
+    <!-- Socials Modal -->
     <div id="socialsModal" class="modal">
         <div class="modal-content" style="max-height: 75vh; overflow-y: auto;">
             <span class="close-btn" onclick="closeModal('socialsModal')">✕</span>
@@ -400,7 +420,7 @@
     </div>
 
     <script>
-        let currentScore = 87397425;
+        let currentScore = 87397905;
 
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'flex';
@@ -408,7 +428,7 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-        function tapLion() {
+        function tapCat() {
             currentScore += 12;
             document.getElementById('scoreDisplay').innerText = currentScore.toLocaleString();
         }
@@ -446,5 +466,5 @@
         }
     </script>
 </body>
-                                                                               </html>
-    
+    </html>
+                
