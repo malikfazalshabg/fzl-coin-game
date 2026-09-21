@@ -58,7 +58,6 @@
             font-weight: bold;
             font-size: 12px;
         }
-        /* Top Stats Bar (Like Hamster/Star Games) */
         .stats-bar {
             display: flex;
             justify-content: space-around;
@@ -89,37 +88,53 @@
             flex: 1;
         }
         .score-container {
-            font-size: 38px;
+            font-size: 42px;
             font-weight: bold;
             color: #f3ba2f;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(243,186,47,0.3);
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(243,186,47,0.4);
         }
-        .lion-logo {
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(135deg, #f3ba2f, #e89812);
+        /* Suit-wearing Lion Boss Character Design */
+        .lion-suit-container {
+            width: 170px;
+            height: 170px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
             border-radius: 50%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 30px rgba(243, 186, 47, 0.4);
+            box-shadow: 0 0 40px rgba(243, 186, 47, 0.4);
             cursor: pointer;
-            font-size: 70px;
-            border: 4px solid #fff;
+            border: 4px solid #f3ba2f;
             user-select: none;
-            transition: transform 0.1s;
+            transition: transform 0.08s ease;
+            position: relative;
         }
-        .lion-logo:active {
-            transform: scale(0.95);
+        .lion-suit-container:active {
+            transform: scale(0.93);
         }
-        /* Energy bar */
+        .lion-face {
+            font-size: 60px;
+            margin-bottom: -5px;
+        }
+        .suit-collar {
+            font-size: 24px;
+            background: #2563eb;
+            color: white;
+            padding: 2px 15px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
         .energy-bar {
             width: 80%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 12px;
             color: #aaa;
         }
@@ -136,12 +151,11 @@
             background: #f3ba2f;
             height: 100%;
         }
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -163,7 +177,6 @@
             font-size: 18px;
             color: #f3ba2f;
         }
-        /* Navigation Footer */
         .nav-footer {
             display: flex;
             justify-content: space-around;
@@ -180,10 +193,9 @@
             font-size: 11px;
             text-align: center;
         }
-        .nav-item:hover {
+        .nav-item:hover, .nav-item:active {
             color: #f3ba2f;
         }
-        /* Social Buttons */
         .social-btn {
             display: block;
             width: 100%;
@@ -207,7 +219,6 @@
         .btn-tk { background: #000000; border: 1px solid #333; }
         .btn-dc { background: #5865f2; }
         
-        /* Friends List Styles */
         .friend-list {
             max-height: 110px;
             overflow-y: auto;
@@ -250,7 +261,6 @@
         </div>
     </div>
 
-    <!-- Pro Stats Bar (Hamster Style) -->
     <div class="stats-bar">
         <div class="stat-item">
             <div class="stat-label">PPH (Profit/h)</div>
@@ -267,13 +277,17 @@
     </div>
 
     <div class="main-content">
-        <div class="score-container" id="scoreDisplay">301,056</div>
-        <div class="lion-logo" onclick="tapLion()">🦁</div>
+        <div class="score-container" id="scoreDisplay">87,397,425</div>
+        
+        <div class="lion-suit-container" onclick="tapLion()">
+            <div class="lion-face">🦁</div>
+            <div class="suit-collar">👔 SUIT</div>
+        </div>
         
         <div style="width: 75%;">
             <div class="energy-bar">
-                <span>⚡ 650 / 1500</span>
-                <span>🔋 85%</span>
+                <span>⚡ 1450 / 1500</span>
+                <span>🔋 96%</span>
             </div>
             <div class="progress-track">
                 <div class="progress-fill"></div>
@@ -281,7 +295,6 @@
         </div>
     </div>
 
-    <!-- Navigation Bar -->
     <div class="nav-footer">
         <button class="nav-item" onclick="openModal('exchangeModal')">🏛️<br>Exchange</button>
         <button class="nav-item" onclick="openModal('mineModal')">⛏️<br>Mine</button>
@@ -290,14 +303,13 @@
         <button class="nav-item" onclick="openModal('socialsModal')">🌐<br>Socials</button>
     </div>
 
-    <!-- 1. Admin Modal -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('adminModal')">✕</span>
             <h3>🛡️ Admin Live Analytics Panel</h3>
             <p style="font-size: 13px; margin: 8px 0;">👥 Total Visitors: 121</p>
             <p style="font-size: 13px; margin: 8px 0;">🌐 Google Logins: 1 Users</p>
-            <p style="font-size: 13px; margin: 8px 0;">👤 Active: Malik Faisal</p>
+            <p style="font-size: 13px; margin: 8px 0;">👤 Active Owner: Malik Faisal</p>
             <hr style="border-color: #333; margin: 10px 0;">
             <h4 style="font-size: 12px; color: #f3ba2f;">📋 Logged Database:</h4>
             <div style="background:#1a2233; padding:8px; border-radius:5px; font-size:12px; color:#fff; margin-top:5px;">• malikfezalshabg@gmail.com (Verified)</div>
@@ -305,7 +317,6 @@
         </div>
     </div>
 
-    <!-- Gmail Verification Modal -->
     <div id="gmailModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('gmailModal')">✕</span>
@@ -318,12 +329,10 @@
                 <p style="font-size: 11px; color: #25d366;">✔ Code bhej diya gaya hai! Yahan code darj karein:</p>
                 <input type="text" id="verificationCodeInput" placeholder="Enter 6-digit Code" style="width: 90%; padding: 8px; background: #1a2233; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 8px; font-size: 13px;">
                 <button onclick="verifyCode()" style="width: 100%; background: #25d366; color: #fff; border: none; padding: 8px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 13px;">Verify Code</button>
-                <p style="font-size: 10px; color: #ff3366; margin-top: 6px; text-align: center;">⚠️ Note: Code bhoolne par reset ka koi option nahi hai!</p>
             </div>
         </div>
     </div>
 
-    <!-- 2. Exchange Modal -->
     <div id="exchangeModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('exchangeModal')">✕</span>
@@ -332,7 +341,6 @@
         </div>
     </div>
 
-    <!-- 3. Mine Modal -->
     <div id="mineModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('mineModal')">✕</span>
@@ -341,22 +349,18 @@
         </div>
     </div>
 
-    <!-- 4. Friends Modal -->
     <div id="friendsModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('friendsModal')">✕</span>
             <h3>👥 Referral Friends</h3>
-            <p style="color: #ccc; font-size: 11px; margin-bottom: 6px;">Invite friends and earn extra bonus coins[span_1](start_span)[span_1](end_span).</p>
-            
+            <p style="color: #ccc; font-size: 11px; margin-bottom: 6px;">Invite friends and earn extra bonus coins.</p>
             <div>
                 <input type="text" id="inviteLink" value="https://t.me/FZLCoinBot?start=ref_malik" readonly style="width: 62%; padding: 5px; background: #1a2233; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 10px;">
                 <button onclick="copyInviteLink()" style="width: 32%; padding: 5px; background: #f3ba2f; color: #000; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 10px;">Copy</button>
             </div>
-
             <a href="https://api.whatsapp.com/send?text=Join%20FZL%20Coin%20Bot!%20https://t.me/FZLCoinBot?start=ref_malik" target="_blank" class="whatsapp-share-btn">
                 💬 Share on WhatsApp
             </a>
-
             <h4 style="margin: 8px 0 2px 0; font-size: 11px; color: #f3ba2f;">Your Friends (2):</h4>
             <div class="friend-list">
                 <div class="friend-item">
@@ -371,7 +375,6 @@
         </div>
     </div>
 
-    <!-- 5. Earn Modal -->
     <div id="earnModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('earnModal')">✕</span>
@@ -380,7 +383,6 @@
         </div>
     </div>
 
-    <!-- 6. Socials Modal -->
     <div id="socialsModal" class="modal">
         <div class="modal-content" style="max-height: 75vh; overflow-y: auto;">
             <span class="close-btn" onclick="closeModal('socialsModal')">✕</span>
@@ -398,7 +400,7 @@
     </div>
 
     <script>
-        let currentScore = 301056;
+        let currentScore = 87397425;
 
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'flex';
@@ -406,19 +408,16 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-        
         function tapLion() {
             currentScore += 12;
             document.getElementById('scoreDisplay').innerText = currentScore.toLocaleString();
         }
-
         function copyInviteLink() {
             var copyText = document.getElementById("inviteLink");
             copyText.select();
             document.execCommand("copy");
             alert("Invite link copied to clipboard!");
         }
-
         function sendGmailCode() {
             let email = document.getElementById('userEmailInput').value;
             if(email.includes('@gmail.com')) {
@@ -428,18 +427,15 @@
                 alert("Baraye karam theek Gmail address darj karein!");
             }
         }
-
         function verifyCode() {
             let code = document.getElementById('verificationCodeInput').value;
             if(code.length >= 4) {
                 alert("Gmail Successfully Verified!");
                 closeModal('gmailModal');
             } else {
-                alert("Galat code! Code bhoolne par account unlock nahi hoga.");
+                alert("Galat code!");
             }
         }
-
-        // Admin Password Protection (Password: malik786)
         function checkAdminPassword() {
             let password = prompt("Enter Admin Password:");
             if (password === "malik786") {
@@ -450,4 +446,5 @@
         }
     </script>
 </body>
-</html>
+                                                                               </html>
+    
