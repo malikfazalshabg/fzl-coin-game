@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Kombat - Direct Start</title>
+    <title>FZL Kombat - Ultimate Click FX Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -21,6 +21,7 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+            position: relative;
         }
         #startOverlay {
             position: fixed;
@@ -47,18 +48,59 @@
             margin-top: 20px;
         }
         .top-container {
-            padding: 12px 15px;
+            padding: 10px 14px;
             background: rgba(26, 29, 45, 0.9);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            z-index: 10;
         }
         .user-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .user-name {
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
+        }
+        .user-name {
+            font-size: 13px;
             font-weight: 800;
             color: #ffd700;
+        }
+        .header-actions {
+            display: flex;
+            gap: 5px;
+        }
+        .admin-btn {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+        }
+        .google-login-btn {
+            background: #ffffff;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
         }
         .game-content {
             display: flex;
@@ -66,16 +108,28 @@
             align-items: center;
             justify-content: center;
             flex-grow: 1;
+            z-index: 10;
         }
         .balance-container {
             font-size: 40px;
             font-weight: 900;
             margin-bottom: 20px;
             color: #f3ba2f;
+            text-shadow: 0 0 15px rgba(243, 186, 47, 0.4);
+        }
+        .hamster-outer {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(243,186,47,0.25) 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
         .hamster-btn {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: radial-gradient(circle, #f3ba2f 0%, #b8860b 100%);
             box-shadow: 0 15px 40px rgba(184, 134, 11, 0.6);
@@ -83,28 +137,102 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 90px;
-            cursor: pointer;
+            font-size: 80px;
+            transition: transform 0.05s ease;
         }
         .hamster-btn:active {
-            transform: scale(0.9);
+            transform: scale(0.92);
         }
         .nav-menu {
             display: flex;
             justify-content: space-around;
             background: rgba(18, 20, 32, 0.95);
-            padding: 12px 0;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            z-index: 10;
         }
         .nav-item {
             background: none;
             border: none;
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
+            font-weight: 600;
+        }
+        .nav-item.active {
+            color: #f3ba2f;
+        }
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 6, 10, 0.88);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-box {
+            background: linear-gradient(135deg, #1c2035 0%, #121522 100%);
+            width: 90%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(243, 186, 47, 0.4);
+            max-height: 85vh;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .modal-close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .soc-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #fff;
+            text-decoration: none;
+        }
+        /* Floating Click Animation FX */
+        .floating-star {
+            position: absolute;
+            font-weight: 900;
+            font-size: 24px;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
+            z-index: 100;
+        }
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0.6);
+            }
+            50% {
+                transform: translateY(-50px) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1);
+            }
         }
     </style>
 </head>
@@ -118,30 +246,153 @@
 
     <div class="top-container">
         <div class="user-row">
-            <span class="user-name">FZL CEO</span>
-            <span style="color: #00ffcc; font-size: 12px;">Online</span>
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatarIcon">🦁</div>
+                <span class="user-name" id="profileNameText">FZL CEO</span>
+            </div>
+            <div class="header-actions">
+                <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
+                <button class="google-login-btn" onclick="triggerGoogleLogin()">🌐 Google</button>
+            </div>
         </div>
     </div>
 
     <div class="game-content">
         <div class="balance-container" id="scoreDisplay">1,250,400</div>
-        <div class="hamster-btn" onclick="addScore()">🦁</div>
+        <div class="hamster-outer" id="clickTarget" onclick="addScore(event)">
+            <div class="hamster-btn">🦁</div>
+        </div>
     </div>
 
     <div class="nav-menu">
-        <button class="nav-item"><span>🪙</span><span>Exchange</span></button>
-        <button class="nav-item"><span>⛏️</span><span>Mine</span></button>
-        <button class="nav-item"><span>👥</span><span>Friends</span></button>
-        <button class="nav-item"><span>🎁</span><span>Earn</span></button>
+        <button class="nav-item active" onclick="openTab('exchange')"><span>🪙</span><span>Exchange</span></button>
+        <button class="nav-item" onclick="openTab('mine')"><span>⛏️</span><span>Mine</span></button>
+        <button class="nav-item" onclick="openTab('friends')"><span>👥</span><span>Friends</span></button>
+        <button class="nav-item" onclick="openTab('earn')"><span>🎁</span><span>Earn</span></button>
+        <button class="nav-item" onclick="openTab('social')"><span>🌐</span><span>Socials</span></button>
+    </div>
+
+    <div class="modal-bg" id="modalWindow">
+        <div class="modal-box">
+            <span class="modal-close" onclick="closeModal()">✕</span>
+            <div id="modalBody"></div>
+        </div>
     </div>
 
     <script>
-        let score = 1250400;
-        function addScore() {
+        let score = parseInt(localStorage.getItem('fzl_score')) || 1250400;
+        let loggedUser = localStorage.getItem('google_user_email') || 'Not Logged In';
+        let allUsersList = JSON.parse(localStorage.getItem('fzl_all_users') || '[]');
+
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        scoreDisplay.innerText = score.toLocaleString();
+
+        if(loggedUser !== 'Not Logged In') {
+            document.getElementById('profileNameText').innerText = loggedUser.split('@')[0];
+            document.getElementById('userAvatarIcon').innerText = '✅';
+        }
+
+        function addScore(event) {
             score += 1;
-            document.getElementById('scoreDisplay').innerText = score.toLocaleString();
+            scoreDisplay.innerText = score.toLocaleString();
+            localStorage.setItem('fzl_score', score);
+
+            // Create colorful floating numbers and stars on tap
+            let x = event.clientX;
+            let y = event.clientY;
+
+            let star = document.createElement('div');
+            star.className = 'floating-star';
+            
+            // Random colorful elements & symbols
+            const symbols = ['+1 🪙', '⭐ +1', '✨', '🌟', '🪙'];
+            const colors = ['#ffd700', '#ff416c', '#00ffcc', '#ff9900', '#00bfff', '#ff66cc'];
+            
+            star.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            star.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            star.style.left = (x - 20) + 'px';
+            star.style.top = (y - 30) + 'px';
+
+            document.body.appendChild(star);
+
+            setTimeout(() => {
+                star.remove();
+            }, 800);
+        }
+
+        function triggerGoogleLogin() {
+            let email = prompt("Google account se login karne ke liye apna Gmail enter karein:");
+            if(email && email.includes('@')) {
+                localStorage.setItem('google_user_email', email);
+                loggedUser = email;
+                document.getElementById('profileNameText').innerText = email.split('@')[0];
+                document.getElementById('userAvatarIcon').innerText = '✅';
+                
+                if(!allUsersList.includes(email)) {
+                    allUsersList.push(email);
+                    localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
+                }
+
+                score += 100000;
+                scoreDisplay.innerText = score.toLocaleString();
+                localStorage.setItem('fzl_score', score);
+                alert("Google Login Successful! +100,000 Coins added.");
+            }
+        }
+
+        function openAdminPanel() {
+            let modal = document.getElementById('modalWindow');
+            let body = document.getElementById('modalBody');
+            modal.style.display = 'flex';
+
+            let userCount = allUsersList.length;
+            let listHtml = allUsersList.map(u => `<li>${u}</li>`).join('') || '<li>No Google logins recorded yet.</li>';
+
+            body.innerHTML = `<h3>🛡️ Admin Live Control Panel</h3><br>
+            <p><b>Total Google Logins:</b> <span style="color:#00ffcc;">${userCount} Users</span></p>
+            <p><b>Current User:</b> <span style="color:#f3ba2f;">${loggedUser}</span></p>
+            <p><b>Total Score:</b> ${score.toLocaleString()} 🪙</p><br>
+            <p><b>Connected Gmail Database:</b></p>
+            <div style="background:#0f101d; padding:8px; border-radius:6px; margin-top:5px; max-height:100px; overflow-y:auto; font-size:12px;">
+                <ul style="padding-left:15px;">${listHtml}</ul>
+            </div><br>
+            <button onclick="localStorage.removeItem('fzl_all_users'); allUsersList=[]; alert('Database cleared!'); closeModal();" style="background:#ff416c; color:#fff; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Clear Logged Users Data</button>`;
+        }
+
+        function openTab(tab) {
+            let modal = document.getElementById('modalWindow');
+            let body = document.getElementById('modalBody');
+            modal.style.display = 'flex';
+
+            if(tab === 'social') {
+                body.innerHTML = `<h3>🌐 Worldwide Social Networks</h3><br>
+                <p style="color:#94a3b8; font-size:12px;">Hamare tamam official platforms ko join karein:</p>
+                <div class="social-grid">
+                    <a href="https://telegram.org" target="_blank" class="soc-btn" style="background:#0088cc;">📢 Telegram</a>
+                    <a href="https://youtube.com" target="_blank" class="soc-btn" style="background:#ff0000;">▶️ YouTube</a>
+                    <a href="https://whatsapp.com" target="_blank" class="soc-btn" style="background:#25d366;">💚 WhatsApp</a>
+                    <a href="https://twitter.com" target="_blank" class="soc-btn" style="background:#1da1f2;">🅧 Twitter/X</a>
+                    <a href="https://instagram.com" target="_blank" class="soc-btn" style="background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">📸 Instagram</a>
+                    <a href="https://facebook.com" target="_blank" class="soc-btn" style="background:#1877f2;">📘 Facebook</a>
+                    <a href="https://tiktok.com" target="_blank" class="soc-btn" style="background:#000000; border:1px solid #333;">🎵 TikTok</a>
+                    <a href="https://discord.com" target="_blank" class="soc-btn" style="background:#5865F2;">🎮 Discord</a>
+                </div>`;
+            } else if(tab === 'exchange') {
+                body.innerHTML = `<h3>🪙 Exchange Market</h3><br><p style="color:#94a3b8;">Market trading and listing updates coming soon on Binance and OKX.</p>`;
+            } else if(tab === 'mine') {
+                body.innerHTML = `<h3>⛏️ Mine Cards</h3><br><p style="color:#94a3b8;">Upgrade cards to increase your hourly coin generation profit.</p>`;
+            } else if(tab === 'friends') {
+                body.innerHTML = `<h3>👥 Referral Friends</h3><br><p style="color:#94a3b8;">Invite friends and earn extra bonus coins for each referral.</p>`;
+            } else if(tab === 'earn') {
+                body.innerHTML = `<h3>🎁 Earn Tasks</h3><br><p style="color:#94a3b8;">Complete daily tasks and social media subscriptions to get instant rewards.</p>`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modalWindow').style.display = 'none';
         }
     </script>
 </body>
-                                            </html>
-                                            
+    </html>
+    
