@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Kombat - Binance Live Analytics</title>
+    <title>FZL Kombat - Ultimate Stars Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -94,7 +94,6 @@
             font-weight: 800;
             border: none;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 65, 108, 0.4);
         }
         .google-login-btn {
             background: #f3ba2f;
@@ -131,6 +130,10 @@
             justify-content: center;
             cursor: pointer;
             touch-action: manipulation;
+            transition: transform 0.05s ease;
+        }
+        .hamster-outer:active {
+            transform: scale(0.93);
         }
         .hamster-btn {
             width: 180px;
@@ -213,18 +216,21 @@
             color: #fff;
             text-decoration: none;
         }
-        .floating-star {
+
+        /* Powerful Star & Multiplier Floating Animation */
+        .floating-star-fx {
             position: absolute;
             font-weight: 900;
-            font-size: 26px;
+            font-size: 28px;
             pointer-events: none;
-            animation: floatUp 0.7s ease-out forwards;
-            z-index: 100;
+            animation: starRise 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            z-index: 9999;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(0.6); }
-            50% { transform: translateY(-60px) scale(1.3); }
-            100% { opacity: 0; transform: translateY(-120px) scale(1); }
+        @keyframes starRise {
+            0% { opacity: 1; transform: translateY(0) scale(0.5) rotate(0deg); }
+            50% { transform: translateY(-70px) scale(1.4) rotate(15deg); }
+            100% { opacity: 0; transform: translateY(-140px) scale(1.1) rotate(-15deg); }
         }
     </style>
 </head>
@@ -243,7 +249,7 @@
                 <span class="user-name" id="profileNameText">FZL CEO</span>
             </div>
             <div class="header-actions">
-                <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin Live</button>
+                <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
                 <button class="google-login-btn" onclick="triggerGoogleLogin()">🌐 Google</button>
             </div>
         </div>
@@ -276,7 +282,6 @@
         let loggedUser = localStorage.getItem('google_user_email') || 'Not Logged In';
         let allUsersList = JSON.parse(localStorage.getItem('fzl_all_users') || '[]');
 
-        // Track active visitor session automatically on load
         let visitorKey = 'fzl_total_visitors';
         let currentVisits = parseInt(localStorage.getItem(visitorKey)) || 120;
         if(!sessionStorage.getItem('visited_counted')) {
@@ -293,8 +298,9 @@
             document.getElementById('userAvatarIcon').innerText = '✅';
         }
 
+        // Guaranteed Web Audio API Sound FX
         let audioCtx = null;
-        function playSound() {
+        function playCoinSound() {
             try {
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -304,66 +310,72 @@
                 }
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
                 
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
+                
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
 
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.08);
+                osc.stop(audioCtx.currentTime + 0.1);
             } catch(e) {}
         }
 
         function startGameSession() {
             document.getElementById('startOverlay').style.display='none';
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            playCoinSound();
         }
 
         const target = document.getElementById('clickTarget');
 
-        target.addEventListener('pointerdown', (e) => {
-            handleMultiClick(e.clientX, e.clientY, 1);
+        // Mouse click support with 1x multiplier and star shape
+        target.addEventListener('click', (e) => {
+            triggerAction(e.clientX, e.clientY, 1);
         });
 
+        // Multi-touch support (1x, 2x, 3x, 4x, 5x) for Mobile screen taps
         target.addEventListener('touchstart', (e) => {
             e.preventDefault();
             let touches = e.changedTouches;
             let count = touches.length;
-            if(count > 5) count = 5;
+            if(count > 5) count = 5; // Cap to 5x max per frame
             
             for (let i = 0; i < touches.length; i++) {
-                handleMultiClick(touches[i].clientX, touches[i].clientY, count);
+                triggerAction(touches[i].clientX, touches[i].clientY, count);
             }
         }, {passive: false});
 
-        function handleMultiClick(x, y, multiplier) {
+        function triggerAction(x, y, multiplier) {
             score += multiplier;
             scoreDisplay.innerText = score.toLocaleString();
             localStorage.setItem('fzl_score', score);
-            playSound();
+            playCoinSound();
 
-            let star = document.createElement('div');
-            star.className = 'floating-star';
+            // Create Star & Multiplier shape floating on screen
+            let starElem = document.createElement('div');
+            starElem.className = 'floating-star-fx';
             
-            const colors = ['#f3ba2f', '#ff416c', '#00ffcc', '#ff9900', '#00bfff', '#ffeaa7'];
-            star.innerText = `+${multiplier}x 🪙`;
-            star.style.color = colors[Math.floor(Math.random() * colors.length)];
+            // Explicit Star symbol combined with multiplier text
+            starElem.innerHTML = `⭐ +${multiplier}x`;
             
-            star.style.left = (x - 25) + 'px';
-            star.style.top = (y - 40) + 'px';
+            // Random vibrant colors for visual excitement
+            const starColors = ['#ffd700', '#ff416c', '#00ffcc', '#ff9900', '#00bfff', '#ff66cc'];
+            starElem.style.color = starColors[Math.floor(Math.random() * starColors.length)];
+            
+            // Position exactly where user clicked/touched
+            starElem.style.left = (x - 30) + 'px';
+            starElem.style.top = (y - 50) + 'px';
 
-            document.body.appendChild(star);
+            document.body.appendChild(starElem);
 
             setTimeout(() => {
-                star.remove();
-            }, 700);
+                starElem.remove();
+            }, 800);
         }
 
         function triggerGoogleLogin() {
