@@ -301,7 +301,7 @@
 
     <div id="startOverlay">
         <h1 style="color: #ffd700; font-size: 26px; margin-bottom: 10px;">🦁 FZL KOMBAT</h1>
-        <p style="color: #94a3b8; font-size: 14px;">Gim ko start karne ke liye neechay diye gaye button par click karein:</p>
+        <p style="color: #94a3b8; font-size: 14px;">گیم کو شروع کرنے کے لیے نیچے دیے گئے بٹن پر کلک کریں:</p>
         <button class="start-btn" onclick="launchGame()">START GAME 🚀</button>
     </div>
 
@@ -398,7 +398,9 @@
         }
 
         function launchGame() {
-            startOverlay.style.display = 'none';
+            if(startOverlay) {
+                startOverlay.style.display = 'none';
+            }
         }
 
         function handleTap(e) {
@@ -492,7 +494,8 @@
         }
 
         function closeModal() {
-            document.getElementById('modalWindow'].style.display = 'none';
+            let modal = document.getElementById('modalWindow');
+            if(modal) modal.style.display = 'none';
         }
 
         function switchTab(tab) {
@@ -518,5 +521,4 @@
                 <div class="social-btn-grid">
                     <button class="soc-btn" style="background:#0088cc;" onclick="window.open('https://telegram.org','_blank')">📢 Telegram</button>
                     <button class="soc-btn" style="background:#ff0000;" onclick="window.open('https://youtube.com','_blank')">▶️ YouTube</button>
-                    <button class="soc-btn" style="background:#25d366;" onclick="window.open('https://whatsapp.com','_blank')">💚 WhatsApp</button>
-                    <button class="soc-btn" style="backgroun
+                    <button class="soc-btn" style="background:#25d366;" onclick="window.open('https://whatsapp.com','_blank')">💚 What
