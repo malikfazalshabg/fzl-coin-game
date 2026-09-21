@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Kombat - VIP Edition</title>
+    <title>FZL Kombat - Binance 2027 Launch Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,6 @@
             padding: 0;
         }
         body {
-            /* VIP Designer Gradient Background instead of plain black */
             background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0f101d 50%, #06070a 100%);
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -23,10 +22,10 @@
             justify-content: space-between;
             overflow: hidden;
         }
-        /* VIP Top Header Card */
+        /* Top Header Card */
         .top-container {
-            padding: 12px 14px;
-            background: rgba(26, 29, 45, 0.75);
+            padding: 10px 14px;
+            background: rgba(26, 29, 45, 0.85);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 215, 0, 0.15);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -35,12 +34,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .user-profile {
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
         }
         .user-avatar {
             width: 34px;
@@ -54,47 +54,61 @@
             box-shadow: 0 0 10px rgba(243, 186, 47, 0.5);
         }
         .user-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #ffd700;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
         }
-        .exchange-pill {
-            background: linear-gradient(135deg, #252b42 0%, #171b2c 100%);
-            padding: 5px 12px;
-            border-radius: 20px;
+        .header-actions {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .admin-btn {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: #fff;
+            padding: 4px 9px;
+            border-radius: 12px;
             font-size: 11px;
-            color: #f3ba2f;
-            border: 1px solid rgba(243, 186, 47, 0.3);
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 65, 108, 0.4);
+        }
+        .google-login-btn {
+            background: #ffffff;
+            color: #000;
+            padding: 4px 9px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 700;
+            border: none;
+            cursor: pointer;
         }
         /* Metrics Grid */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
         .metric-card {
             background: rgba(22, 26, 41, 0.8);
-            border-radius: 10px;
-            padding: 8px 4px;
+            border-radius: 8px;
+            padding: 6px 4px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
         }
         .metric-title {
-            font-size: 9px;
+            font-size: 8px;
             color: #94a3b8;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         .metric-value {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             color: #f3ba2f;
         }
-        /* Main Game Area with Glow Effect */
+        /* Main Game Area */
         .game-content {
             display: flex;
             flex-direction: column;
@@ -107,19 +121,18 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 42px;
+            font-size: 38px;
             font-weight: 900;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-shadow: 0 0 25px rgba(243, 186, 47, 0.5);
-            letter-spacing: 1px;
         }
         .balance-icon {
-            font-size: 34px;
+            font-size: 30px;
             filter: drop-shadow(0 0 8px rgba(243, 186, 47, 0.6));
         }
         .hamster-outer {
-            width: 250px;
-            height: 250px;
+            width: 240px;
+            height: 240px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(243,186,47,0.25) 0%, rgba(79, 70, 229, 0.1) 50%, transparent 75%);
             display: flex;
@@ -127,11 +140,11 @@
             justify-content: center;
             cursor: pointer;
             position: relative;
-            box-shadow: 0 0 60px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.15);
         }
         .hamster-btn {
-            width: 200px;
-            height: 200px;
+            width: 190px;
+            height: 190px;
             border-radius: 50%;
             background: radial-gradient(circle, #f3ba2f 0%, #b8860b 100%);
             box-shadow: 0 15px 40px rgba(184, 134, 11, 0.5), inset 0 6px 15px rgba(255,255,255,0.5);
@@ -139,19 +152,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 85px;
+            font-size: 80px;
             transition: transform 0.06s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
         }
         .hamster-btn:active {
             transform: scale(0.9);
         }
-        /* VIP Floating Star Tap Animation */
+        /* Floating Star Tap Animation */
         .tap-star {
             position: absolute;
             font-weight: 900;
             color: #00ffcc;
-            font-size: 26px;
+            font-size: 24px;
             pointer-events: none;
             text-shadow: 0 0 12px rgba(0, 255, 204, 0.9);
             animation: starUp 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -166,38 +178,36 @@
             width: 100%;
             max-width: 420px;
             margin: 0 auto;
-            padding: 0 18px 12px 18px;
+            padding: 0 18px 10px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .energy-status {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #fff;
             display: flex;
             align-items: center;
             gap: 6px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
         .boost-btn-original {
             background: linear-gradient(135deg, #252b42 0%, #1a1f33 100%);
             border: 1px solid rgba(243, 186, 47, 0.4);
-            padding: 8px 16px;
-            border-radius: 14px;
-            font-size: 12px;
+            padding: 7px 14px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 800;
             color: #f3ba2f;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        /* Bottom VIP Navigation Menu */
+        /* Bottom Navigation Menu */
         .nav-menu {
             display: flex;
             justify-content: space-around;
-            background: rgba(18, 20, 32, 0.9);
+            background: rgba(18, 20, 32, 0.95);
             backdrop-filter: blur(15px);
-            padding: 10px 0 14px 0;
+            padding: 8px 0 12px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
         }
@@ -207,21 +217,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            font-size: 11px;
+            gap: 3px;
+            font-size: 10px;
             color: #94a3b8;
             cursor: pointer;
             font-weight: 600;
-            transition: color 0.2s;
         }
         .nav-item.active {
             color: #f3ba2f;
             text-shadow: 0 0 10px rgba(243, 186, 47, 0.4);
         }
         .nav-item span:first-child {
-            font-size: 20px;
+            font-size: 18px;
         }
-        /* VIP Modal Popup */
+        /* Modal Popup System */
         .modal-bg {
             display: none;
             position: fixed;
@@ -237,43 +246,70 @@
             width: 90%;
             max-width: 380px;
             border-radius: 20px;
-            padding: 22px;
+            padding: 20px;
             border: 1px solid rgba(243, 186, 47, 0.3);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-            max-height: 80vh;
+            max-height: 82vh;
             overflow-y: auto;
             text-align: left;
         }
         .modal-close {
             float: right;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             color: #94a3b8;
         }
-        .modal-close:hover {
+        .social-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .soc-btn {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             color: #fff;
+        }
+        .admin-panel-box {
+            background: #0f101d;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid rgba(255,65,108,0.3);
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
 
-    <!-- VIP Top Container -->
+    <!-- Top Container -->
     <div class="top-container">
         <div class="user-row">
-            <div class="user-profile">
-                <div class="user-avatar">🦁</div>
-                <span class="user-name">FZL VIP CEO</span>
+            <div class="user-profile" onclick="switchTab('airdrop')">
+                <div class="user-avatar" id="userAvatarIcon">🦁</div>
+                <span class="user-name" id="profileNameText">FZL CEO (2027)</span>
             </div>
-            <div class="exchange-pill">⚡ BINANCE VIP</div>
+            <div class="header-actions">
+                <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
+                <button class="google-login-btn" onclick="triggerGoogleLogin()">🌐 Google</button>
+            </div>
         </div>
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-title">Profit / hour</div>
-                <div class="metric-value">+150.8K</div>
+                <div class="metric-value">+250.5K</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Daily cipher</div>
-                <div class="metric-value" style="color:#00ffcc">• — • •</div>
+                <div class="metric-title">Binance Launch</div>
+                <div class="metric-value" style="color:#00ffcc">Q4 2027</div>
             </div>
             <div class="metric-card">
                 <div class="metric-title">Daily combo</div>
@@ -286,24 +322,24 @@
     <div class="game-content">
         <div class="balance-container">
             <span class="balance-icon">🪙</span>
-            <span id="score">845,920</span>
+            <span id="score">1,250,400</span>
         </div>
         <div class="hamster-outer" id="hamsterArea">
             <div class="hamster-btn" id="hamsterBtn">🦁</div>
         </div>
     </div>
 
-    <!-- VIP Energy & Boost Footer -->
+    <!-- Energy & Boost Footer -->
     <div class="footer-info">
         <div class="energy-status">
-            ⚡ <span id="energy">750</span> / <span id="maxEnergy">1000</span>
+            ⚡ <span id="energy">950</span> / <span id="maxEnergy">1000</span>
         </div>
         <div class="boost-btn-original" onclick="openBoost()">
             🚀 Turbo Boost
         </div>
     </div>
 
-    <!-- Bottom VIP Navigation Menu -->
+    <!-- Bottom Navigation Menu -->
     <div class="nav-menu">
         <button class="nav-item active" onclick="switchTab('exchange')">
             <span>🪙</span><span>Exchange</span>
@@ -318,7 +354,7 @@
             <span>🎁</span><span>Earn</span>
         </button>
         <button class="nav-item" onclick="switchTab('airdrop')">
-            <span>🪂</span><span>Airdrop</span>
+            <span>🪂</span><span>Social Hub</span>
         </button>
     </div>
 
@@ -331,10 +367,11 @@
     </div>
 
     <script>
-        let score = parseInt(localStorage.getItem('hm_score')) || 845920;
-        let energy = parseInt(localStorage.getItem('hm_energy')) || 750;
+        let score = parseInt(localStorage.getItem('hm_score')) || 1250400;
+        let energy = parseInt(localStorage.getItem('hm_energy')) || 950;
         let maxEnergy = 1000;
-        let profitPerHour = 150800;
+        let loggedUser = localStorage.getItem('google_user_email') || 'Not Logged In';
+        let allUsersList = JSON.parse(localStorage.getItem('fzl_all_users') || '[]');
 
         const scoreEl = document.getElementById('score');
         const energyEl = document.getElementById('energy');
@@ -343,7 +380,12 @@
         scoreEl.innerText = score.toLocaleString();
         energyEl.innerText = energy;
 
-        // Premium Sound Generator
+        if(loggedUser !== 'Not Logged In') {
+            document.getElementById('profileNameText').innerText = loggedUser.split('@')[0];
+            document.getElementById('userAvatarIcon').innerText = '✅';
+        }
+
+        // Sound Generator
         let audioCtx = null;
         function playOriginalSound() {
             try {
@@ -366,7 +408,7 @@
             } catch(e) {}
         }
 
-        // Tap Mechanics & VIP Star Glow Effect
+        // Tap Mechanics
         hamsterBtn.addEventListener('click', (e) => {
             if (energy >= 1) {
                 score += 1;
@@ -379,14 +421,13 @@
 
                 playOriginalSound();
 
-                // Generate Floating VIP Star (+1 ⭐)
                 let rect = hamsterBtn.getBoundingClientRect();
                 let x = e.clientX ? e.clientX : (rect.left + rect.width / 2);
                 let y = e.clientY ? e.clientY : (rect.top + rect.height / 2);
 
                 let star = document.createElement('div');
                 star.className = 'tap-star';
-                star.innerHTML = "+1 ⭐";
+                star.innerHTML = "+1 FZL";
                 star.style.left = x + 'px';
                 star.style.top = y + 'px';
 
@@ -404,13 +445,55 @@
             }
         }, 1000);
 
+        function triggerGoogleLogin() {
+            let email = prompt("Google account se login karne ke liye apna Gmail enter karein (e.g., user@gmail.com):");
+            if(email && email.includes('@')) {
+                localStorage.setItem('google_user_email', email);
+                loggedUser = email;
+                document.getElementById('profileNameText').innerText = email.split('@')[0];
+                document.getElementById('userAvatarIcon').innerText = '✅';
+                
+                if(!allUsersList.includes(email)) {
+                    allUsersList.push(email);
+                    localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
+                }
+
+                score += 100000;
+                scoreEl.innerText = score.toLocaleString();
+                alert("Google Login Successful! Connected to FZL Cloud & +100,000 Coins added for 2027 Binance Listing.");
+            } else if(email) {
+                alert("Barah-raast sahi Gmail darj karein!");
+            }
+        }
+
+        function openAdminPanel() {
+            let modal = document.getElementById('modalWindow');
+            let body = document.getElementById('modalContentBody');
+            modal.style.display = 'flex';
+
+            let userCount = allUsersList.length;
+            let listHtml = allUsersList.map(u => `<li>${u}</li>`).join('') || '<li>No Google logins recorded yet.</li>';
+
+            body.innerHTML = `<h3>🛡️ Admin Live Control Panel</h3><br>
+            <p><b>Total Google Logins:</b> <span style="color:#00ffcc;">${userCount} Users</span></p>
+            <p><b>Current Active User:</b> <span style="color:#f3ba2f;">${loggedUser}</span></p>
+            <p><b>Total Platform Score:</b> ${score.toLocaleString()} 🪙</p><br>
+            <p><b>Connected Gmail Database List:</b></p>
+            <div class="admin-panel-box">
+                <ul style="padding-left: 15px; max-height: 120px; overflow-y: auto;">
+                    ${listHtml}
+                </ul>
+            </div><br>
+            <button onclick="localStorage.removeItem('fzl_all_users'); allUsersList=[]; alert('Database cleared!'); closeModal();" style="background:#ff416c; color:#fff; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Clear Logged Users Data</button>`;
+        }
+
         function openBoost() {
             let modal = document.getElementById('modalWindow');
             let body = document.getElementById('modalContentBody');
             modal.style.display = 'flex';
-            body.innerHTML = `<h3>🚀 VIP Turbo Boost</h3><br>
-            <p>Refill your energy instantly to maximum capacity for continuous tapping.</p><br>
-            <button onclick="energy=maxEnergy; energyEl.innerText=energy; closeModal(); alert('Energy Fully Refilled!');" style="background:linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%); color:#000; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow: 0 4px 15px rgba(243,186,47,0.4);">Refill Energy (Free)</button>`;
+            body.innerHTML = `<h3>🚀 Turbo Boost</h3><br>
+            <p>Refill your energy instantly to maximum capacity for rapid farming.</p><br>
+            <button onclick="energy=maxEnergy; energyEl.innerText=energy; closeModal(); alert('Energy Fully Refilled!');" style="background:linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%); color:#000; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Refill Energy (Free)</button>`;
         }
 
         function closeModal() {
@@ -423,26 +506,17 @@
             modal.style.display = 'flex';
 
             if (tab === 'mine') {
-                body.innerHTML = `<h3>⛏️ VIP Mine Market</h3><br>
-                <p><b>Quantum Server:</b> +25,000 PPH (Cost: 100,000 🪙)</p><br>
-                <button onclick="if(score>=100000){score-=100000; profitPerHour+=25000; scoreEl.innerText=score.toLocaleString(); alert('VIP Card Upgraded!'); closeModal();}else{alert('Not enough coins!');}" style="background:linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%); color:#000; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Upgrade Card</button>`;
+                body.innerHTML = `<h3>⛏️ Mine Upgrades (Binance Prep)</h3><br>
+                <p><b>Binance Liquid Pool:</b> +50,000 PPH (Cost: 200,000 🪙)</p><br>
+                <button onclick="if(score>=200000){score-=200000; scoreEl.innerText=score.toLocaleString(); alert('Card Upgraded!'); closeModal();}else{alert('Not enough coins!');}" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Upgrade Card</button>`;
             } else if (tab === 'friends') {
-                body.innerHTML = `<h3>👥 VIP Referral Program</h3><br>
-                <p>Invite friends and earn 25,000 FZL coins bonus for each referral.</p><br>
-                <input type="text" value="https://t.me/FZLKombatBot?start=vip_ref_2027" style="width:100%; padding:10px; background:#0f101d; color:#fff; border:1px solid rgba(243,186,47,0.3); border-radius:8px;" readonly>`;
+                body.innerHTML = `<h3>👥 Invite Friends</h3><br>
+                <p>Share referral link to build your 2027 airdrop community.</p><br>
+                <input type="text" value="https://t.me/FZLKombatBot?start=ref_2027" style="width:100%; padding:8px; background:#0f101d; color:#fff; border:1px solid #323a52; border-radius:6px;" readonly>`;
             } else if (tab === 'earn') {
-                body.innerHTML = `<h3>🎁 VIP Daily Rewards</h3><br>
-                <p>👉 Watch Official FZL Launch Stream (+200,000 🪙)</p><br>
-                <button onclick="score+=200000; scoreEl.innerText=score.toLocaleString(); closeModal(); alert('VIP Reward Claimed!');" style="background:linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%); color:#000; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Claim Reward</button>`;
+                body.innerHTML = `<h3>🎁 Social Media & Binance Tasks</h3><br>
+                <p>👉 Join Binance Web3 Channel (+200k Coins)</p><br>
+                <button onclick="score+=200000; scoreEl.innerText=score.toLocaleString(); closeModal(); alert('Reward Claimed!');" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Claim Task</button>`;
             } else if (tab === 'airdrop') {
-                body.innerHTML = `<h3>🪂 Binance Airdrop 2027</h3><br>
-                <p>Connect your secure TON Wallet to verify eligibility for the upcoming token generation event.</p><br>
-                <button onclick="alert('TON Wallet successfully linked to blockchain!'); closeModal();" style="background:#0088cc; color:#fff; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Connect TON Wallet</button>`;
-            } else {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
-</body>
-                    </html>
-    
+                body.innerHTML = `<h3>🌐 Global Social & Binance Hub (2027)</h3><br>
+                <p>Connect with all official networks & Binance 
