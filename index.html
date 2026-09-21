@@ -217,7 +217,6 @@
             text-decoration: none;
         }
         
-        /* Form Inputs Style */
         .login-input-group {
             margin-bottom: 12px;
         }
@@ -238,7 +237,6 @@
             font-size: 14px;
         }
 
-        /* Floating Star Animation */
         .floating-star-fx {
             position: absolute;
             font-weight: 900;
@@ -395,7 +393,6 @@
 
         function openLoginModal() {
             if(loggedUser !== 'Not Logged In') {
-                // اگر پہلے سے لاگ ان ہے تو لاگ آؤٹ کر دیں
                 if(confirm("Kya aap logout karna chahte hain?")) {
                     localStorage.removeItem('google_user_email');
                     loggedUser = 'Not Logged In';
@@ -495,4 +492,4 @@
             } else if(tab === 'mine') {
                 body.innerHTML = `<h3 style="color:#f3ba2f;">⛏️ Mine Cards</h3><br><p style="color:#848e9c;">Upgrade cards to increase your hourly coin generation profit.</p>`;
             } else if(tab === 'friends') {
-                bod
+                body.innerHTML = `<h3 style="color:#f3ba2f;">👥 Referral Friends</h3><br><p style="color:#848e9c;">Invite friends and earn extra bon
