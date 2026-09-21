@@ -5,47 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FZL Coin</title>
     <style>
-        body {
-            background-color: #1a1a1a;
-            color: white;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+        * {
+            box-sizing: border-box;
+            user-select: none;
         }
-        .coin {
-            width: 200px;
-            height: 200px;
-            background: gold;
-            border-radius: 50%;
+        body {
+            background: linear-gradient(180deg, #0f0c20 0%, #1a103c 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            text-align: center;
+        }
+        .header {
+            padding: 20px 10px 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            color: #f3ba2f;
+            text-shadow: 0 0 10px rgba(243, 186, 47, 0.4);
+        }
+        .score-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            margin-top: 15px;
+            font-size: 36px;
             font-weight: bold;
-            color: black;
-            margin: 50px auto;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            user-select: none;
         }
-        .coin:active {
-            transform: scale(0.95);
+        .score-container img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .game-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .coin-btn {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffe100 0%, #f3ba2f 70%, #b8860b 100%);
+            box-shadow: 0 0 35px rgba(243, 186, 47, 0.6), inset 0 0 15px #ffffff;
+            border: 8px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.08s ease;
+            position: relative;
+        }
+        .coin-btn:active {
+            transform: scale(0.92);
+        }
+        .coin-inner {
+            font-size: 70px;
+            font-weight: bold;
+            color: #1a103c;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+        }
+        .energy-container {
+            width: 80%;
+            margin-top: 25px;
+        }
+        .energy-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #cccccc;
+        }
+        .energy-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #2b2152;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #4a388c;
+        }
+        .energy-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #f3ba2f, #ffeb3b);
+            border-radius: 10px;
+            transition: width 0.1s ease;
+        }
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #120a2e;
+            padding: 12px 0;
+            border-top: 1px solid #2b2152;
+        }
+        .nav-item {
+            color: #a095c4;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: #f3ba2f;
+        }
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
         }
     </style>
 </head>
 <body>
-    <h1>FZL Coin</h1>
-    <h2 id="score">Coins: 0</h2>
-    <div class="coin" onclick="tapCoin()">TAP</div>
+
+    <div class="header">
+        <h1>FZL COIN</h1>
+        <div class="score-container">
+            <span>🪙</span>
+            <span id="score">0</span>
+        </div>
+    </div>
+
+    <div class="game-body">
+        <div class="coin-btn" onclick="tapCoin(event)">
+            <div class="coin-inner">FZL</div>
+        </div>
+
+        <div class="energy-container">
+            <div class="energy-info">
+                <span>⚡ Energy</span>
+                <span id="energy-text">1000 / 1000</span>
+            </div>
+            <div class="energy-bar">
+                <div class="energy-fill" id="energy-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-nav">
+        <div class="nav-item active">
+            <div class="nav-icon">🪙</div>
+            <div>Tap</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">⛏️</div>
+            <div>Earn</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👥</div>
+            <div>Friends</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">💼</div>
+            <div>Wallet</div>
+        </div>
+    </div>
 
     <script>
-        let count = 0;
-        function tapCoin() {
-            count++;
-            document.getElementById('score').innerText = 'Coins: ' + count;
+        let score = 0;
+        let energy = 1000;
+        const maxEnergy = 1000;
+
+        function tapCoin(event) {
+            if (energy > 0) {
+                score++;
+                energy--;
+                updateUI();
+            }
         }
+
+        function updateUI() {
+            document.getElementById('score').innerText = score.toLocaleString();
+            document.getElementById('energy-text').innerText = `${energy} / ${maxEnergy}`;
+            document.getElementById('energy-fill').style.width = `${(energy / maxEnergy) * 100}%`;
+        }
+
+        // Energy Auto Recharge
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy += 1;
+                updateUI();
+            }
+        }, 1000);
     </script>
 </body>
-</html>
-
+    </html>
+    
