@@ -1,479 +1,304 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Kombat - Binance Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FZL Coin Bot</title>
     <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
+        body {
+            background-color: #0b0e14;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-        body {
-            background: radial-gradient(circle at 50% 30%, #2b313a 0%, #181a20 60%, #0b0e11 100%);
-            color: #ffffff;
-            font-family: sans-serif;
-            height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: space-between;
-            overflow: hidden;
-            position: relative;
-            border: 4px solid #f3ba2f;
+            height: 100vh;
         }
-        .top-container {
-            padding: 10px 14px;
-            background: rgba(24, 26, 32, 0.95);
-            border-bottom: 2px solid #f3ba2f;
-            z-index: 10;
-        }
-        .user-row {
+        .header {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+            background: #121620;
         }
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            background: #f3ba2f;
-            color: #0b0e11;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .user-info {
+            background: #1a2233;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-size: 14px;
-            font-weight: bold;
-        }
-        .user-name {
-            font-size: 13px;
-            font-weight: 800;
-            color: #f3ba2f;
-        }
-        .header-actions {
-            display: flex;
-            gap: 5px;
         }
         .admin-btn {
-            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
-            color: #fff;
+            background: #e91e63;
+            color: white;
             padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 800;
-            border: none;
+            border-radius: 5px;
             cursor: pointer;
-        }
-        .google-login-btn {
-            background: #f3ba2f;
-            color: #0b0e11;
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 800;
             border: none;
-            cursor: pointer;
-        }
-        .game-content {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-            z-index: 10;
+            gap: 4px;
         }
-        .balance-container {
-            font-size: 42px;
-            font-weight: 900;
-            margin-bottom: 20px;
+        .logout-btn {
+            background: #333;
+            color: #bbb;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .score-container {
+            font-size: 40px;
+            font-weight: bold;
             color: #f3ba2f;
-            text-shadow: 0 0 20px rgba(243, 186, 47, 0.5);
+            margin: auto;
         }
-        .hamster-outer {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(243,186,47,0.3) 0%, transparent 70%);
-            display: flex;
-            align-items: center;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
             justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #121620;
+            border: 2px solid #f3ba2f;
+            border-radius: 15px;
+            padding: 20px;
+            width: 85%;
+            max-width: 350px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
             cursor: pointer;
-            touch-action: manipulation;
-            transition: transform 0.05s ease;
+            font-size: 18px;
+            color: #f3ba2f;
         }
-        .hamster-outer:active {
-            transform: scale(0.93);
-        }
-        .hamster-btn {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #f3ba2f 0%, #b8860b 100%);
-            box-shadow: 0 15px 40px rgba(243, 186, 47, 0.4);
-            border: 6px solid #ffeaa7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-        }
-        .nav-menu {
+        /* Navigation Footer */
+        .nav-footer {
             display: flex;
             justify-content: space-around;
-            background: rgba(24, 26, 32, 0.98);
+            width: 100%;
+            background: #121620;
             padding: 10px 0;
-            border-top: 2px solid #f3ba2f;
-            z-index: 10;
+            border-top: 1px solid #222;
         }
         .nav-item {
             background: none;
             border: none;
-            color: #848e9c;
-            font-size: 11px;
+            color: #888;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            font-weight: 600;
-        }
-        .nav-item.active {
-            color: #f3ba2f;
-        }
-        .modal-bg {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 14, 17, 0.9);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-box {
-            background: linear-gradient(135deg, #181a20 0%, #0b0e11 100%);
-            width: 90%;
-            max-width: 380px;
-            border-radius: 20px;
-            padding: 20px;
-            border: 2px solid #f3ba2f;
-            max-height: 85vh;
-            overflow-y: auto;
-            text-align: left;
-        }
-        .modal-close {
-            float: right;
-            font-size: 20px;
-            cursor: pointer;
-            color: #f3ba2f;
-        }
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .soc-btn {
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #fff;
-            text-decoration: none;
-        }
-        .login-input-group {
-            margin-bottom: 12px;
-        }
-        .login-input-group label {
-            display: block;
             font-size: 12px;
-            color: #f3ba2f;
-            margin-bottom: 5px;
-            font-weight: bold;
+            text-align: center;
         }
-        .login-input-group input {
+        .nav-item:hover {
+            color: #f3ba2f;
+        }
+        /* Social Buttons */
+        .social-btn {
+            display: block;
             width: 100%;
             padding: 10px;
+            margin: 8px 0;
             border-radius: 8px;
-            border: 1px solid #f3ba2f;
-            background: #0b0e11;
-            color: #fff;
-            font-size: 14px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: left;
         }
-        .floating-star-fx {
-            position: absolute;
-            font-weight: 900;
-            font-size: 28px;
-            pointer-events: none;
-            animation: starRise 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-            z-index: 9999;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        .btn-tg { background: #0088cc; }
+        .btn-yt { background: #ff0000; }
+        .btn-wa { background: #25d366; }
+        .btn-tw { background: #1da1f2; }
+        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-fb { background: #1877f2; }
+        .btn-tk { background: #000000; border: 1px solid #333; }
+        .btn-dc { background: #5865f2; }
+        
+        /* Friends List Styles */
+        .friend-list {
+            max-height: 110px;
+            overflow-y: auto;
+            background: #1a2233;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 13px;
         }
-        @keyframes starRise {
-            0% { opacity: 1; transform: translateY(0) scale(0.5) rotate(0deg); }
-            50% { transform: translateY(-70px) scale(1.4) rotate(15deg); }
-            100% { opacity: 0; transform: translateY(-140px) scale(1.1) rotate(-15deg); }
+        .friend-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #2a3447;
+        }
+        .friend-item:last-child {
+            border-bottom: none;
+        }
+        .whatsapp-share-btn {
+            display: block;
+            width: 100%;
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 8px;
+            font-size: 13px;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="top-container">
-        <div class="user-row">
-            <div class="user-profile">
-                <div class="user-avatar" id="userAvatarIcon">🦁</div>
-                <span class="user-name" id="profileNameText">FZL CEO</span>
+    <div class="header">
+        <div class="user-info">✅ malikfezalshabg</div>
+        <div>
+            <!-- Admin button with lock icon -->
+            <button class="admin-btn" onclick="checkAdminPassword()">🔒 Admin</button>
+            <button class="logout-btn" onclick="alert('Logged out successfully')">Logout</button>
+        </div>
+    </div>
+
+    <div class="score-container">301,021</div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-footer">
+        <button class="nav-item" onclick="openModal('exchangeModal')">🏛️<br>Exchange</button>
+        <button class="nav-item" onclick="openModal('mineModal')">⛏️<br>Mine</button>
+        <button class="nav-item" onclick="openModal('friendsModal')">👥<br>Friends</button>
+        <button class="nav-item" onclick="openModal('earnModal')">🪙<br>Earn</button>
+        <button class="nav-item" onclick="openModal('socialsModal')">🌐<br>Socials</button>
+    </div>
+
+    <!-- 1. Admin Modal (Image 859.jpg) -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('adminModal')">✕</span>
+            <h3>🛡️ Admin Live Analytics Panel</h3>
+            <p>👥 Total Platform Visitors: 121 People</p>
+            <p>🌐 Total Google Logins: 0 Users</p>
+            <p>👤 Current Active User: Not Logged In</p>
+            <hr style="border-color: #333;">
+            <h4>📋 Live Visitors / Logins Database:</h4>
+            <div style="background:#1a2233; padding:8px; border-radius:5px; font-size:13px; color:#aaa;">• No Google logins recorded yet.</div>
+            <button style="width:100%; background:#ff3366; color:white; border:none; padding:10px; border-radius:5px; margin-top:15px; cursor:pointer; font-weight:bold;">Clear Logged Users Data</button>
+        </div>
+    </div>
+
+    <!-- 2. Exchange Modal -->
+    <div id="exchangeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('exchangeModal')">✕</span>
+            <h3>🏛️ Exchange Market</h3>
+            <p style="color: #ccc; font-size: 14px; line-height: 1.5;">Market trading and listing updates coming soon on Binance and OKX.</p>
+        </div>
+    </div>
+
+    <!-- 3. Mine Modal -->
+    <div id="mineModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('mineModal')">✕</span>
+            <h3>⛏️ Mine Cards</h3>
+            <p style="color: #ccc; font-size: 14px; line-height: 1.5;">Upgrade cards to increase your hourly coin generation profit.</p>
+        </div>
+    </div>
+
+    <!-- 4. Friends Modal -->
+    <div id="friendsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('friendsModal')">✕</span>
+            <h3>👥 Referral Friends</h3>
+            <p style="color: #ccc; font-size: 12px; line-height: 1.3; margin-bottom: 8px;">Invite friends and earn extra bonus coins for each referral[span_2](start_span)[span_2](end_span).</p>
+            
+            <!-- Invite Link Section -->
+            <div>
+                <input type="text" id="inviteLink" value="https://t.me/FZLCoinBot?start=ref_malik" readonly style="width: 62%; padding: 5px; background: #1a2233; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 11px;">
+                <button onclick="copyInviteLink()" style="width: 32%; padding: 5px; background: #f3ba2f; color: #000; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px;">Copy Link</button>
             </div>
-            <div class="header-actions">
-                <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
-                <button class="google-login-btn" id="authBtnText" onclick="openLoginModal()">🌐 Gmail</button>
+
+            <!-- WhatsApp Share Button -->
+            <a href="https://api.whatsapp.com/send?text=Join%20FZL%20Coin%20Bot%20and%20earn%20coins%20with%20me!%20https://t.me/FZLCoinBot?start=ref_malik" target="_blank" class="whatsapp-share-btn">
+                💬 Share on WhatsApp
+            </a>
+
+            <!-- Friends List Display -->
+            <h4 style="margin: 10px 0 4px 0; font-size: 12px; color: #f3ba2f;">Your Friends (2):</h4>
+            <div class="friend-list">
+                <div class="friend-item">
+                    <span>👤 Ali Khan</span>
+                    <span style="color: #f3ba2f;">+5,000 Coins</span>
+                </div>
+                <div class="friend-item">
+                    <span>👤 Ahmed Raza</span>
+                    <span style="color: #f3ba2f;">+5,000 Coins</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="game-content">
-        <div class="balance-container" id="scoreDisplay">1,250,400</div>
-        <div class="hamster-outer" id="clickTarget">
-            <div class="hamster-btn">🦁</div>
+    <!-- 5. Earn Modal -->
+    <div id="earnModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('earnModal')|">✕</span>
+            <h3>🪙 Earn More Coins</h3>
+            <p style="color: #ccc; font-size: 14px;">Complete daily tasks and watch videos to earn more rewards.</p>
         </div>
     </div>
 
-    <div class="nav-menu">
-        <button class="nav-item active" onclick="openTab('exchange')"><span>🪙</span><span>Exchange</span></button>
-        <button class="nav-item" onclick="openTab('mine')"><span>⛏️</span><span>Mine</span></button>
-        <button class="nav-item" onclick="openTab('friends')"><span>👥</span><span>Friends</span></button>
-        <button class="nav-item" onclick="openTab('earn')"><span>🎁</span><span>Earn</span></button>
-        <button class="nav-item" onclick="openTab('social')"><span>🌐</span><span>Socials</span></button>
-    </div>
-
-    <div class="modal-bg" id="modalWindow">
-        <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">✕</span>
-            <div id="modalBody"></div>
+    <!-- 6. Socials Modal -->
+    <div id="socialsModal" class="modal">
+        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+            <span class="close-btn" onclick="closeModal('socialsModal')">✕</span>
+            <h3>🌐 Worldwide Social Networks</h3>
+            <p style="font-size: 13px; color: #aaa;">Hamare tamam official platforms ko join karein:</p>
+            <button class="social-btn btn-tg">📢 Telegram</button>
+            <button class="social-btn btn-yt">▶️ YouTube</button>
+            <button class="social-btn btn-wa">💬 WhatsApp</button>
+            <button class="social-btn btn-tw">✖️ Twitter/X</button>
+            <button class="social-btn btn-ig">📸 Instagram</button>
+            <button class="social-btn btn-fb">📘 Facebook</button>
+            <button class="social-btn btn-tk">🎵 TikTok</button>
+            <button class="social-btn btn-dc">🎮 Discord</button>
         </div>
     </div>
 
     <script>
-        let score = parseInt(localStorage.getItem('fzl_score')) || 1250400;
-        let loggedUser = localStorage.getItem('google_user_email') || 'Not Logged In';
-        let allUsersList = JSON.parse(localStorage.getItem('fzl_all_users') || '[]');
-
-        let visitorKey = 'fzl_total_visitors';
-        let currentVisits = parseInt(localStorage.getItem(visitorKey)) || 120;
-        if(!sessionStorage.getItem('visited_counted')) {
-            currentVisits++;
-            localStorage.setItem(visitorKey, currentVisits);
-            sessionStorage.setItem('visited_counted', 'true');
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        function copyInviteLink() {
+            var copyText = document.getElementById("inviteLink");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Invite link copied to clipboard!");
         }
 
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        scoreDisplay.innerText = score.toLocaleString();
-
-        let authBtn = document.getElementById('authBtnText');
-        if(loggedUser !== 'Not Logged In') {
-            document.getElementById('profileNameText').innerText = loggedUser.split('@')[0];
-            document.getElementById('userAvatarIcon').innerText = '✅';
-            authBtn.innerText = '🔓 Logout';
-        }
-
-        let audioCtx = null;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Password Protection Function for Admin Panel (Password set to: malik786)
+        function checkAdminPassword() {
+            let password = prompt("Enter Admin Password:");
+            if (password === "malik786") {
+                openModal('adminModal');
+            } else if (password !== null) {
+                alert("Incorrect Password! Access Denied.");
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        window.addEventListener('pointerdown', initAudio, { once: true });
-        window.addEventListener('touchstart', initAudio, { once: true });
-
-        function playCoinSound() {
-            try {
-                initAudio();
-                if (!audioCtx) return;
-                
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
-                
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-            } catch(e) {}
-        }
-
-        const target = document.getElementById('clickTarget');
-
-        target.addEventListener('click', (e) => {
-            triggerAction(e.clientX, e.clientY, 1);
-        });
-
-        target.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            let touches = e.changedTouches;
-            let count = touches.length;
-            if(count > 5) count = 5;
-            
-            for (let i = 0; i < touches.length; i++) {
-                triggerAction(touches[i].clientX, touches[i].clientY, count);
-            }
-        }, {passive: false});
-
-        function triggerAction(x, y, multiplier) {
-            score += multiplier;
-            scoreDisplay.innerText = score.toLocaleString();
-            localStorage.setItem('fzl_score', score);
-            playCoinSound();
-
-            let starElem = document.createElement('div');
-            starElem.className = 'floating-star-fx';
-            starElem.innerHTML = `⭐ +${multiplier}x`;
-            
-            const starColors = ['#ffd700', '#ff416c', '#00ffcc', '#ff9900', '#00bfff', '#ff66cc'];
-            starElem.style.color = starColors[Math.floor(Math.random() * starColors.length)];
-            
-            starElem.style.left = (x - 30) + 'px';
-            starElem.style.top = (y - 50) + 'px';
-
-            document.body.appendChild(starElem);
-
-            setTimeout(() => {
-                starElem.remove();
-            }, 800);
-        }
-
-        function openLoginModal() {
-            if(loggedUser !== 'Not Logged In') {
-                if(confirm("Do you want to logout?")) {
-                    localStorage.removeItem('google_user_email');
-                    loggedUser = 'Not Logged In';
-                    document.getElementById('profileNameText').innerText = 'FZL CEO';
-                    document.getElementById('userAvatarIcon').innerText = '🦁';
-                    authBtn.innerText = '🌐 Gmail';
-                    alert("You have successfully logged out!");
-                }
-                return;
-            }
-
-            let modal = document.getElementById('modalWindow');
-            let body = document.getElementById('modalBody');
-            modal.style.display = 'flex';
-
-            body.innerHTML = `
-                <h3 style="color:#f3ba2f; margin-bottom:15px;">🌐 Gmail Account Login</h3>
-                <div class="login-input-group">
-                    <label>Gmail Address</label>
-                    <input type="email" id="modalEmailInput" placeholder="example@gmail.com">
-                </div>
-                <div class="login-input-group">
-                    <label>Password</label>
-                    <input type="password" id="modalPasswordInput" placeholder="Enter Gmail Password">
-                </div>
-                <button onclick="submitLoginData()" style="background:#f3ba2f; color:#0b0e11; border:none; width:100%; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px;">Login & Connect</button>
-            `;
-        }
-
-        function submitLoginData() {
-            let email = document.getElementById('modalEmailInput').value.trim();
-            let password = document.getElementById('modalPasswordInput').value.trim();
-
-            if(email && email.includes('@') && password.length > 0) {
-                localStorage.setItem('google_user_email', email);
-                loggedUser = email;
-                document.getElementById('profileNameText').innerText = email.split('@')[0];
-                document.getElementById('userAvatarIcon').innerText = '✅';
-                authBtn.innerText = '🔓 Logout';
-
-                if(!allUsersList.includes(email)) {
-                    allUsersList.push(email);
-                    localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
-                }
-
-                score += 100000;
-                scoreDisplay.innerText = score.toLocaleString();
-                localStorage.setItem('fzl_score', score);
-                
-                closeModal();
-                alert("Gmail Login Successful! +100,000 Coins added.");
-            } else {
-                alert("Please enter a valid Gmail and Password!");
-            }
-        }
-
-        function openAdminPanel() {
-            let modal = document.getElementById('modalWindow');
-            let body = document.getElementById('modalBody');
-            modal.style.display = 'flex';
-
-            let totalVisits = localStorage.getItem(visitorKey) || 120;
-            let userCount = allUsersList.length;
-            let listHtml = allUsersList.map((u, index) => `<li style="padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><b>${index+1}.</b> ${u}</li>`).join('') || '<li style="color:#848e9c;">No Gmail logins recorded yet.</li>';
-
-            body.innerHTML = `<h3 style="color:#f3ba2f;">🛡️ Admin Live Analytics Panel</h3><br>
-            <p><b>👥 Total Platform Visitors:</b> <span style="color:#00ffcc; font-size:16px;">${totalVisits} People</span></p>
-            <p><b>🌐 Total Gmail Logins:</b> <span style="color:#f3ba2f; font-size:16px;">${userCount} Users</span></p>
-            <p><b>👤 Current Active User:</b> <span style="color:#fff;">${loggedUser}</span></p><br>
-            <p style="color:#f3ba2f; font-weight:bold;">📋 Live Visitors / Logins Database:</p>
-            <div style="background:#0b0e11; padding:10px; border-radius:8px; margin-top:5px; max-height:120px; overflow-y:auto; font-size:12px; border:1px solid #f3ba2f;">
-                <ul style="padding-left:15px; color:#848e9c;">${listHtml}</ul>
-            </div><br>
-            <button onclick="localStorage.removeItem('fzl_all_users'); allUsersList=[]; alert('Database cleared!'); closeModal();" style="background:#ff416c; color:#fff; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Clear Logged Users Data</button>`;
-        }
-
-        function openTab(tab) {
-            let modal = document.getElementById('modalWindow');
-            let body = document.getElementById('modalBody');
-            modal.style.display = 'flex';
-
-            if(tab === 'social') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">🌐 Worldwide Social Networks</h3><br>
-                <p style="color:#848e9c; font-size:12px;">Hamare tamam official platforms ko join karein:</p>
-                <div class="social-grid">
-                    <a href="https://telegram.org" target="_blank" class="soc-btn" style="background:#0088cc;">📢 Telegram</a>
-                    <a href="https://youtube.com" target="_blank" class="soc-btn" style="background:#ff0000;">▶️ YouTube</a>
-                    <a href="https://whatsapp.com" target="_blank" class="soc-btn" style="background:#25d366;">💚 WhatsApp</a>
-                    <a href="https://twitter.com" target="_blank" class="soc-btn" style="background:#1da1f2;">🅧 Twitter/X</a>
-                    <a href="https://instagram.com" target="_blank" class="soc-btn" style="background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">📸 Instagram</a>
-                    <a href="https://facebook.com" target="_blank" class="soc-btn" style="background:#1877f2;">📘 Facebook</a>
-                    <a href="https://tiktok.com" target="_blank" class="soc-btn" style="background:#000000; border:1px solid #333;">🎵 TikTok</a>
-                    <a href="https://discord.com" target="_blank" class="soc-btn" style="background:#5865F2;">🎮 Discord</a>
-                </div>`;
-            } else if(tab === 'exchange') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">🪙 Exchange Market</h3><br><p style="color:#848e9c;">Market trading and listing updates coming soon on Binance and OKX.</p>`;
-            } else if(tab === 'mine') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">⛏️ Mine Cards</h3><br><p style="color:#848e9c;">Upgrade cards to increase your hourly coin generation profit.</p>`;
-            } else if(tab === 'friends') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">👥 Referral Friends</h3><br><p style="color:#848e9c;">Invite friends and earn extra bonus coins for each referral.</p>`;
-            } else if(tab === 'earn') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">🎁 Earn Tasks</h3><br><p style="color:#848e9c;">Complete daily tasks and social media subscriptions to get instant rewards.</p>`;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('modalWindow').style.display = 'none';
         }
     </script>
 </body>
-    </html>
-    
+</html>
