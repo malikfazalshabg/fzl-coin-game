@@ -2,469 +2,589 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Coin Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FZL Cat Kombat Bot - Suit Edition</title>
     <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
         body {
             background-color: #0b0e14;
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: space-between;
             height: 100vh;
             overflow: hidden;
         }
+        /* Top Header */
         .header {
             width: 100%;
+            padding: 10px 15px;
+            background: #121620;
+            border-bottom: 2px solid #1f293d;
+        }
+        .top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            box-sizing: border-box;
-            background: #121620;
-            border-bottom: 2px solid #222;
+            margin-bottom: 6px;
         }
-        .user-info {
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             background: #1a2233;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 20px;
+            border: 1px solid #2a3447;
             font-size: 13px;
+            font-weight: bold;
+        }
+        .top-right-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .icon-btn {
+            background: #1a2233;
+            border: 1px solid #2a3447;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .exchange-badge {
+            background: #1f293d;
+            padding: 5px 12px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
-            border: 1px solid #333;
-        }
-        .admin-btn {
-            background: #ff3366;
-            color: white;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        .gmail-btn {
-            background: #f3ba2f;
-            color: #000;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        .stats-bar {
-            display: flex;
-            justify-content: space-around;
-            width: 92%;
-            background: #151a28;
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid #2a3447;
-            margin-top: 10px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-label {
-            font-size: 11px;
-            color: #888;
-        }
-        .stat-val {
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 13px;
             color: #f3ba2f;
+            border: 1px solid #334155;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(243, 186, 47, 0.2);
         }
-        .main-content {
+        .level-progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        .level-bar-bg {
+            flex: 1;
+            background: #1e293b;
+            height: 6px;
+            border-radius: 3px;
+            margin-left: 10px;
+            overflow: hidden;
+        }
+        .level-bar-fill {
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, #f3ba2f, #fb923c);
+            border-radius: 3px;
+        }
+
+        /* Reward Cards */
+        .cards-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            gap: 8px;
+            background: #0f141f;
+        }
+        .reward-card {
+            flex: 1;
+            background: #151b2b;
+            border: 1px solid #22304a;
+            border-radius: 12px;
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .reward-card::after {
+            content: '✔';
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            font-size: 10px;
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reward-card-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 3px;
+        }
+        .reward-card-time {
+            font-size: 10px;
+            color: #94a3b8;
+        }
+
+        /* Coin Balance */
+        .balance-container {
+            text-align: center;
+            margin: 5px 0;
+        }
+        .coin-amount {
+            font-size: 38px;
+            font-weight: 800;
+            color: #f3ba2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-shadow: 0 0 20px rgba(243, 186, 47, 0.3);
+        }
+
+        /* Main Tap Area: Cat with Proper Suit and Front Face */
+        .tap-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             flex: 1;
+            position: relative;
         }
-        .score-container {
-            font-size: 42px;
-            font-weight: bold;
-            color: #f3ba2f;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(243,186,47,0.4);
+        .cat-circle-glow {
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(15, 23, 42, 0) 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(37, 99, 235, 0.25);
+            border: 2px solid rgba(59, 130, 246, 0.5);
         }
-        /* White Cat Suit Character Design with Visible Tail */
-        .cat-suit-container {
-            width: 175px;
-            height: 175px;
+        .cat-avatar-box {
+            width: 180px;
+            height: 180px;
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 40px rgba(243, 186, 47, 0.4);
-            cursor: pointer;
             border: 4px solid #f3ba2f;
-            user-select: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             transition: transform 0.08s ease;
             position: relative;
         }
-        .cat-suit-container:active {
-            transform: scale(0.93);
+        .cat-avatar-box:active {
+            transform: scale(0.92);
         }
+
+        /* Detailed Front-facing Cat in Suit Representation */
         .cat-face {
-            font-size: 55px;
-            margin-bottom: -2px;
+            font-size: 50px;
+            margin-top: 5px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-        .cat-suit-badge {
-            font-size: 20px;
-            background: #2563eb;
-            color: white;
-            padding: 2px 12px;
-            border-radius: 10px;
-            border: 2px solid #fff;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        .cat-suit-body {
+            background: linear-gradient(180deg, #1d4ed8, #1e40af);
+            width: 110px;
+            height: 60px;
+            border-radius: 40px 40px 10px 10px;
+            margin-top: -8px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 5px;
+            border: 2px solid #60a5fa;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
         }
-        /* Tail indicator */
-        .cat-tail {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            font-size: 22px;
-            transform: rotate(25deg);
+        .cat-shirt-collar {
+            width: 30px;
+            height: 12px;
+            background: #ffffff;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
         }
-        .energy-bar {
-            width: 80%;
+        .cat-tie {
+            width: 8px;
+            height: 30px;
+            background: #ef4444;
+            clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+            margin-top: -2px;
+        }
+
+        /* Flying Coin Animation towards Binance */
+        .flying-coin {
+            position: fixed;
+            font-size: 24px;
+            z-index: 9999;
+            pointer-events: none;
+            animation: flyToBinance 0.65s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+        }
+        @keyframes flyToBinance {
+            0% {
+                transform: scale(1) translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.3) translate(var(--dx), var(--dy));
+                opacity: 0;
+            }
+        }
+
+        /* Energy Bar */
+        .energy-wrapper {
+            width: 85%;
+            margin: 10px auto;
+        }
+        .energy-info {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
             font-size: 12px;
-            color: #aaa;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        .progress-track {
+        .energy-track {
             width: 100%;
             background: #1a2233;
-            height: 8px;
-            border-radius: 4px;
-            margin-top: 5px;
+            height: 10px;
+            border-radius: 5px;
             overflow: hidden;
+            border: 1px solid #2a3447;
         }
-        .progress-fill {
+        .energy-fill {
             width: 85%;
-            background: #f3ba2f;
+            background: linear-gradient(90deg, #f3ba2f, #fbbf24);
             height: 100%;
+            border-radius: 5px;
+            transition: width 0.2s;
         }
+
+        /* Bottom Navigation Bar */
+        .nav-footer {
+            display: flex;
+            justify-content: space-around;
+            background: #121620;
+            padding: 8px 0;
+            border-top: 2px solid #1f293d;
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 11px;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .nav-btn span.icon {
+            font-size: 20px;
+        }
+        .nav-btn.active, .nav-btn:hover {
+            color: #f3ba2f;
+        }
+
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-        .modal-content {
+        .modal-box {
             background: #121620;
             border: 2px solid #f3ba2f;
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 20px;
-            width: 85%;
-            max-width: 350px;
+            width: 88%;
+            max-width: 360px;
             position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
-        .close-btn {
+        .close-modal {
             position: absolute;
-            top: 15px;
+            top: 12px;
             right: 15px;
             cursor: pointer;
             font-size: 18px;
             color: #f3ba2f;
+            font-weight: bold;
         }
-        .nav-footer {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            background: #121620;
-            padding: 10px 0;
-            border-top: 2px solid #222;
-        }
-        .nav-item {
-            background: none;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            font-size: 11px;
-            text-align: center;
-        }
-        .nav-item:hover, .nav-item:active {
+        .modal-box h3 {
+            margin-top: 0;
             color: #f3ba2f;
+            font-size: 18px;
         }
-        .social-btn {
-            display: block;
+        .modal-input {
             width: 100%;
             padding: 10px;
+            background: #1a2233;
+            border: 1px solid #334155;
+            color: #fff;
+            border-radius: 8px;
             margin: 8px 0;
+            font-size: 14px;
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 10px;
+            background: #f3ba2f;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 14px;
+            margin: 6px 0;
             border-radius: 8px;
             border: none;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            text-align: left;
             text-decoration: none;
             font-size: 13px;
         }
         .btn-tg { background: #0088cc; }
         .btn-yt { background: #ff0000; }
         .btn-wa { background: #25d366; }
-        .btn-tw { background: #1da1f2; }
-        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .btn-fb { background: #1877f2; }
-        .btn-tk { background: #000000; border: 1px solid #333; }
-        .btn-dc { background: #5865f2; }
-        
-        .friend-list {
-            max-height: 110px;
-            overflow-y: auto;
-            background: #1a2233;
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 13px;
-        }
-        .friend-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #2a3447;
-        }
-        .whatsapp-share-btn {
-            display: block;
-            width: 100%;
-            background: #25d366;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 8px;
-            font-size: 13px;
-            text-decoration: none;
-        }
     </style>
 </head>
 <body>
 
+    <!-- Header Section -->
     <div class="header">
-        <div class="user-info">🐱 FZL CEO</div>
-        <div style="display: flex; gap: 6px;">
-            <button class="gmail-btn" onclick="openModal('gmailModal')">📧 Gmail</button>
-            <button class="admin-btn" onclick="checkAdminPassword()">🔒 Admin</button>
+        <div class="top-row">
+            <div class="user-profile" onclick="openModal('adminModal')">
+                🐱 Malak (CEO)
+            </div>
+            <div class="top-right-icons">
+                <div class="exchange-badge" id="binanceTarget">
+                    <span>🪙</span> Binance
+                </div>
+                <button class="icon-btn" onclick="openModal('gmailModal')">📧 Gmail</button>
+                <button class="icon-btn" style="background:#f3ba2f; color:#000;" onclick="openModal('boostModal')">🚀 Boost</button>
+            </div>
+        </div>
+        <div class="level-progress-container">
+            <span>Epic &gt; 6/10</span>
+            <span style="color: #f3ba2f; font-weight: bold;">Profit/h: +3.52K</span>
+            <div class="level-bar-bg">
+                <div class="level-bar-fill"></div>
+            </div>
         </div>
     </div>
 
-    <div class="stats-bar">
-        <div class="stat-item">
-            <div class="stat-label">PPH (Profit/h)</div>
-            <div class="stat-val">+152.4K</div>
+    <!-- Reward Cards -->
+    <div class="cards-row">
+        <div class="reward-card" onclick="alert('Daily reward claimed successfully!')">
+            <div style="font-size: 16px;">📅</div>
+            <div class="reward-card-title">Daily reward</div>
+            <div class="reward-card-time">14:57</div>
         </div>
-        <div class="stat-item" style="border-left: 1px solid #2a3447; border-right: 1px solid #2a3447; padding: 0 15px;">
-            <div class="stat-label">Tap to coin</div>
-            <div class="stat-val">+12</div>
+        <div class="reward-card" onclick="alert('Daily cipher active!')">
+            <div style="font-size: 16px;">🔐</div>
+            <div class="reward-card-title">Daily cipher</div>
+            <div class="reward-card-time">09:57</div>
         </div>
-        <div class="stat-item">
-            <div class="stat-label">Daily Cipher</div>
-            <div class="stat-val" style="color: #25d366;">🟢 Active</div>
+        <div class="reward-card" onclick="alert('Daily combo unlocked!')">
+            <div style="font-size: 16px;">🎁</div>
+            <div class="reward-card-title">Daily combo</div>
+            <div class="reward-card-time">02:57</div>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="score-container" id="scoreDisplay">87,397,905</div>
-        
-        <!-- White Cat Suit Character with Tail -->
-        <div class="cat-suit-container" onclick="tapCat()">
-            <div class="cat-face">🐱</div>
-            <div class="cat-suit-badge">👔 SUIT</div>
-            <div class="cat-tail">🐈‍⬛</div>
+    <!-- Coin Balance Display -->
+    <div class="balance-container">
+        <div class="coin-amount">
+            <span>🪙</span> <span id="scoreDisplay">2,022,689</span>
         </div>
-        
-        <div style="width: 75%;">
-            <div class="energy-bar">
-                <span>⚡ 1450 / 1500</span>
+    </div>
+
+    <!-- Main Tap Area: Front-Facing Cat Wearing a Suit and Tie -->
+    <div class="tap-section" id="tapArea">
+        <div class="cat-circle-glow" onclick="tapCat(event)">
+            <div class="cat-avatar-box">
+                <div class="cat-face">🐱</div>
+                <div class="cat-suit-body">
+                    <div class="cat-shirt-collar"></div>
+                    <div class="cat-tie"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energy Bar -->
+        <div class="energy-wrapper">
+            <div class="energy-info">
+                <span>⚡ <span id="energyText">1450</span> / 1500</span>
                 <span>🔋 96%</span>
             </div>
-            <div class="progress-track">
-                <div class="progress-fill"></div>
+            <div class="energy-track">
+                <div class="energy-fill" id="energyFill"></div>
             </div>
         </div>
     </div>
 
+    <!-- Bottom Navigation Footer -->
     <div class="nav-footer">
-        <button class="nav-item" onclick="openModal('exchangeModal')">🏛️<br>Exchange</button>
-        <button class="nav-item" onclick="openModal('mineModal')">⛏️<br>Mine</button>
-        <button class="nav-item" onclick="openModal('friendsModal')">👥<br>Friends</button>
-        <button class="nav-item" onclick="openModal('earnModal')">🪙<br>Earn</button>
-        <button class="nav-item" onclick="openModal('socialsModal')">🌐<br>Socials</button>
+        <button class="nav-btn active" onclick="openModal('exchangeModal')">
+            <span class="icon">🏛️</span> Exchange
+        </button>
+        <button class="nav-btn" onclick="openModal('mineModal')">
+            <span class="icon">⛏️</span> Mine
+        </button>
+        <button class="nav-btn" onclick="openModal('friendsModal')">
+            <span class="icon">👥</span> Friends
+        </button>
+        <button class="nav-btn" onclick="openModal('earnModal')">
+            <span class="icon">🪙</span> Earn
+        </button>
+        <button class="nav-btn" onclick="openModal('socialsModal')">
+            <span class="icon">🌐</span> Socials
+        </button>
     </div>
 
-    <!-- Admin Modal -->
-    <div id="adminModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('adminModal')">✕</span>
-            <h3>🛡️ Admin Live Analytics Panel</h3>
-            <p style="font-size: 13px; margin: 8px 0;">👥 Total Visitors: 121</p>
-            <p style="font-size: 13px; margin: 8px 0;">🌐 Google Logins: 1 Users</p>
-            <p style="font-size: 13px; margin: 8px 0;">👤 Active Owner: Malik Faisal</p>
-            <hr style="border-color: #333; margin: 10px 0;">
-            <h4 style="font-size: 12px; color: #f3ba2f;">📋 Logged Database:</h4>
-            <div style="background:#1a2233; padding:8px; border-radius:5px; font-size:12px; color:#fff; margin-top:5px;">• malikfezalshabg@gmail.com (Verified)</div>
-            <button style="width:100%; background:#ff3366; color:white; border:none; padding:8px; border-radius:5px; margin-top:12px; cursor:pointer; font-weight:bold; font-size:12px;">Clear Data</button>
-        </div>
-    </div>
-
-    <!-- Gmail Verification Modal -->
-    <div id="gmailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('gmailModal')">✕</span>
-            <h3>📧 Gmail Verification</h3>
-            <p style="font-size: 12px; color: #ccc;">Apna Gmail account darj karein taake code bheja ja sake:</p>
-            <input type="email" id="userEmailInput" placeholder="example@gmail.com" style="width: 90%; padding: 8px; background: #1a2233; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 10px; font-size: 13px;">
-            <button onclick="sendGmailCode()" style="width: 100%; background: #f3ba2f; color: #000; border: none; padding: 8px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 13px;">Send Code to Gmail</button>
-            
-            <div id="codeSection" style="display:none; margin-top: 12px;">
-                <p style="font-size: 11px; color: #25d366;">✔ Code bhej diya gaya hai! Yahan code darj karein:</p>
-                <input type="text" id="verificationCodeInput" placeholder="Enter 6-digit Code" style="width: 90%; padding: 8px; background: #1a2233; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 8px; font-size: 13px;">
-                <button onclick="verifyCode()" style="width: 100%; background: #25d366; color: #fff; border: none; padding: 8px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 13px;">Verify Code</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Exchange Modal -->
+    <!-- Modals -->
     <div id="exchangeModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('exchangeModal')">✕</span>
-            <h3>🏛️ Exchange Market</h3>
-            <p style="color: #ccc; font-size: 13px; line-height: 1.4;">Select your exchange to list coins on Binance, OKX, and Bybit.</p>
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('exchangeModal')">✕</span>
+            <h3>🏛️ Choose Exchange</h3>
+            <p style="color: #94a3b8; font-size: 13px;">Select your crypto exchange to list and withdraw your earned coins securely.</p>
+            <button class="modal-btn" style="background:#1e293b; color:#f3ba2f; border:1px solid #f3ba2f; margin-top:10px;">🟢 Binance (Connected)</button>
         </div>
     </div>
 
-    <!-- Mine Modal -->
     <div id="mineModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('mineModal')">✕</span>
-            <h3>⛏️ Mine Cards</h3>
-            <p style="color: #ccc; font-size: 13px; line-height: 1.4;">Upgrade cards to boost your Profit per Hour automatically.</p>
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('mineModal')">✕</span>
+            <h3>⛏️ Mine Cards Upgrade</h3>
+            <p style="color: #94a3b8; font-size: 13px;">Upgrade cards to boost your passive Profit per Hour automatically.</p>
         </div>
     </div>
 
-    <!-- Friends Modal -->
     <div id="friendsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('friendsModal')">✕</span>
-            <h3>👥 Referral Friends</h3>
-            <p style="color: #ccc; font-size: 11px; margin-bottom: 6px;">Invite friends and earn extra bonus coins.</p>
-            <div>
-                <input type="text" id="inviteLink" value="https://t.me/FZLCoinBot?start=ref_malik" readonly style="width: 62%; padding: 5px; background: #1a2233; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 10px;">
-                <button onclick="copyInviteLink()" style="width: 32%; padding: 5px; background: #f3ba2f; color: #000; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 10px;">Copy</button>
-            </div>
-            <a href="https://api.whatsapp.com/send?text=Join%20FZL%20Coin%20Bot!%20https://t.me/FZLCoinBot?start=ref_malik" target="_blank" class="whatsapp-share-btn">
-                💬 Share on WhatsApp
-            </a>
-            <h4 style="margin: 8px 0 2px 0; font-size: 11px; color: #f3ba2f;">Your Friends (2):</h4>
-            <div class="friend-list">
-                <div class="friend-item">
-                    <span>👤 Ali Khan</span>
-                    <span style="color: #f3ba2f;">+5,000 Coins</span>
-                </div>
-                <div class="friend-item">
-                    <span>👤 Ahmed Raza</span>
-                    <span style="color: #f3ba2f;">+5,000 Coins</span>
-                </div>
-            </div>
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('friendsModal')">✕</span>
+            <h3>👥 Invite Friends</h3>
+            <p style="color: #94a3b8; font-size: 12px;">Invite friends and get bonus coins instantly!</p>
+            <input type="text" class="modal-input" value="https://t.me/FZLCatBot?start=ref_malak" readonly>
+            <button class="modal-btn" onclick="alert('Invite link copied!')">📋 Copy Link</button>
         </div>
     </div>
 
-    <!-- Earn Modal -->
     <div id="earnModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('earnModal')">✕</span>
-            <h3>🪙 Earn More Coins</h3>
-            <p style="color: #ccc; font-size: 13px;">Complete daily tasks and watch promotional videos for rewards.</p>
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('earnModal')">✕</span>
+            <h3>🪙 Earn Extra Coins</h3>
+            <p style="color: #94a3b8; font-size: 13px;">Complete daily tasks, watch videos, and join social channels.</p>
         </div>
     </div>
 
-    <!-- Socials Modal -->
     <div id="socialsModal" class="modal">
-        <div class="modal-content" style="max-height: 75vh; overflow-y: auto;">
-            <span class="close-btn" onclick="closeModal('socialsModal')">✕</span>
-            <h3>🌐 Worldwide Social Networks</h3>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 8px;">Hamare official platforms par jayein:</p>
-            <a href="https://t.me" target="_blank" class="social-btn btn-tg">📢 Telegram</a>
-            <a href="https://www.youtube.com" target="_blank" class="social-btn btn-yt">▶️ YouTube</a>
-            <a href="https://wa.me" target="_blank" class="social-btn btn-wa">💬 WhatsApp</a>
-            <a href="https://twitter.com" target="_blank" class="social-btn btn-tw">✖️ Twitter/X</a>
-            <a href="https://instagram.com" target="_blank" class="social-btn btn-ig">📸 Instagram</a>
-            <a href="https://facebook.com" target="_blank" class="social-btn btn-fb">📘 Facebook</a>
-            <a href="https://tiktok.com" target="_blank" class="social-btn btn-tk">🎵 TikTok</a>
-            <a href="https://discord.com" target="_blank" class="social-btn btn-dc">🎮 Discord</a>
+        <div class="modal-box" style="max-height: 75vh; overflow-y: auto;">
+            <span class="close-modal" onclick="closeModal('socialsModal')">✕</span>
+            <h3>🌐 Official Social Networks</h3>
+            <a href="https://t.me" target="_blank" class="social-btn btn-tg">📢 Telegram Channel</a>
+            <a href="https://www.youtube.com" target="_blank" class="social-btn btn-yt">▶️ YouTube Official</a>
+            <a href="https://wa.me" target="_blank" class="social-btn btn-wa">💬 WhatsApp Group</a>
+        </div>
+    </div>
+
+    <div id="boostModal" class="modal">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('boostModal')">✕</span>
+            <h3>🚀 Multitap Boost</h3>
+            <p style="color: #94a3b8; font-size: 13px;">Increase the amount of coins you earn per tap!</p>
+            <div style="background:#1a2233; padding:12px; border-radius:8px; margin-top:10px;">
+                <div style="font-size:13px; font-weight:bold;">Earn per tap: <span style="color:#f3ba2f;" id="tapPowerDisplay">+7</span></div>
+            </div>
+            <button class="modal-btn" onclick="upgradeMultitap()">Upgrade Multitap</button>
+        </div>
+    </div>
+
+    <div id="gmailModal" class="modal">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('gmailModal')">✕</span>
+            <h3>📧 Gmail Verification</h3>
+            <p style="color: #94a3b8; font-size: 12px;">Apna Gmail account darj karein:</p>
+            <input type="email" id="userEmail" class="modal-input" placeholder="example@gmail.com">
+            <button class="modal-btn" onclick="sendGmailCode()">Send Verification Code</button>
+        </div>
+    </div>
+
+    <div id="adminModal" class="modal">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal('adminModal')">✕</span>
+            <h3>🛡️ Admin Analytics</h3>
+            <p style="font-size: 13px; margin: 6px 0;">👤 Owner: Malak</p>
+            <p style="font-size: 13px; margin: 6px 0;">👥 Total Active Users: 1,420</p>
         </div>
     </div>
 
     <script>
-        let currentScore = 87397905;
+        let score = 2022689;
+        let tapPower = 7;
+        let energy = 1450;
+        const maxEnergy = 1500;
 
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        function tapCat() {
-            currentScore += 12;
-            document.getElementById('scoreDisplay').innerText = currentScore.toLocaleString();
-        }
-        function copyInviteLink() {
-            var copyText = document.getElementById("inviteLink");
-            copyText.select();
-            document.execCommand("copy");
-            alert("Invite link copied to clipboard!");
-        }
-        function sendGmailCode() {
-            let email = document.getElementById('userEmailInput').value;
-            if(email.includes('@gmail.com')) {
-                document.getElementById('codeSection').style.display = 'block';
-                alert("Verification code has been sent to " + email);
-            } else {
-                alert("Baraye karam theek Gmail address darj karein!");
+        function tapCat(event) {
+            if (energy < tapPower) {
+                alert('Energy exhausted! Wait for it to refill.');
+                return;
             }
-        }
-        function verifyCode() {
-            let code = document.getElementById('verificationCodeInput').value;
-            if(code.length >= 4) {
-                alert("Gmail Successfully Verified!");
-                closeModal('gmailModal');
-            } else {
-                alert("Galat code!");
-            }
-        }
-        function checkAdminPassword() {
-            let password = prompt("Enter Admin Password:");
-            if (password === "malik786") {
-                openModal('adminModal');
-            } else if (password !== null) {
-                alert("Incorrect Password! Access Denied.");
-            }
-        }
-    </script>
-</body>
-    </html>
+
+            score += tapPower;
+            energy -= tapPower;
+            if (energy < 0) energy = 0;
+
+            document.getElementById('scoreDisplay').innerText = score.toLocaleString();
+            document.getElementById('energyText').innerText = energy;
+            document.getElementById('energyFill').style.width = (energy / maxEnergy * 100) + '%';
+
+            let clickX = event.clientX;
+            let clickY = event.clientY;
+
+            let target = document.getElementById('binanceTarget').getBoundingClientRect();
+            let targetX = target.left + target.width / 2;
+            let targetY = target.top + target.height / 2;
+
+            for (let i = 0; i < Math.min(tapPower, 5); i++) {
+                let coin = document.createElement('div');
+                coin.className = 'flying-coin';
+                coin.innerText = '🪙';
                 
+                let offsetX = (Math.random() - 0.5) * 40;
+                let offsetY = (Math.random() - 0.5) * 40;
+                coin.style.left = (clickX + offsetX) + 'px';
+                coin.style.top = (clickY + offsetY) + 
