@@ -22,6 +22,30 @@
             justify-content: space-between;
             overflow: hidden;
         }
+        #startOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 11, 18, 0.98);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .start-btn {
+            background: linear-gradient(135deg, #f3ba2f 0%, #e67e22 100%);
+            color: #000;
+            font-size: 20px;
+            font-weight: 900;
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(243, 186, 47, 0.6);
+            margin-top: 20px;
+        }
         .top-container {
             padding: 10px 14px;
             background: rgba(26, 29, 45, 0.85);
@@ -71,7 +95,6 @@
             font-weight: 800;
             border: none;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(255, 65, 108, 0.4);
         }
         .google-login-btn {
             background: #ffffff;
@@ -120,28 +143,15 @@
             gap: 10px;
             font-size: 38px;
             font-weight: 900;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-shadow: 0 0 25px rgba(243, 186, 47, 0.5);
         }
         .balance-icon {
             font-size: 30px;
-            filter: drop-shadow(0 0 8px rgba(243, 186, 47, 0.6));
-        }
-        .sound-enable-banner {
-            background: rgba(0, 255, 204, 0.15);
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,255,204,0.3);
         }
         .hamster-outer {
-            width: 230px;
-            height: 230px;
+            width: 240px;
+            height: 240px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(243,186,47,0.25) 0%, rgba(79, 70, 229, 0.1) 50%, transparent 75%);
             display: flex;
@@ -149,11 +159,10 @@
             justify-content: center;
             cursor: pointer;
             position: relative;
-            box-shadow: 0 0 50px rgba(99, 102, 241, 0.15);
         }
         .hamster-btn {
-            width: 180px;
-            height: 180px;
+            width: 190px;
+            height: 190px;
             border-radius: 50%;
             background: radial-gradient(circle, #f3ba2f 0%, #b8860b 100%);
             box-shadow: 0 15px 40px rgba(184, 134, 11, 0.5), inset 0 6px 15px rgba(255,255,255,0.5);
@@ -161,7 +170,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 75px;
+            font-size: 80px;
             transition: transform 0.05s ease;
         }
         .hamster-btn:active {
@@ -212,10 +221,8 @@
             display: flex;
             justify-content: space-around;
             background: rgba(18, 20, 32, 0.95);
-            backdrop-filter: blur(15px);
             padding: 8px 0 12px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
         }
         .nav-item {
             background: none;
@@ -231,7 +238,6 @@
         }
         .nav-item.active {
             color: #f3ba2f;
-            text-shadow: 0 0 10px rgba(243, 186, 47, 0.4);
         }
         .nav-item span:first-child {
             font-size: 18px;
@@ -241,7 +247,6 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(5, 6, 10, 0.85);
-            backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -253,7 +258,6 @@
             border-radius: 20px;
             padding: 20px;
             border: 1px solid rgba(243, 186, 47, 0.3);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
             max-height: 82vh;
             overflow-y: auto;
             text-align: left;
@@ -295,11 +299,17 @@
 </head>
 <body>
 
+    <div id="startOverlay">
+        <h1 style="color: #ffd700; font-size: 26px; margin-bottom: 10px;">🦁 FZL KOMBAT</h1>
+        <p style="color: #94a3b8; font-size: 14px;">Gim ko start karne ke liye neechay diye gaye button par click karein:</p>
+        <button class="start-btn" onclick="launchGame()">START GAME 🚀</button>
+    </div>
+
     <div class="top-container">
         <div class="user-row">
             <div class="user-profile" onclick="switchTab('airdrop')">
                 <div class="user-avatar" id="userAvatarIcon">🦁</div>
-                <span class="user-name" id="profileNameText">FZL CEO (2027)</span>
+                <span class="user-name" id="profileNameText">FZL CEO</span>
             </div>
             <div class="header-actions">
                 <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
@@ -326,10 +336,6 @@
         <div class="balance-container">
             <span class="balance-icon">🪙</span>
             <span id="score">1250400</span>
-        </div>
-
-        <div class="sound-enable-banner" id="soundBanner" onclick="initAudioEngine()">
-            🔊 Sound On karne ke liye yahan Tap karein!
         </div>
 
         <div class="hamster-outer" id="hamsterArea">
@@ -381,7 +387,7 @@
         const scoreEl = document.getElementById('score');
         const energyEl = document.getElementById('energy');
         const hamsterArea = document.getElementById('hamsterArea');
-        const soundBanner = document.getElementById('soundBanner');
+        const startOverlay = document.getElementById('startOverlay');
 
         scoreEl.innerText = score.toLocaleString();
         energyEl.innerText = energy;
@@ -391,51 +397,11 @@
             document.getElementById('userAvatarIcon').innerText = '✅';
         }
 
-        // Web Audio Sound Engine Setup
-        let audioCtx = null;
-        function initAudioEngine() {
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                soundBanner.style.display = 'none';
-                playTapSound();
-            } catch(e) {}
+        function launchGame() {
+            startOverlay.style.display = 'none';
         }
 
-        function playTapSound() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(700, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.07);
-
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.07);
-            } catch(e) {}
-        }
-
-        // Tap Mechanics supporting Click, Touch and Pointer events robustly
         function handleTap(e) {
-            // Initialize audio context on first touch if not already active
-            if (!audioCtx) {
-                initAudioEngine();
-            }
-
             if (energy >= 1) {
                 score += 1;
                 energy -= 1;
@@ -444,8 +410,6 @@
                 
                 localStorage.setItem('hm_score', score);
                 localStorage.setItem('hm_energy', energy);
-
-                playTapSound();
 
                 let rect = hamsterArea.getBoundingClientRect();
                 let clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left + rect.width / 2);
@@ -464,13 +428,12 @@
 
         hamsterArea.addEventListener('click', handleTap);
         hamsterArea.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Prevents double firing on mobile
+            e.preventDefault();
             for (let i = 0; i < e.changedTouches.length; i++) {
                 handleTap(e.changedTouches[i]);
             }
         }, { passive: false });
 
-        // Energy Recovery
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 15;
@@ -480,7 +443,7 @@
         }, 1000);
 
         function triggerGoogleLogin() {
-            let email = prompt("Google account se login karne ke liye apna Gmail enter karein (e.g., user@gmail.com):");
+            let email = prompt("Google account se login karne ke liye apna Gmail enter karein:");
             if(email && email.includes('@')) {
                 localStorage.setItem('google_user_email', email);
                 loggedUser = email;
@@ -494,9 +457,7 @@
 
                 score += 100000;
                 scoreEl.innerText = score.toLocaleString();
-                alert("Google Login Successful! Connected to FZL Cloud & +100,000 Coins added.");
-            } else if(email) {
-                alert("Barah-raast sahi Gmail darj karein!");
+                alert("Google Login Successful! +100,000 Coins added.");
             }
         }
 
@@ -511,8 +472,8 @@
             body.innerHTML = `<h3>🛡️ Admin Live Control Panel</h3><br>
             <p><b>Total Google Logins:</b> <span style="color:#00ffcc;">${userCount} Users</span></p>
             <p><b>Current Active User:</b> <span style="color:#f3ba2f;">${loggedUser}</span></p>
-            <p><b>Total Platform Score:</b> ${score.toLocaleString()} 🪙</p><br>
-            <p><b>Connected Gmail Database List:</b></p>
+            <p><b>Total Score:</b> ${score.toLocaleString()} 🪙</p><br>
+            <p><b>Connected Gmail Database:</b></p>
             <div class="admin-panel-box">
                 <ul style="padding-left: 15px; max-height: 120px; overflow-y: auto;">
                     ${listHtml}
@@ -531,7 +492,7 @@
         }
 
         function closeModal() {
-            document.getElementById('modalWindow').style.display = 'none';
+            document.getElementById('modalWindow'].style.display = 'none';
         }
 
         function switchTab(tab) {
@@ -540,6 +501,22 @@
             modal.style.display = 'flex';
 
             if (tab === 'mine') {
-                body.innerHTML = `<h3>⛏️ Mine Upgrades & Key Cards</h3><br>
+                body.innerHTML = `<h3>⛏️ Mine Upgrades</h3><br>
                 <p><b>Binance Liquid Pool:</b> +50,000 PPH (Cost: 200,000 🪙)</p><br>
-                <button onclick="if(score>=200000){score-=200000; scoreEl.innerText=score.toLocaleString(); alert('Card Upgraded!'); close
+                <button onclick="if(score>=200000){score-=200000; scoreEl.innerText=score.toLocaleString(); alert('Card Upgraded!'); closeModal();}else{alert('Not enough coins!');}" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Upgrade Card</button>`;
+            } else if (tab === 'friends') {
+                body.innerHTML = `<h3>👥 Invite Friends</h3><br>
+                <p>Share referral link:</p><br>
+                <input type="text" value="https://t.me/FZLKombatBot?start=ref_2027" style="width:100%; padding:8px; background:#0f101d; color:#fff; border:1px solid #323a52; border-radius:6px;" readonly>`;
+            } else if (tab === 'earn') {
+                body.innerHTML = `<h3>🎁 Earn Tasks</h3><br>
+                <p>👉 Join Binance Web3 Channel (+200k Coins)</p><br>
+                <button onclick="score+=200000; scoreEl.innerText=score.toLocaleString(); closeModal(); alert('Reward Claimed!');" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Claim Task</button>`;
+            } else if (tab === 'airdrop') {
+                body.innerHTML = `<h3>🌐 Social Hub</h3><br>
+                <p>Connect with official networks:</p>
+                <div class="social-btn-grid">
+                    <button class="soc-btn" style="background:#0088cc;" onclick="window.open('https://telegram.org','_blank')">📢 Telegram</button>
+                    <button class="soc-btn" style="background:#ff0000;" onclick="window.open('https://youtube.com','_blank')">▶️ YouTube</button>
+                    <button class="soc-btn" style="background:#25d366;" onclick="window.open('https://whatsapp.com','_blank')">💚 WhatsApp</button>
+                    <button class="soc-btn" style="backgroun
