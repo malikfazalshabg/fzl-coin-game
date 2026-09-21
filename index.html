@@ -253,11 +253,11 @@
 </head>
 <body>
 
-    <!-- Start Overlay with Inline Direct onclick handler -->
+    <!-- Start Overlay -->
     <div id="startOverlay">
         <h1 style="color: #f3ba2f; font-size: 28px; margin-bottom: 10px;">🦁 FZL KOMBAT</h1>
-        <p style="color: #848e9c; font-size: 15px;">Click the button below to start the game:</p>
-        <button class="start-btn" onclick="removeOverlayAndStart()">START GAME 🚀</button>
+        <p style="color: #848e9c; font-size: 15px;">Tap below to start game and activate sound:</p>
+        <button class="start-btn" id="realStartBtn">START GAME 🚀</button>
     </div>
 
     <div class="top-container">
@@ -319,6 +319,31 @@
         }
 
         let audioCtx = null;
+
+        // Start Game Button Handler (Ensures AudioContext unlocks properly on mobile)
+        const realStartBtn = document.getElementById('realStartBtn');
+        function handleGameStart(e) {
+            if (e) e.preventDefault();
+            
+            // Initialize and resume AudioContext immediately upon user touch/click
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            } catch(err) {}
+
+            let overlay = document.getElementById('startOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+                overlay.remove();
+            }
+            playCoinSound();
+        }
+
+        realStartBtn.addEventListener('click', handleGameStart);
+        realStartBtn.addEventListener('touchend', handleGameStart);
+
         function playCoinSound() {
             try {
                 if (!audioCtx) {
@@ -343,16 +368,6 @@
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.1);
             } catch(e) {}
-        }
-
-        // Direct Global Function for Starting Game (Bypasses all event listener issues)
-        function removeOverlayAndStart() {
-            let overlay = document.getElementById('startOverlay');
-            if (overlay) {
-                overlay.style.display = 'none';
-                overlay.remove();
-            }
-            playCoinSound();
         }
 
         const target = document.getElementById('clickTarget');
@@ -489,9 +504,4 @@
                     <a href="https://instagram.com" target="_blank" class="soc-btn" style="background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">📸 Instagram</a>
                     <a href="https://facebook.com" target="_blank" class="soc-btn" style="background:#1877f2;">📘 Facebook</a>
                     <a href="https://tiktok.com" target="_blank" class="soc-btn" style="background:#000000; border:1px solid #333;">🎵 TikTok</a>
-                    <a href="https://discord.com" target="_blank" class="soc-btn" style="background:#5865F2;">🎮 Discord</a>
-                </div>`;
-            } else if(tab === 'exchange') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">🪙 Exchange Market</h3><br><p style="color:#848e9c;">Market trading and listing updates coming soon on Binance and OKX.</p>`;
-            } else if(tab === 'mine') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">⛏️ Mine Cards</h3><br><p style="color:#848e9c;">Upgrade cards to incr
+                    <a 
