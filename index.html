@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Kombat - Binance Edition with Password</title>
+    <title>FZL Kombat - Binance Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -216,8 +216,29 @@
             color: #fff;
             text-decoration: none;
         }
+        
+        /* Form Inputs Style */
+        .login-input-group {
+            margin-bottom: 12px;
+        }
+        .login-input-group label {
+            display: block;
+            font-size: 12px;
+            color: #f3ba2f;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .login-input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #f3ba2f;
+            background: #0b0e11;
+            color: #fff;
+            font-size: 14px;
+        }
 
-        /* Star & Multiplier Floating Animation */
+        /* Floating Star Animation */
         .floating-star-fx {
             position: absolute;
             font-weight: 900;
@@ -250,7 +271,7 @@
             </div>
             <div class="header-actions">
                 <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
-                <button class="google-login-btn" onclick="triggerGoogleLogin()">🌐 Google</button>
+                <button class="google-login-btn" id="authBtnText" onclick="openLoginModal()">🌐 Google</button>
             </div>
         </div>
     </div>
@@ -293,12 +314,13 @@
         const scoreDisplay = document.getElementById('scoreDisplay');
         scoreDisplay.innerText = score.toLocaleString();
 
+        let authBtn = document.getElementById('authBtnText');
         if(loggedUser !== 'Not Logged In') {
             document.getElementById('profileNameText').innerText = loggedUser.split('@')[0];
             document.getElementById('userAvatarIcon').innerText = '✅';
+            authBtn.innerText = '🔓 Logout';
         }
 
-        // Web Audio API Sound FX
         let audioCtx = null;
         function playCoinSound() {
             try {
@@ -371,29 +393,62 @@
             }, 800);
         }
 
-        function triggerGoogleLogin() {
-            let email = prompt("Google account se login karne ke liye apna Gmail enter karein:");
-            if(email && email.includes('@')) {
-                let password = prompt("Apne Gmail account ka password enter karein:");
-                
-                if(password && password.length > 0) {
-                    localStorage.setItem('google_user_email', email);
-                    loggedUser = email;
-                    document.getElementById('profileNameText').innerText = email.split('@')[0];
-                    document.getElementById('userAvatarIcon').innerText = '✅';
-                    
-                    if(!allUsersList.includes(email)) {
-                        allUsersList.push(email);
-                        localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
-                    }
-
-                    score += 100000;
-                    scoreDisplay.innerText = score.toLocaleString();
-                    localStorage.setItem('fzl_score', score);
-                    alert("Google Login & Password Verified Successfully! +100,000 Coins added.");
-                } else {
-                    alert("Password galat ya khali hai!");
+        function openLoginModal() {
+            if(loggedUser !== 'Not Logged In') {
+                // اگر پہلے سے لاگ ان ہے تو لاگ آؤٹ کر دیں
+                if(confirm("Kya aap logout karna chahte hain?")) {
+                    localStorage.removeItem('google_user_email');
+                    loggedUser = 'Not Logged In';
+                    document.getElementById('profileNameText').innerText = 'FZL CEO';
+                    document.getElementById('userAvatarIcon').innerText = '🦁';
+                    authBtn.innerText = '🌐 Google';
+                    alert("Aap successfully logout ho gaye hain!");
                 }
+                return;
+            }
+
+            let modal = document.getElementById('modalWindow');
+            let body = document.getElementById('modalBody');
+            modal.style.display = 'flex';
+
+            body.innerHTML = `
+                <h3 style="color:#f3ba2f; margin-bottom:15px;">🌐 Google Account Login</h3>
+                <div class="login-input-group">
+                    <label>Gmail Address</label>
+                    <input type="email" id="modalEmailInput" placeholder="example@gmail.com">
+                </div>
+                <div class="login-input-group">
+                    <label>Password</label>
+                    <input type="password" id="modalPasswordInput" placeholder="Enter Gmail Password">
+                </div>
+                <button onclick="submitLoginData()" style="background:#f3ba2f; color:#0b0e11; border:none; width:100%; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px;">Login & Connect</button>
+            `;
+        }
+
+        function submitLoginData() {
+            let email = document.getElementById('modalEmailInput').value.trim();
+            let password = document.getElementById('modalPasswordInput').value.trim();
+
+            if(email && email.includes('@') && password.length > 0) {
+                localStorage.setItem('google_user_email', email);
+                loggedUser = email;
+                document.getElementById('profileNameText').innerText = email.split('@')[0];
+                document.getElementById('userAvatarIcon').innerText = '✅';
+                authBtn.innerText = '🔓 Logout';
+
+                if(!allUsersList.includes(email)) {
+                    allUsersList.push(email);
+                    localStorage.setItem('fzl_all_users', JSON.stringify(allUsersList));
+                }
+
+                score += 100000;
+                scoreDisplay.innerText = score.toLocaleString();
+                localStorage.setItem('fzl_score', score);
+                
+                closeModal();
+                alert("Google Login Successful! +100,000 Coins added.");
+            } else {
+                alert("Baraye meherbani sahi Gmail aur Password darj karein!");
             }
         }
 
@@ -440,16 +495,4 @@
             } else if(tab === 'mine') {
                 body.innerHTML = `<h3 style="color:#f3ba2f;">⛏️ Mine Cards</h3><br><p style="color:#848e9c;">Upgrade cards to increase your hourly coin generation profit.</p>`;
             } else if(tab === 'friends') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">👥 Referral Friends</h3><br><p style="color:#848e9c;">Invite friends and earn extra bonus coins for each referral.</p>`;
-            } else if(tab === 'earn') {
-                body.innerHTML = `<h3 style="color:#f3ba2f;">🎁 Earn Tasks</h3><br><p style="color:#848e9c;">Complete daily tasks and social media subscriptions to get instant rewards.</p>`;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('modalWindow').style.display = 'none';
-        }
-    </script>
-</body>
-                    </html>
-    
+                bod
