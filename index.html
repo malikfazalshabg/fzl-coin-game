@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FZL Kombat - Fixed Audio & Tap Edition</title>
+    <title>FZL Kombat - Ultimate Fixed Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -120,16 +120,28 @@
             gap: 10px;
             font-size: 38px;
             font-weight: 900;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-shadow: 0 0 25px rgba(243, 186, 47, 0.5);
         }
         .balance-icon {
             font-size: 30px;
             filter: drop-shadow(0 0 8px rgba(243, 186, 47, 0.6));
         }
+        .sound-enable-banner {
+            background: rgba(0, 255, 204, 0.15);
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,255,204,0.3);
+        }
         .hamster-outer {
-            width: 240px;
-            height: 240px;
+            width: 230px;
+            height: 230px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(243,186,47,0.25) 0%, rgba(79, 70, 229, 0.1) 50%, transparent 75%);
             display: flex;
@@ -140,8 +152,8 @@
             box-shadow: 0 0 50px rgba(99, 102, 241, 0.15);
         }
         .hamster-btn {
-            width: 190px;
-            height: 190px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: radial-gradient(circle, #f3ba2f 0%, #b8860b 100%);
             box-shadow: 0 15px 40px rgba(184, 134, 11, 0.5), inset 0 6px 15px rgba(255,255,255,0.5);
@@ -149,11 +161,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 80px;
+            font-size: 75px;
             transition: transform 0.05s ease;
         }
         .hamster-btn:active {
-            transform: scale(0.88);
+            transform: scale(0.85);
         }
         .tap-star {
             position: absolute;
@@ -304,8 +316,8 @@
                 <div class="metric-value" style="color:#00ffcc">Q4 2027</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Daily combo</div>
-                <div class="metric-value">3 / 3</div>
+                <div class="metric-title">Keys & Combo</div>
+                <div class="metric-value">🔑 4 / 4</div>
             </div>
         </div>
     </div>
@@ -315,6 +327,11 @@
             <span class="balance-icon">🪙</span>
             <span id="score">1250400</span>
         </div>
+
+        <div class="sound-enable-banner" id="soundBanner" onclick="initAudioEngine()">
+            🔊 Sound On karne ke liye yahan Tap karein!
+        </div>
+
         <div class="hamster-outer" id="hamsterArea">
             <div class="hamster-btn" id="hamsterBtn">🦁</div>
         </div>
@@ -364,6 +381,7 @@
         const scoreEl = document.getElementById('score');
         const energyEl = document.getElementById('energy');
         const hamsterArea = document.getElementById('hamsterArea');
+        const soundBanner = document.getElementById('soundBanner');
 
         scoreEl.innerText = score.toLocaleString();
         energyEl.innerText = energy;
@@ -373,9 +391,20 @@
             document.getElementById('userAvatarIcon').innerText = '✅';
         }
 
-        // Web Audio Sound Generator
+        // Web Audio Sound Engine Setup
         let audioCtx = null;
-        function playOriginalSound() {
+        function initAudioEngine() {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                soundBanner.style.display = 'none';
+                playTapSound();
+            } catch(e) {}
+        }
+
+        function playTapSound() {
             try {
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -387,21 +416,26 @@
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(700, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.07);
 
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
 
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.08);
+                osc.stop(audioCtx.currentTime + 0.07);
             } catch(e) {}
         }
 
-        // Tap Mechanics (Attached to outer area to support both touch and click reliably)
-        hamsterArea.addEventListener('pointerdown', (e) => {
+        // Tap Mechanics supporting Click, Touch and Pointer events robustly
+        function handleTap(e) {
+            // Initialize audio context on first touch if not already active
+            if (!audioCtx) {
+                initAudioEngine();
+            }
+
             if (energy >= 1) {
                 score += 1;
                 energy -= 1;
@@ -411,22 +445,30 @@
                 localStorage.setItem('hm_score', score);
                 localStorage.setItem('hm_energy', energy);
 
-                playOriginalSound();
+                playTapSound();
 
                 let rect = hamsterArea.getBoundingClientRect();
-                let x = e.clientX ? e.clientX : (rect.left + rect.width / 2);
-                let y = e.clientY ? e.clientY : (rect.top + rect.height / 2);
+                let clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : rect.left + rect.width / 2);
+                let clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : rect.top + rect.height / 2);
 
                 let star = document.createElement('div');
                 star.className = 'tap-star';
                 star.innerHTML = "+1 FZL";
-                star.style.left = (x - rect.left) + 'px';
-                star.style.top = (y - rect.top) + 'px';
+                star.style.left = (clientX - rect.left) + 'px';
+                star.style.top = (clientY - rect.top) + 'px';
 
                 hamsterArea.appendChild(star);
                 setTimeout(() => star.remove(), 700);
             }
-        });
+        }
+
+        hamsterArea.addEventListener('click', handleTap);
+        hamsterArea.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents double firing on mobile
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                handleTap(e.changedTouches[i]);
+            }
+        }, { passive: false });
 
         // Energy Recovery
         setInterval(() => {
@@ -498,20 +540,6 @@
             modal.style.display = 'flex';
 
             if (tab === 'mine') {
-                body.innerHTML = `<h3>⛏️ Mine Upgrades (Binance Prep)</h3><br>
+                body.innerHTML = `<h3>⛏️ Mine Upgrades & Key Cards</h3><br>
                 <p><b>Binance Liquid Pool:</b> +50,000 PPH (Cost: 200,000 🪙)</p><br>
-                <button onclick="if(score>=200000){score-=200000; scoreEl.innerText=score.toLocaleString(); alert('Card Upgraded!'); closeModal();}else{alert('Not enough coins!');}" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Upgrade Card</button>`;
-            } else if (tab === 'friends') {
-                body.innerHTML = `<h3>👥 Invite Friends</h3><br>
-                <p>Share referral link to build your 2027 airdrop community.</p><br>
-                <input type="text" value="https://t.me/FZLKombatBot?start=ref_2027" style="width:100%; padding:8px; background:#0f101d; color:#fff; border:1px solid #323a52; border-radius:6px;" readonly>`;
-            } else if (tab === 'earn') {
-                body.innerHTML = `<h3>🎁 Social Media & Binance Tasks</h3><br>
-                <p>👉 Join Binance Web3 Channel (+200k Coins)</p><br>
-                <button onclick="score+=200000; scoreEl.innerText=score.toLocaleString(); closeModal(); alert('Reward Claimed!');" style="background:#f3ba2f; border:none; width:100%; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Claim Task</button>`;
-            } else if (tab === 'airdrop') {
-                body.innerHTML = `<h3>🌐 Global Social & Binance Hub (2027)</h3><br>
-                <p>Connect with all official networks & Binance ecosystem:</p>
-                <div class="social-btn-grid">
-                    <button class="soc-btn" style="background:#0088cc;" onclick="window.open('https://telegram.org','_blank')">📢 Telegram</button>
-                    <button class="soc-btn" style="background:#ff0000;" onclick="window.open('h
+                <button onclick="if(score>=200000){score-=200000; scoreEl.innerText=score.toLocaleString(); alert('Card Upgraded!'); close
