@@ -24,30 +24,6 @@
             position: relative;
             border: 4px solid #f3ba2f;
         }
-        #startOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 14, 17, 0.98);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-        .start-btn {
-            background: linear-gradient(135deg, #f3ba2f 0%, #d49a12 100%);
-            color: #0b0e11;
-            font-size: 22px;
-            font-weight: 900;
-            padding: 16px 45px;
-            border-radius: 35px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 35px rgba(243, 186, 47, 0.6);
-            margin-top: 20px;
-        }
         .top-container {
             padding: 10px 14px;
             background: rgba(24, 26, 32, 0.95);
@@ -253,13 +229,6 @@
 </head>
 <body>
 
-    <!-- Start Overlay -->
-    <div id="startOverlay">
-        <h1 style="color: #f3ba2f; font-size: 28px; margin-bottom: 10px;">🦁 FZL KOMBAT</h1>
-        <p style="color: #848e9c; font-size: 15px;">Tap below to start game and activate sound:</p>
-        <button class="start-btn" id="realStartBtn">START GAME 🚀</button>
-    </div>
-
     <div class="top-container">
         <div class="user-row">
             <div class="user-profile">
@@ -268,7 +237,7 @@
             </div>
             <div class="header-actions">
                 <button class="admin-btn" onclick="openAdminPanel()">🛡️ Admin</button>
-                <button class="google-login-btn" id="authBtnText" onclick="openLoginModal()">🌐 Google</button>
+                <button class="google-login-btn" id="authBtnText" onclick="openLoginModal()">🌐 Gmail</button>
             </div>
         </div>
     </div>
@@ -319,39 +288,23 @@
         }
 
         let audioCtx = null;
-
-        // Start Game Button Handler (Ensures AudioContext unlocks properly on mobile)
-        const realStartBtn = document.getElementById('realStartBtn');
-        function handleGameStart(e) {
-            if (e) e.preventDefault();
-            
-            // Initialize and resume AudioContext immediately upon user touch/click
-            try {
+        function initAudio() {
+            if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-            } catch(err) {}
-
-            let overlay = document.getElementById('startOverlay');
-            if (overlay) {
-                overlay.style.display = 'none';
-                overlay.remove();
             }
-            playCoinSound();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
-        realStartBtn.addEventListener('click', handleGameStart);
-        realStartBtn.addEventListener('touchend', handleGameStart);
+        window.addEventListener('pointerdown', initAudio, { once: true });
+        window.addEventListener('touchstart', initAudio, { once: true });
 
         function playCoinSound() {
             try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                initAudio();
+                if (!audioCtx) return;
+                
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 
@@ -417,7 +370,7 @@
                     loggedUser = 'Not Logged In';
                     document.getElementById('profileNameText').innerText = 'FZL CEO';
                     document.getElementById('userAvatarIcon').innerText = '🦁';
-                    authBtn.innerText = '🌐 Google';
+                    authBtn.innerText = '🌐 Gmail';
                     alert("You have successfully logged out!");
                 }
                 return;
@@ -428,7 +381,7 @@
             modal.style.display = 'flex';
 
             body.innerHTML = `
-                <h3 style="color:#f3ba2f; margin-bottom:15px;">🌐 Google Account Login</h3>
+                <h3 style="color:#f3ba2f; margin-bottom:15px;">🌐 Gmail Account Login</h3>
                 <div class="login-input-group">
                     <label>Gmail Address</label>
                     <input type="email" id="modalEmailInput" placeholder="example@gmail.com">
@@ -462,7 +415,7 @@
                 localStorage.setItem('fzl_score', score);
                 
                 closeModal();
-                alert("Google Login Successful! +100,000 Coins added.");
+                alert("Gmail Login Successful! +100,000 Coins added.");
             } else {
                 alert("Please enter a valid Gmail and Password!");
             }
@@ -475,11 +428,11 @@
 
             let totalVisits = localStorage.getItem(visitorKey) || 120;
             let userCount = allUsersList.length;
-            let listHtml = allUsersList.map((u, index) => `<li style="padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><b>${index+1}.</b> ${u}</li>`).join('') || '<li style="color:#848e9c;">No Google logins recorded yet.</li>';
+            let listHtml = allUsersList.map((u, index) => `<li style="padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.05);"><b>${index+1}.</b> ${u}</li>`).join('') || '<li style="color:#848e9c;">No Gmail logins recorded yet.</li>';
 
             body.innerHTML = `<h3 style="color:#f3ba2f;">🛡️ Admin Live Analytics Panel</h3><br>
             <p><b>👥 Total Platform Visitors:</b> <span style="color:#00ffcc; font-size:16px;">${totalVisits} People</span></p>
-            <p><b>🌐 Total Google Logins:</b> <span style="color:#f3ba2f; font-size:16px;">${userCount} Users</span></p>
+            <p><b>🌐 Total Gmail Logins:</b> <span style="color:#f3ba2f; font-size:16px;">${userCount} Users</span></p>
             <p><b>👤 Current Active User:</b> <span style="color:#fff;">${loggedUser}</span></p><br>
             <p style="color:#f3ba2f; font-weight:bold;">📋 Live Visitors / Logins Database:</p>
             <div style="background:#0b0e11; padding:10px; border-radius:8px; margin-top:5px; max-height:120px; overflow-y:auto; font-size:12px; border:1px solid #f3ba2f;">
@@ -504,4 +457,23 @@
                     <a href="https://instagram.com" target="_blank" class="soc-btn" style="background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">📸 Instagram</a>
                     <a href="https://facebook.com" target="_blank" class="soc-btn" style="background:#1877f2;">📘 Facebook</a>
                     <a href="https://tiktok.com" target="_blank" class="soc-btn" style="background:#000000; border:1px solid #333;">🎵 TikTok</a>
-                    <a 
+                    <a href="https://discord.com" target="_blank" class="soc-btn" style="background:#5865F2;">🎮 Discord</a>
+                </div>`;
+            } else if(tab === 'exchange') {
+                body.innerHTML = `<h3 style="color:#f3ba2f;">🪙 Exchange Market</h3><br><p style="color:#848e9c;">Market trading and listing updates coming soon on Binance and OKX.</p>`;
+            } else if(tab === 'mine') {
+                body.innerHTML = `<h3 style="color:#f3ba2f;">⛏️ Mine Cards</h3><br><p style="color:#848e9c;">Upgrade cards to increase your hourly coin generation profit.</p>`;
+            } else if(tab === 'friends') {
+                body.innerHTML = `<h3 style="color:#f3ba2f;">👥 Referral Friends</h3><br><p style="color:#848e9c;">Invite friends and earn extra bonus coins for each referral.</p>`;
+            } else if(tab === 'earn') {
+                body.innerHTML = `<h3 style="color:#f3ba2f;">🎁 Earn Tasks</h3><br><p style="color:#848e9c;">Complete daily tasks and social media subscriptions to get instant rewards.</p>`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modalWindow').style.display = 'none';
+        }
+    </script>
+</body>
+    </html>
+    
