@@ -1,559 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Ultimate Fixed Edition</title>
+    <title>FZL Coin - Working Direct Edition</title>
     <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+        * { box-sizing: border-box; user-select: none; }
         body {
             background-color: #0b0e14;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column;
             justify-content: space-between;
-            height: 100vh;
-            overflow: hidden;
+            height: 100vh; overflow: hidden;
         }
-
-        /* Top Header */
         .header {
-            width: 100%;
-            padding: 8px 12px;
-            background: #121620;
-            border-bottom: 2px solid #1f293d;
-            z-index: 10;
+            background: #121620; padding: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #1f293d; font-weight: bold;
         }
-        .top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4px;
+        .content {
+            flex: 1; display: none; flex-direction: column;
+            align-items: center; justify-content: center; padding: 15px; text-align: center;
+        .content.active { display: flex; }
+        .score { font-size: 38px; color: #f3ba2f; font-weight: bold; margin: 15px 0; }
+        .tiger-btn {
+            width: 160px; height: 160px; background: #2a1b0c;
+            border: 5px solid #f3ba2f; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 70px; cursor: pointer; box-shadow: 0 0 25px rgba(243,186,47,0.5);
+            transition: transform 0.1s;
         }
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #1a2233;
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid #2a3447;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
+        .tiger-btn:active { transform: scale(0.9); }
+        .mult-row { display: flex; gap: 8px; margin: 15px 0; }
+        .m-btn {
+            background: #151b2b; border: 1px solid #f3ba2f; color: #fff;
+            padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
-        .user-avatar-sm {
-            width: 22px;
-            height: 22px;
-            background: #334155;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
+        .m-btn.active { background: #f3ba2f; color: #000; }
+        .nav {
+            display: flex; justify-content: space-around;
+            background: #121620; padding: 10px 0; border-top: 2px solid #1f293d;
         }
-        .top-right-controls {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-        .exchange-badge {
-            background: #1f293d;
-            padding: 4px 10px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            color: #f3ba2f;
-            border: 1px solid #334155;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .music-btn {
-            background: #1a2233;
-            border: 1px solid #2a3447;
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-size: 14px;
-            cursor: pointer;
-            color: #fff;
-        }
-        .level-progress-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 2px;
-        }
-        .level-bar-bg {
-            flex: 1;
-            background: #1e293b;
-            height: 5px;
-            border-radius: 3px;
-            margin-left: 8px;
-            overflow: hidden;
-        }
-        .level-bar-fill {
-            width: 2%;
-            height: 100%;
-            background: linear-gradient(90deg, #f3ba2f, #fb923c);
-            border-radius: 3px;
-        }
-
-        /* Pages Container */
-        .page-content {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 12px;
-        }
-        .page-content.active {
-            display: flex;
-        }
-
-        /* HOME PAGE */
-        .cards-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            gap: 6px;
-        }
-        .reward-card {
-            flex: 1;
-            background: #151b2b;
-            border: 1px solid #22304a;
-            border-radius: 10px;
-            padding: 8px 4px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .reward-card-title {
-            font-size: 10px;
-            font-weight: bold;
-            color: #e2e8f0;
-            margin-bottom: 2px;
-        }
-        .reward-card-time {
-            font-size: 9px;
-            color: #22c55e;
-        }
-
-        .balance-container {
-            text-align: center;
-            margin: 10px 0;
-        }
-        .coin-amount {
-            font-size: 34px;
-            font-weight: 800;
-            color: #f3ba2f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        /* Multiplier Selector Row (1x, 2x, 3x, 4x) */
-        .multiplier-row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .mult-btn {
-            background: #151b2b;
-            border: 1px solid #22304a;
-            color: #94a3b8;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .mult-btn.active {
-            background: #f3ba2f;
-            color: #000;
-            border-color: #f3ba2f;
-        }
-
-        .tap-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            position: relative;
-        }
-        .tiger-circle-glow {
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(243, 186, 47, 0.3) 0%, rgba(15, 23, 42, 0) 70%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-            border: 2px solid rgba(243, 186, 47, 0.5);
-            box-shadow: 0 0 35px rgba(243, 186, 47, 0.3);
-        }
-        .tiger-avatar-box {
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(135deg, #2a1b0c, #120904);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid #f3ba2f;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-            transition: transform 0.05s ease;
-            position: relative;
-        }
-        .tiger-avatar-box:active {
-            transform: scale(0.92);
-        }
-        .tiger-face {
-            font-size: 55px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-        .vip-crown-badge {
-            position: absolute;
-            top: -12px;
-            font-size: 22px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-        }
-
-        .flying-coin {
-            position: fixed;
-            font-size: 22px;
-            z-index: 9999;
-            pointer-events: none;
-            animation: flyToTop 0.6s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
-        }
-        @keyframes flyToTop {
-            0% { transform: scale(1) translate(0, 0); opacity: 1; }
-            100% { transform: scale(0.3) translate(var(--dx), var(--dy)); opacity: 0; }
-        }
-
-        .energy-wrapper {
-            width: 90%;
-            margin: 10px auto 0 auto;
-        }
-        .energy-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 3px;
-            font-weight: bold;
-        }
-        .energy-track {
-            width: 100%;
-            background: #1a2233;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid #2a3447;
-        }
-        .energy-fill {
-            width: 100%;
-            background: linear-gradient(90deg, #f3ba2f, #fbbf24);
-            height: 100%;
-            border-radius: 4px;
-        }
-
-        /* STYLES FOR SOCIAL & FRIENDS */
-        .section-title {
-            font-size: 16px;
-            color: #f3ba2f;
-            margin-bottom: 12px;
-            font-weight: bold;
-        }
-        .social-grid, .friends-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .social-item, .friend-item {
-            background: #151b2b;
-            border: 1px solid #22304a;
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .action-btn {
-            background: #f3ba2f;
-            color: #000;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .tg-btn { background: #229ed9; color: #fff; }
-        .wa-btn { background: #25d366; color: #fff; }
-
-        /* ADMIN PANEL STYLES */
-        .admin-box {
-            background: #151b2b;
-            border: 2px solid #ef4444;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-        .admin-input {
-            width: 100%;
-            padding: 8px;
-            background: #0b0e14;
-            border: 1px solid #22304a;
-            color: #fff;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-
-        /* Navigation Footer */
-        .nav-footer {
-            display: flex;
-            justify-content: space-around;
-            background: #121620;
-            padding: 6px 0 10px 0;
-            border-top: 2px solid #1f293d;
-            z-index: 10;
-        }
-        .nav-btn {
-            background: none;
-            border: none;
-            color: #64748b;
-            cursor: pointer;
-            font-size: 10px;
-            text-align: center;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-        .nav-btn span.icon {
-            font-size: 18px;
-        }
-        .nav-btn.active, .nav-btn:hover {
-            color: #ffffff;
-        }
+        .nav-b { background: none; border: none; color: #94a3b8; font-size: 14px; cursor: pointer; font-weight: bold; }
+        .nav-b.active { color: #f3ba2f; }
+        .action-box { background: #151b2b; border: 1px solid #22304a; padding: 15px; border-radius: 10px; width: 100%; max-width: 320px; }
+        .btn-main { background: #f3ba2f; color: #000; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- Header -->
     <div class="header">
-        <div class="top-row">
-            <div class="user-profile" onclick="switchTab('profile')">
-                <div class="user-avatar-sm" id="headerTierIcon">🥉</div>
-                <span id="ceoName">Malak (Lvl <span id="currentLevelNum">1</span>)</span>
-            </div>
-            <div class="top-right-controls">
-                <button class="music-btn" onclick="toggleMusic()" id="musicToggleBtn">🔊</button>
-                <div class="exchange-badge" onclick="switchTab('social')">
-                    <span>🌐</span> <b>Socials</b>
-                </div>
-            </div>
+        <div>👑 Malak (Lvl <span id="lvl">1</span>)</div>
+        <div style="color: #f3ba2f;">⚡ <span id="energy">1000</span>/1000</div>
+    </div>
+
+    <!-- Page Home -->
+    <div id="p-home" class="content active">
+        <div style="font-size: 14px; color: #94a3b8;">Total FZL Coins</div>
+        <div class="score">🪙 <span id="score">0</span></div>
+
+        <!-- Multipliers -->
+        <div class="mult-row">
+            <button class="m-btn active" id="mb1" onclick="setMult(1)">1X</button>
+            <button class="m-btn" id="mb2" onclick="setMult(2)">2X</button>
+            <button class="m-btn" id="mb3" onclick="setMult(3)">3X</button>
+            <button class="m-btn" id="mb4" onclick="setMult(4)">4X</button>
         </div>
-        <div class="level-progress-container">
-            <span id="tierName">Bronze &gt; Level <span id="lvlIndicator">1</span>/50</span>
-            <div class="level-bar-bg">
-                <div class="level-bar-fill" id="levelBarFill"></div>
-            </div>
+
+        <!-- Tiger Clicker -->
+        <div class="tiger-btn" onclick="tapAction()">🐅</div>
+        <p style="font-size: 12px; color: #94a3b8; margin-top: 15px;">स्क्रीन पर टाइगर पर टैप करें!</p>
+    </div>
+
+    <!-- Page Levels -->
+    <div id="p-levels" class="content">
+        <div class="action-box">
+            <h3>⭐ लेवल अपग्रेड</h3>
+            <p>अगला लेवल कॉस्ट: <span style="color:#f3ba2f">100,000 कॉइन्स</span></p>
+            <button class="btn-main" onclick="upgradeLevel()">लेवल बढ़ाएं</button>
         </div>
     </div>
 
-    <!-- AUDIO ELEMENT -->
-    <audio id="bgMusic" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mp3">
-    </audio>
-
-    <!-- PAGE 1: HOME (TAP & EARN) -->
-    <div id="page-home" class="page-content active">
-        <div class="cards-row">
-            <div class="reward-card" onclick="claimDailyReward()">
-                <div class="reward-card-title">📅 Daily reward</div>
-                <div class="reward-card-time">Claim 5,000</div>
-            </div>
-            <div class="reward-card" onclick="switchTab('levels')">
-                <div class="reward-card-title">⭐ Level Up</div>
-                <div class="reward-card-time" id="nextLevelCostText">Cost: 200K</div>
-            </div>
-            <div class="reward-card" onclick="switchTab('friends')">
-                <div class="reward-card-title">👥 Friends</div>
-                <div class="reward-card-time">Invite & Earn</div>
-            </div>
-        </div>
-
-        <div class="balance-container">
-            <div class="coin-amount">
-                <span>🪙</span> <span id="scoreDisplay">0</span>
-            </div>
-        </div>
-
-        <!-- Multiplier Buttons Selector (1x, 2x, 3x, 4x) -->
-        <div class="multiplier-row">
-            <button class="mult-btn active" id="btn-m1" onclick="setMultiplier(1)">1X Tap</button>
-            <button class="mult-btn" id="btn-m2" onclick="setMultiplier(2)">2X Tap</button>
-            <button class="mult-btn" id="btn-m3" onclick="setMultiplier(3)">3X Tap</button>
-            <button class="mult-btn" id="btn-m4" onclick="setMultiplier(4)">4X Tap</button>
-        </div>
-
-        <div class="tap-section" id="tapArea">
-            <div class="tiger-circle-glow" onclick="tapTiger(event)">
-                <div class="tiger-avatar-box" id="tigerBox">
-                    <div class="vip-crown-badge" id="tigerCrown"></div>
-                    <div class="tiger-face" id="tigerEmoji">🐯</div>
-                </div>
-            </div>
-
-            <div class="energy-wrapper">
-                <div class="energy-info">
-                    <span>⚡ <span id="energyText">1500</span> / 1500</span>
-                    <span>🔋 100%</span>
-                </div>
-                <div class="energy-track">
-                    <div class="energy-fill" id="energyFill"></div>
-                </div>
-            </div>
+    <!-- Page Friends -->
+    <div id="p-friends" class="content">
+        <div class="action-box">
+            <h3>👥 दोस्तों को जोड़ें</h3>
+            <p style="font-size: 12px; color: #94a3b8;">हर इनवाइट पर 25,000 कॉइन्स पाएं!</p>
+            <button class="btn-main" style="background:#229ed9; color:#fff;" onclick="alert('लिंक कॉपी हो गया!')">Telegram पर शेयर करें</button>
         </div>
     </div>
 
-    <!-- PAGE 2: LEVELS -->
-    <div id="page-levels" class="page-content">
-        <div class="section-title">⭐ 50 Tiger Evolution & VIP Crowns</div>
-        <div style="background: #151b2b; border: 1px solid #f3ba2f; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 15px;">
-            <div style="font-size: 32px;" id="pageTigerEmoji">🐯</div>
-            <h3 style="color: #f3ba2f; margin: 8px 0;" id="pageTierTitle">Bronze Tier (Level 1)</h3>
-            <p style="font-size: 13px; color: #94a3b8;" id="pageLevelDesc">Next level requires: <span id="upgradeCostDisplay" style="color:#f3ba2f; font-weight:bold;">200,000</span> FZL Coins</p>
-            <button class="action-btn" style="padding: 10px 20px; font-size: 13px; margin-top: 10px;" onclick="upgradeLevel()">🚀 Upgrade Level</button>
+    <!-- Page Admin -->
+    <div id="p-admin" class="content">
+        <div class="action-box" style="border-color: #ef4444;">
+            <h3 style="color:#ef4444">🛡️ एडमिन लॉग</h3>
+            <input type="password" id="pin" placeholder="पिन डालें (786)" style="width:100%; padding:8px; background:#0b0e14; color:#fff; border:1px solid #444; border-radius:4px; margin-bottom:8px;">
+            <button class="btn-main" style="background:#ef4444; color:#fff;" onclick="adminLogin()">लॉगिन करें</button>
         </div>
     </div>
 
-    <!-- PAGE 3: FRIENDS & SOCIAL INVITE -->
-    <div id="page-friends" class="page-content">
-        <div class="section-title">👥 Friend List & Direct Sharing</div>
-        <div style="margin-bottom: 12px; background: #151b2b; padding: 12px; border-radius: 10px; border: 1px solid #22304a;">
-            <h4 style="margin:0 0 6px 0; color:#f3ba2f;">🚀 Invite Friends & Earn 25,000 Coins</h4>
-            <p style="font-size: 11px; color:#94a3b8; margin:0 0 10px 0;">Share instantly via Telegram or WhatsApp:</p>
-            <div style="display: flex; gap: 8px;">
-                <button class="action-btn tg-btn" style="flex:1; padding:10px;" onclick="inviteViaTelegram()">📢 Telegram</button>
-                <button class="action-btn wa-btn" style="flex:1; padding:10px;" onclick="inviteViaWhatsApp()">💬 WhatsApp</button>
-            </div>
-        </div>
-
-        <div class="section-title" style="margin-top:15px;">Your Invited Friends</div>
-        <div class="friends-list">
-            <div class="friend-item">
-                <div>
-                    <h4>Ali Khan</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#22c55e;">Level 5 • +25,000 coins</p>
-                </div>
-                <span style="font-size:12px; color:#f3ba2f;">Active</span>
-            </div>
-            <div class="friend-item">
-                <div>
-                    <h4>Ahmed Raza</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#22c55e;">Level 12 • +110,000 coins</p>
-                </div>
-                <span style="font-size:12px; color:#f3ba2f;">Active</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE 4: SOCIAL MEDIA -->
-    <div id="page-social" class="page-content">
-        <div class="section-title">🌐 Social Media Channels</div>
-        <div class="social-grid">
-            <div class="social-item">
-                <div>
-                    <h4>📢 Telegram Channel</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Join community</p>
-                </div>
-                <button class="action-btn tg-btn" onclick="window.open('https://telegram.org', '_blank')">Visit</button>
-            </div>
-            <div class="social-item">
-                <div>
-                    <h4>💬 WhatsApp Group</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Connect on WhatsApp</p>
-                </div>
-                <button class="action-btn wa-btn" onclick="window.open('https://whatsapp.com', '_blank')">Join</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE 5: ADMIN & PROFILE -->
-    <div id="page-profile" class="page-content">
-        <div class="section-title">🛡️ CEO Profile & Secure Admin Log</div>
-        <div style="background: #151b2b; padding: 15px; border-radius: 12px; font-size: 13px; margin-bottom: 10px;">
-            <p><b>Name:</b> Malak</p>
-            <p><b>Current Level:</b> Level <span id="profileLevel">1</span> / 50</p>
-            <p><b>Status:</b> <span id="profileTierName">Bronze I</span></p>
-        </div>
-
-        <div class="admin-box">
-            <h4 style="margin:0 0 8px 0; color:#ef4444;">🔒 Owner Admin Log</h4>
-            <input type="password" id="adminPin" class="admin-input" placeholder="Enter Admin PIN (Default: 786)">
-            <button class="action-btn" style="background:#ef4444; color:#fff; width:100%;" onclick="verifyAdmin()">Open Admin Log</button>
-            
-            <div id="adminPanelContent" style="display:none; margin-top: 10px; border-top: 1px solid #22304a; padding-top: 10px;">
-                <p style="color:#22c55e; font-size:12px; font-weight:bold;">✅ Admin Log Unlocked Successfully!</p>
-                <button class="action-btn" style="background:#22c55e; color:#000; width:100%; margin-top:5px;" onclick="addAdminBonus()">Give 1M Bonus Coins</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation Footer -->
-    <div class="nav-footer">
-        <button class="nav-btn active" id="btn-home" onclick="switchTab('home')">
-            <span class="icon">🪙</span> FZL
-        </button>
-        <button class="nav-btn" id="btn-levels" onclick="switchTab('levels')">
-            <span class="icon">⭐</span> Levels
-        </button>
-        <button class="nav-btn" id="btn-friends" onclick="switchTab('friends')">
-            <span class="icon">👥</span> Friends
-        </button>
-        <button class="nav-btn" id="btn-social" onclick="switchTab('social')">
-            <span class="icon">🌐</span> Socials
-        </button>
-        <button class="nav-btn" id="btn-profile" onclick="switchTab('profile')">
-            <span class="icon">🛡️</span> Admin
-        </button>
+    <!-- Footer Navigation -->
+    <div class="nav">
+        <button class="nav-b active" id="nb-home" onclick="navTo('home')">🪙 होम</button>
+        <button class="nav-b" id="nb-levels" onclick="navTo('levels')">⭐ लेवल्स</button>
+        <button class="nav-b" id="nb-friends" onclick="navTo('friends')">👥 फ्रेंड्स</button>
+        <button class="nav-b" id="nb-admin" onclick="navTo('admin')">🛡️ एडमिन</button>
     </div>
 
     <script>
         let score = 0;
-        let baseTapPower = 1;
+        let energy = 1000;
         let multiplier = 1;
-        let energy = 1500;
-        let maxEnergy = 1500;
-        let currentLevel = 1;
-        let musicPlaying = false;
+        let level = 1;
 
-        const levelData = [
-            { name: "Bronze I", color: "#cd7f32", emoji: "🐯", crown: "" },
-            { name: "Bronze II", color: "#c18c5d", emoji: "🐅", crown: "" },
-            { name: "Bronze III", color: "#b59b68", emoji: "🐱", crown: "" },
-            { name: "Bronze IV", color: "#a8a272", emoji: "🐯", crown: "" },
-            { name: "Bronze V", color: "#9ca97c", emoji: "🐅", crown: "" },
-            { name: "Silver I", color: "#c0c0c0", emoji: "🐆", crown: "" },
-            { name: "Silver II", color: "#b8c4c4", emoji: "🐅", crown: "" },
-            { name: "Silver III", color: "#b0c8c8", emoji: "🐯", crown: "" },
-            { name: "Silver IV", color: "#a8cccc", emoji: "🐆", crown: "" },
+        function navTo(page) {
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-b').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('p-' + page).classList.add('active');
+            document.getElementById('nb-' + page).classList.add('active');
+        }
+
+        function setMult(val) {
+            multiplier = val;
+            document.querySelectorAll('.m-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('mb' + val).classList.add('active');
+        }
+
+        function tapAction() {
+            let earn = 1 * multiplier;
+            if (energy >= earn) {
+                score += earn;
+                energy -= earn;
+                document.getElementById('score').innerText = score.toLocaleString();
+                document.getElementById('energy').innerText = energy;
+            } else {
+                alert('एनर्जी खत्म हो गई है! कृपया थोड़ा इंतज़ार करें।');
+            }
+        }
+
+        function upgradeLevel() {
+            if (score >= 100000) {
+                score -= 100000;
+                level += 1;
+                document.getElementById('score').innerText = score.toLocaleString();
+                document.getElementById('lvl').innerText = level;
+                alert('बधाई हो! आपका लेवल अपग्रेड हो गया है।');
+            } else {
+                alert('पर्याप्त कॉइन्स नहीं हैं!');
+            }
+        }
+
+        function adminLogin() {
+            let p = document.getElementById('pin').value;
+            if (p === '786') {
+                score += 500000;
+                document.getElementById('score').innerText = score.toLocaleString();
+                alert('सफलतापूर्वक 5,00,000 बोनस कॉइन्स जोड़ दिए गए हैं!');
+            } else {
+                alert('गलत पिन!');
+            }
+        }
+
+        // ऑटो एनर्जी रीचार्ज
+        setInterval(() => {
+            if (energy < 1000) {
+                energy += 10;
+                if (energy > 1000) energy = 1000;
+                document.getElementById('energy').innerText = energy;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
