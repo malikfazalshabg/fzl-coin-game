@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - 100% Working VIP Edition</title>
-    <!-- Firebase SDKs -->
+    <title>FZL Coin Bot</title>
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         body {
-            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+            background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 100%);
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; padding: 0;
@@ -22,11 +22,11 @@
         .header {
             background: rgba(15, 23, 42, 0.95); padding: 8px 12px;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid #3b82f6; font-size: 11px; font-weight: bold;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            border-bottom: 2px solid #1e3a8a; font-size: 11px; font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             z-index: 10;
         }
-        .badge { background: linear-gradient(45deg, #1d4ed8, #2563eb); padding: 5px 10px; border-radius: 20px; border: 1px solid #60a5fa; display: flex; align-items: center; gap: 5px; cursor: pointer; box-shadow: 0 2px 10px rgba(37,99,235,0.4); }
+        .badge { background: #1e3a8a; padding: 5px 12px; border-radius: 20px; border: 1px solid #3b82f6; display: flex; align-items: center; gap: 5px; cursor: pointer; }
         
         .content {
             flex: 1; display: none; flex-direction: column;
@@ -35,26 +35,26 @@
         }
         .content.active { display: flex; }
         
-        .progress-bar-container { width: 100%; max-width: 350px; text-align: left; font-size: 11px; color: #93c5fd; margin-bottom: 6px; font-weight: bold; }
-        .progress-line { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 3px; overflow: hidden; border: 1px solid #3b82f6; }
+        .progress-bar-container { width: 100%; max-width: 350px; text-align: left; font-size: 11px; color: #93c5fd; margin-bottom: 8px; font-weight: bold; }
+        .progress-line { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 4px; overflow: hidden; border: 1px solid #3b82f6; }
         .progress-fill { width: 2%; height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); box-shadow: 0 0 10px #3b82f6; }
 
-        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 350px; margin-bottom: 6px; }
-        .top-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #3b82f6; border-radius: 10px; padding: 8px 4px; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .top-card:active { transform: scale(0.95); background: #3b82f6; }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 350px; margin-bottom: 10px; }
+        .top-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #1e3a8a; border-radius: 12px; padding: 8px 4px; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .top-card:active { transform: scale(0.95); background: #1e3a8a; }
         .top-card-title { font-size: 10px; font-weight: bold; color: #60a5fa; margin-bottom: 2px; }
         .top-card-sub { font-size: 8px; color: #cbd5e1; }
 
-        .score-box { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 34px; color: #38bdf8; font-weight: bold; margin: 4px 0; text-shadow: 0 0 15px rgba(56,189,248,0.5); }
+        .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 38px; color: #38bdf8; font-weight: bold; margin: 6px 0; text-shadow: 0 0 15px rgba(56,189,248,0.5); }
         .score-box img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #fbbf24; }
-        .mult-display { font-size: 11px; color: #4ade80; font-weight: bold; margin: 2px 0; background: rgba(30,41,59,0.8); padding: 3px 10px; border-radius: 15px; border: 1px solid #4ade80; display: inline-block; }
+        .mult-display { font-size: 11px; color: #4ade80; font-weight: bold; margin: 4px 0; background: rgba(30,41,59,0.8); padding: 4px 12px; border-radius: 15px; border: 1px solid #4ade80; display: inline-block; }
 
-        .tiger-wrapper { position: relative; margin: 10px 0; display: flex; justify-content: center; align-items: center; }
+        .tiger-wrapper { position: relative; margin: 15px 0; display: flex; justify-content: center; align-items: center; }
         .tiger-btn {
-            width: 150px; height: 150px; background: radial-gradient(circle, #f59e0b 0%, #78350f 70%, #150d05 100%);
-            border: 5px solid #fbbf24; border-radius: 50%;
+            width: 160px; height: 160px; background: radial-gradient(circle, #f59e0b 0%, #78350f 70%, #150d05 100%);
+            border: 6px solid #fbbf24; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 75px; cursor: pointer; box-shadow: 0 0 30px rgba(251,191,36,0.6), inset 0 0 15px rgba(255,255,255,0.4);
+            font-size: 80px; cursor: pointer; box-shadow: 0 0 35px rgba(251,191,36,0.6), inset 0 0 15px rgba(255,255,255,0.4);
             transition: transform 0.05s;
         }
         .tiger-btn:active { transform: scale(0.92); }
@@ -75,35 +75,30 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.6);
             border: 2px solid rgba(255,255,255,0.6);
         }
-        .fly-coin img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-        }
+        .fly-coin img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; }
         @keyframes flyUp {
             0% { transform: translateY(0) scale(0.6); opacity: 1; }
             100% { transform: translateY(-160px) scale(1.3); opacity: 0; }
         }
 
-        .energy-wrap { width: 100%; max-width: 300px; background: #1e293b; border: 1px solid #3b82f6; border-radius: 5px; height: 10px; overflow: hidden; margin-top: 6px; }
+        .energy-wrap { width: 100%; max-width: 320px; background: #1e293b; border: 1px solid #1e3a8a; border-radius: 6px; height: 10px; overflow: hidden; margin-top: 8px; }
         .energy-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #3b82f6, #38bdf8); }
-        .energy-text { display: flex; justify-content: space-between; width: 100%; max-width: 300px; font-size: 10px; color: #93c5fd; margin-top: 3px; font-weight: bold; }
+        .energy-text { display: flex; justify-content: space-between; width: 100%; max-width: 320px; font-size: 11px; color: #93c5fd; margin-top: 4px; font-weight: bold; }
 
         .nav {
             display: flex; justify-content: space-around;
-            background: rgba(15, 23, 42, 0.95); padding: 6px 0; border-top: 2px solid #3b82f6;
-            box-shadow: 0 -4px 20px rgba(59, 130, 246, 0.3);
+            background: rgba(15, 23, 42, 0.95); padding: 8px 0; border-top: 2px solid #1e3a8a;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
             z-index: 10;
         }
-        .nav-b { background: none; border: none; color: #94a3b8; font-size: 10px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 1px; align-items: center; }
+        .nav-b { background: none; border: none; color: #94a3b8; font-size: 10px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 2px; align-items: center; }
         .nav-b.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.6); }
 
-        .action-box { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #3b82f6; padding: 12px; border-radius: 10px; width: 100%; max-width: 350px; margin-bottom: 10px; text-align: left; }
+        .action-box { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #1e3a8a; padding: 14px; border-radius: 12px; width: 100%; max-width: 350px; margin-bottom: 10px; text-align: left; }
         .action-box h3 { margin-top: 0; color: #60a5fa; font-size: 14px; }
-        .btn-main { background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; border: none; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 6px; width: 100%; font-size: 11px; }
+        .btn-main { background: linear-gradient(90deg, #1d4ed8, #3b82f6); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; width: 100%; font-size: 12px; }
         
-        .video-container { width: 100%; max-width: 350px; border-radius: 8px; overflow: hidden; border: 1px solid #3b82f6; margin-bottom: 8px; background: #000; }
+        .video-container { width: 100%; max-width: 350px; border-radius: 8px; overflow: hidden; border: 1px solid #1e3a8a; margin-bottom: 8px; background: #000; }
         video { width: 100%; height: 160px; object-fit: cover; display: block; }
     </style>
 </head>
@@ -115,7 +110,7 @@
             <span>Malak (Lvl <span id="lvl">1</span>)</span>
         </div>
         <div style="display: flex; gap: 6px; align-items: center;">
-            <div class="badge" style="background: #047857; border-color: #34d399;">👥 <span id="liveUsers">1</span> Online</div>
+            <div class="badge" style="background: #065f46; border-color: #10b981;">👥 <span id="liveUsers">1</span> Online</div>
             <div class="badge" onclick="toggleSound()" id="soundIndicator">🔊 Sound: ON</div>
         </div>
     </div>
@@ -143,7 +138,7 @@
         </div>
 
         <div class="score-box">
-            <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Binance Coin">
+            <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="BNB">
             <span id="score">0</span>
         </div>
 
@@ -188,7 +183,6 @@
             <div class="video-container">
                 <video autoplay loop muted playsinline>
                     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
                 </video>
             </div>
             <h3>🌐 Official Community & Binance Connect</h3>
@@ -201,10 +195,10 @@
     <div id="p-admin" class="content">
         <div class="action-box" style="border-color: #ef4444;">
             <h3 style="color:#ef4444">🛡️ Owner Admin Panel</h3>
-            <input type="password" id="pin" placeholder="Enter PIN (786)" style="width:100%; padding:6px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:4px; margin-bottom:6px; font-size:11px;">
+            <input type="password" id="pin" placeholder="Enter PIN (786)" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:6px; margin-bottom:8px; font-size:11px;">
             <button class="btn-main" style="background:#ef4444;" onclick="adminLogin()">Login Panel</button>
-            <div id="adminPanelBody" style="display:none; margin-top:8px;">
-                <button class="btn-main" style="background:#4ade80; color:#000;" onclick="addBonus()">🎁 Add 1,000,000 Coins</button>
+            <div id="adminPanelBody" style="display:none; margin-top:10px;">
+                <button class="btn-main" style="background:#10b981; color:#fff;" onclick="addBonus()">🎁 Add 1,000,000 Coins</button>
             </div>
         </div>
     </div>
@@ -219,7 +213,6 @@
     </div>
 
     <script>
-        // Firebase Cloud Database Initialization
         const firebaseConfig = {
             apiKey: "AIzaSyDummyKeyForFZLCoinBot-Demo",
             authDomain: "fzl-coin-bot.firebaseapp.com",
@@ -239,7 +232,7 @@
         let soundOn = true;
         let audioCtx = null;
 
-        const binanceCoinUrl = "https://cryptologos.cc/logos/binance-coin-bnb-logo.png";
+        const bnbLogo = "https://cryptologos.cc/logos/binance-coin-bnb-logo.png";
 
         try {
             firebase.initializeApp(firebaseConfig);
@@ -274,61 +267,37 @@
                 }
                 updateUI();
             });
-
         } catch (e) {
             updateUI();
         }
 
         function saveCloudData() {
             if (!userRef) return;
-            userRef.set({
-                score: score,
-                energy: energy,
-                level: level,
-                lastClaim: lastClaim
-            });
+            userRef.set({ score, energy, level, lastClaim });
         }
 
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        function playCoinSound() {
+        function playSound() {
             if (!soundOn) return;
             try {
                 initAudio();
                 if (!audioCtx) return;
-                
                 let now = audioCtx.currentTime;
-                let osc1 = audioCtx.createOscillator();
-                let osc2 = audioCtx.createOscillator();
+                let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
-
-                osc1.type = 'square';
-                osc2.type = 'triangle';
-                
-                osc1.frequency.setValueAtTime(1200, now);
-                osc1.frequency.exponentialRampToValueAtTime(3000, now + 0.12);
-                
-                osc2.frequency.setValueAtTime(2400, now);
-                osc2.frequency.exponentialRampToValueAtTime(5000, now + 0.12);
-
-                gain.gain.setValueAtTime(0.8, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-
-                osc1.connect(gain);
-                osc2.connect(gain);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1500, now);
+                osc.frequency.exponentialRampToValueAtTime(3500, now + 0.1);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.connect(gain);
                 gain.connect(audioCtx.destination);
-
-                osc1.start(now);
-                osc2.start(now);
-                osc1.stop(now + 0.15);
-                osc2.stop(now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.12);
             } catch (e) {}
         }
 
@@ -348,7 +317,6 @@
         const homePage = document.getElementById('p-home');
 
         if (tigerBtn) {
-            // Touch & Click Event Handler to guarantee 100% responsiveness
             const handleTap = (e) => {
                 initAudio();
                 let count = 1;
@@ -361,14 +329,14 @@
                     energy -= count;
                     updateUI();
                     saveCloudData();
-                    playCoinSound();
+                    playSound();
 
                     let multDisp = document.getElementById('multDisplay');
                     if (multDisp) multDisp.innerText = `Active Multiplier: ${count}X (${count} Finger)`;
 
                     let clientX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : window.innerWidth / 2);
                     let clientY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : window.innerHeight / 2);
-                    createFlyingAnimations(clientX, clientY, count);
+                    createFlyingCoins(clientX, clientY, count);
                 }
             };
 
@@ -379,18 +347,12 @@
             }, { passive: false });
         }
 
-        function createFlyingAnimations(x, y, mult) {
-            const colors = [
-                'linear-gradient(45deg, #f59e0b, #d97706)', 
-                'linear-gradient(45deg, #3b82f6, #1d4ed8)', 
-                'linear-gradient(45deg, #10b981, #059669)', 
-                'linear-gradient(45deg, #ec4899, #be185d)'  
-            ];
-
+        function createFlyingCoins(x, y, mult) {
+            const colors = ['#f59e0b', '#3b82f6', '#10b981', '#ec4899'];
             let flyEl = document.createElement('div');
             flyEl.className = 'fly-coin';
             flyEl.style.background = colors[Math.floor(Math.random() * colors.length)];
-            flyEl.innerHTML = `<img src="${binanceCoinUrl}" alt="BNB"> +${mult}X`;
+            flyEl.innerHTML = `<img src="${bnbLogo}" alt="BNB"> +${mult}X`;
 
             let offsetX = (Math.random() - 0.5) * 100;
             let offsetY = (Math.random() - 0.5) * 60;
@@ -419,8 +381,47 @@
             document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
-        // Energy Regeneration Loop
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 15;
-                if (energy > maxEnergy) energy = maxEner
+                if (energy > maxEnergy) energy = maxEnergy;
+                updateUI();
+                saveCloudData();
+            }
+        }, 1000);
+
+        function claimDaily() {
+            let now = new Date().getTime();
+            if (now - lastClaim < 259200000) {
+                alert('⏳ Daily reward is locked! Try again after 3 days.');
+                return;
+            }
+            score += 1000;
+            lastClaim = now;
+            updateUI();
+            saveCloudData();
+            playSound();
+            alert('🎉 Success! 1,000 coins claimed.');
+        }
+
+        function upgradeLevel() {
+            let cost = getLevelCost();
+            if (score >= cost) {
+                score -= cost;
+                level += 1;
+                updateUI();
+                saveCloudData();
+                playSound();
+                alert('🎉 Level Upgraded to ' + level);
+                navTo('home');
+            } else {
+                alert('❌ Insufficient coins!');
+            }
+        }
+
+        function adminLogin() {
+            if (document.getElementById('pin').value === '786') {
+                document.getElementById('adminPanelBody').style.display = 'block';
+                alert('✅ Admin Unlocked!');
+            } else {
+                a
