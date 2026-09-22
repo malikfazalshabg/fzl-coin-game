@@ -116,7 +116,7 @@
         .social-btn {
             padding: 12px; border-radius: 10px; border: none; color: #fff; font-weight: 700; font-size: 11px;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: 0.2s; text-decoration: none;
         }
         .social-btn:active { transform: scale(0.95); }
 
@@ -186,12 +186,14 @@
             <p style="font-size: 10px; color: #94a3b8;">Share your brand link & connect everywhere:</p>
             
             <div class="social-grid">
-                <button class="social-btn" style="background: #229ed9;" onclick="window.open('https://telegram.org', '_blank')">📢 Telegram</button>
-                <button class="social-btn" style="background: #ff0000;" onclick="window.open('https://youtube.com', '_blank')">▶️ YouTube</button>
-                <button class="social-btn" style="background: #25d366;" onclick="window.open('https://whatsapp.com', '_blank')">💬 WhatsApp</button>
-                <button class="social-btn" style="background: #1da1f2;" onclick="window.open('https://twitter.com', '_blank')">🐦 Twitter/X</button>
-                <button class="social-btn" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743);" onclick="window.open('https://instagram.com', '_blank')">📸 Instagram</button>
-                <button class="social-btn" style="background: #f59e0b; color:#000;" onclick="window.open('https://www.binance.com', '_blank')">🟡 Binance Wallet</button>
+                <!-- Direct WhatsApp Share Button -->
+                <a class="social-btn" style="background: #25d366; grid-column: span 2; font-size: 12px; justify-content: center;" href="https://api.whatsapp.com/send?text=Come%20play%20FZL%20Brand%20VIP%20and%20earn%20crypto!%20Join%20here:%20https://fzl-coin-game.vercel.app" target="_blank">💬 WhatsApp پر دوستوں کو شیئر کریں</a>
+                
+                <a class="social-btn" style="background: #229ed9;" href="https://telegram.org" target="_blank">📢 Telegram</a>
+                <a class="social-btn" style="background: #ff0000;" href="https://youtube.com" target="_blank">▶️ YouTube</a>
+                <a class="social-btn" style="background: #1da1f2;" href="https://twitter.com" target="_blank">🐦 Twitter/X</a>
+                <a class="social-btn" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743);" href="https://instagram.com" target="_blank">📸 Instagram</a>
+                <a class="social-btn" style="background: #f59e0b; color:#000; grid-column: span 2;" href="https://www.binance.com" target="_blank">🟡 Binance Wallet</a>
             </div>
         </div>
     </div>
@@ -201,7 +203,7 @@
         <div class="vip-card" style="text-align: center;">
             <h3 style="color:#fbbf24; margin-top:0; font-size:16px; font-weight:800;">💳 Secure Brand Wallet</h3>
             <div style="font-size: 22px; font-weight: 800; color: #ec4899; margin: 20px 0;" id="walletScore">0 FZL</div>
-            <button class="vip-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('✅ Brand App Link Copied! Share everywhere.');">🔗 Copy & Share Link</button>
+            <button class="vip-btn" onclick="navigator.clipboard.writeText('https://fzl-coin-game.vercel.app'); alert('✅ Brand App Link Copied! Share everywhere.');">🔗 Copy & Share Link</button>
         </div>
     </div>
 
@@ -224,7 +226,6 @@
     </div>
 
     <script>
-        // 👉 [یہاں اپنی اصلی فائر بیس کنفیگریشن درج کریں تاکہ آن لائن یوزرز اور ڈیٹا لائیو سنک ہو سکے]
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY_HERE",
             authDomain: "your-project.firebaseapp.com",
@@ -390,4 +391,5 @@
         navTo('exchange');
     </script>
 </body>
-</html>
+            </html>
+    
