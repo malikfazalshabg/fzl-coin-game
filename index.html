@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Pro Edition</title>
+    <title>FZL Coin Bot - Anime Edition</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         body {
-            background-color: #0b0e14;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; padding: 0;
             display: flex; flex-direction: column;
             justify-content: space-between;
             height: 100vh; overflow: hidden;
         }
         .header {
-            background: #121620; padding: 10px 15px;
+            background: rgba(15, 23, 42, 0.9); padding: 12px 15px;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid #1f293d; font-size: 13px; font-weight: bold;
+            border-bottom: 2px solid #3b82f6; font-size: 13px; font-weight: bold;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
         }
-        .badge { background: #1a2233; padding: 5px 10px; border-radius: 20px; border: 1px solid #2a364f; display: flex; align-items: center; gap: 6px; }
+        .badge { background: linear-gradient(45deg, #1d4ed8, #2563eb); padding: 6px 12px; border-radius: 20px; border: 1px solid #60a5fa; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(37,99,235,0.4); }
         
         .content {
             flex: 1; display: none; flex-direction: column;
@@ -29,93 +30,95 @@
         }
         .content.active { display: flex; }
         
-        .progress-bar-container { width: 100%; max-width: 350px; text-align: left; font-size: 11px; color: #94a3b8; margin-bottom: 10px; }
-        .progress-line { width: 100%; background: #1a2233; height: 6px; border-radius: 3px; margin-top: 4px; overflow: hidden; }
-        .progress-fill { width: 2%; height: 100%; background: #f3ba2f; }
+        .progress-bar-container { width: 100%; max-width: 350px; text-align: left; font-size: 11px; color: #93c5fd; margin-bottom: 10px; font-weight: bold; }
+        .progress-line { width: 100%; background: #1e293b; height: 8px; border-radius: 4px; margin-top: 4px; overflow: hidden; border: 1px solid #3b82f6; }
+        .progress-fill { width: 2%; height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); box-shadow: 0 0 10px #3b82f6; }
 
         .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 360px; margin-bottom: 10px; }
-        .top-card { background: #151b2b; border: 1px solid #22304a; border-radius: 10px; padding: 10px 5px; cursor: pointer; text-align: center; transition: 0.2s; }
-        .top-card:active { transform: scale(0.95); background: #1f293d; }
-        .top-card-title { font-size: 11px; font-weight: bold; color: #f3ba2f; margin-bottom: 2px; }
-        .top-card-sub { font-size: 9px; color: #94a3b8; }
+        .top-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #3b82f6; border-radius: 12px; padding: 10px 5px; cursor: pointer; text-align: center; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .top-card:active { transform: scale(0.95); background: #3b82f6; }
+        .top-card-title { font-size: 11px; font-weight: bold; color: #60a5fa; margin-bottom: 2px; }
+        .top-card-sub { font-size: 9px; color: #cbd5e1; }
 
-        .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 36px; color: #f3ba2f; font-weight: bold; margin: 5px 0; }
-        .mult-display { font-size: 12px; color: #22c55e; font-weight: bold; margin: 4px 0; background: #151b2b; padding: 4px 10px; border-radius: 15px; border: 1px solid #22304a; display: inline-block; }
+        .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 38px; color: #38bdf8; font-weight: bold; margin: 5px 0; text-shadow: 0 0 15px rgba(56,189,248,0.5); }
+        .mult-display { font-size: 12px; color: #4ade80; font-weight: bold; margin: 4px 0; background: rgba(30,41,59,0.8); padding: 4px 12px; border-radius: 15px; border: 1px solid #4ade80; display: inline-block; box-shadow: 0 0 10px rgba(74,222,128,0.2); }
 
         .tiger-wrapper { position: relative; margin: 15px 0; display: flex; justify-content: center; align-items: center; }
         .tiger-btn {
-            width: 160px; height: 160px; background: radial-gradient(circle, #3a250c 0%, #150d05 100%);
-            border: 5px solid #f3ba2f; border-radius: 50%;
+            width: 170px; height: 170px; background: radial-gradient(circle, #2563eb 0%, #0f172a 80%);
+            border: 6px solid #60a5fa; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 75px; cursor: pointer; box-shadow: 0 0 30px rgba(243,186,47,0.4);
+            font-size: 80px; cursor: pointer; box-shadow: 0 0 40px rgba(96,165,250,0.6), inset 0 0 20px rgba(255,255,255,0.3);
             transition: transform 0.05s;
         }
         .tiger-btn:active { transform: scale(0.92); }
 
         .fly-coin {
             position: absolute;
-            width: 36px;
-            height: 36px;
-            background: radial-gradient(circle, #ffe259 0%, #ffa751 100%);
+            width: 38px;
+            height: 38px;
+            background: radial-gradient(circle, #60a5fa 0%, #2563eb 100%);
             border: 2px solid #fff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-            color: #111;
+            color: #fff;
             pointer-events: none;
             animation: flyUp 0.8s ease-out forwards;
             z-index: 100;
-            box-shadow: 0 4px 10px rgba(243,186,47,0.6);
+            box-shadow: 0 4px 15px rgba(59,130,246,0.8);
         }
         @keyframes flyUp {
             0% { transform: translateY(0) scale(0.6); opacity: 1; }
-            100% { transform: translateY(-130px) scale(1.2); opacity: 0; }
+            100% { transform: translateY(-140px) scale(1.3); opacity: 0; }
         }
 
-        .energy-wrap { width: 100%; max-width: 320px; background: #151b2b; border: 1px solid #22304a; border-radius: 6px; height: 10px; overflow: hidden; margin-top: 8px; }
-        .energy-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #f3ba2f, #fb923c); transition: width 0.2s; }
-        .energy-text { display: flex; justify-content: space-between; width: 100%; max-width: 320px; font-size: 11px; color: #94a3b8; margin-top: 4px; }
+        .energy-wrap { width: 100%; max-width: 320px; background: #1e293b; border: 1px solid #3b82f6; border-radius: 6px; height: 12px; overflow: hidden; margin-top: 8px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+        .energy-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #3b82f6, #38bdf8); transition: width 0.2s; box-shadow: 0 0 10px #38bdf8; }
+        .energy-text { display: flex; justify-content: space-between; width: 100%; max-width: 320px; font-size: 11px; color: #93c5fd; margin-top: 4px; font-weight: bold; }
 
         .nav {
             display: flex; justify-content: space-around;
-            background: #121620; padding: 8px 0; border-top: 2px solid #1f293d;
+            background: rgba(15, 23, 42, 0.95); padding: 8px 0; border-top: 2px solid #3b82f6;
+            box-shadow: 0 -4px 20px rgba(59, 130, 246, 0.3);
         }
-        .nav-b { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 2px; align-items: center; }
-        .nav-b.active { color: #f3ba2f; }
+        .nav-b { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 2px; align-items: center; transition: 0.2s; }
+        .nav-b.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.6); }
 
-        .action-box { background: #151b2b; border: 1px solid #22304a; padding: 15px; border-radius: 10px; width: 100%; max-width: 350px; margin-bottom: 12px; text-align: left; }
-        .action-box h3 { margin-top: 0; color: #f3ba2f; font-size: 15px; }
-        .btn-main { background: #f3ba2f; color: #000; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; width: 100%; font-size: 12px; }
-        .tg-btn { background: #229ed9; color: #fff; }
-        .wa-btn { background: #25d366; color: #fff; }
+        .action-box { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #3b82f6; padding: 15px; border-radius: 12px; width: 100%; max-width: 350px; margin-bottom: 12px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .action-box h3 { margin-top: 0; color: #60a5fa; font-size: 15px; }
+        .btn-main { background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; width: 100%; font-size: 12px; box-shadow: 0 4px 15px rgba(37,99,235,0.4); transition: 0.2s; }
+        .btn-main:active { transform: scale(0.97); }
+        .tg-btn { background: linear-gradient(90deg, #0284c7, #0ea5e9); }
+        .wa-btn { background: linear-gradient(90deg, #16a34a, #22c55e); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="badge">
-            <span>🥉</span>
+            <span>🛡️</span>
             <span>Malak (Lvl <span id="lvl">1</span>)</span>
         </div>
         <div style="display: flex; gap: 8px;">
             <div class="badge" onclick="toggleSound()" id="soundIndicator" style="cursor: pointer;">🔊 Sound: ON</div>
-            <div class="badge" style="color: #f3ba2f; cursor:pointer;" onclick="navTo('social')">🌐 Socials</div>
+            <div class="badge" style="color: #38bdf8; cursor:pointer;" onclick="navTo('social')">🌐 Socials</div>
         </div>
     </div>
 
-    <div id="p-home" class="content">
+    <div id="p-home" class="content active">
         <div class="progress-bar-container">
-            <span>Bronze > Level <span id="curLvlText">1</span>/50</span>
+            <span>Elite Rank > Level <span id="curLvlText">1</span>/50</span>
             <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
         </div>
 
         <div class="cards-grid">
             <div class="top-card" onclick="claimDaily()">
-                <div class="top-card-title">🎁 Daily reward</div>
-                <div class="top-card-sub" id="dailySubText">Claim 1,000 (3 Days)</div>
+                <div class="top-card-title">🎁 Daily Reward</div>
+                <div class="top-card-sub" id="dailySubText">Claim 5,000</div>
             </div>
             <div class="top-card" onclick="navTo('levels')">
                 <div class="top-card-title">⭐ Level Up</div>
@@ -128,7 +131,7 @@
         </div>
 
         <div class="score-box">
-            <span>🪙</span>
+            <span>💎</span>
             <span id="score">0</span>
         </div>
 
@@ -149,30 +152,30 @@
 
     <div id="p-levels" class="content">
         <div class="action-box">
-            <h3>⭐ Tiger Level Upgrade</h3>
-            <p style="font-size: 12px; color: #94a3b8;">Next Level Cost: <span style="color:#f3ba2f; font-weight:bold;">200,000 Coins</span></p>
-            <p style="font-size: 12px; color: #22c55e;">Benefit: Higher earning power and elite status!</p>
-            <button class="btn-main" onclick="upgradeLevel()">🚀 Upgrade Level</button>
+            <h3>⭐ Elite Rank Upgrade</h3>
+            <p style="font-size: 12px; color: #cbd5e1;">Next Level Cost: <span style="color:#38bdf8; font-weight:bold;">200,000 Coins</span></p>
+            <p style="font-size: 12px; color: #4ade80;">Benefit: Unlock extreme mining power and special badges!</p>
+            <button class="btn-main" onclick="upgradeLevel()">🚀 Upgrade Level Now</button>
         </div>
     </div>
 
     <div id="p-friends" class="content">
         <div class="action-box">
             <h3>👥 Friends Invite System</h3>
-            <p style="font-size: 12px; color: #94a3b8;">Invite your friends and earn 25,000 coins for every successful referral request!</p>
+            <p style="font-size: 12px; color: #cbd5e1;">Invite your friends and earn 25,000 coins for every successful referral!</p>
             <button class="btn-main tg-btn" onclick="shareTelegram()">📢 Send Request on Telegram</button>
             <button class="btn-main wa-btn" onclick="shareWhatsApp()">💬 Share Link on WhatsApp</button>
         </div>
         <div class="action-box">
-            <h3 style="font-size: 13px;">Connected Friends (0)</h3>
-            <p style="font-size: 11px; color: #94a3b8;">Your friend list is currently empty.</p>
+            <h3 style="font-size: 13px;">Connected Squad (0)</h3>
+            <p style="font-size: 11px; color: #94a3b8;">Your squad list is currently empty.</p>
         </div>
     </div>
 
     <div id="p-social" class="content">
         <div class="action-box">
-            <h3>🌐 Social Media Channels</h3>
-            <p style="font-size: 12px; color: #94a3b8;">Join official community updates:</p>
+            <h3>🌐 Official Community</h3>
+            <p style="font-size: 12px; color: #cbd5e1;">Join our official channels for live updates:</p>
             <button class="btn-main tg-btn" onclick="window.open('https://t.me', '_blank')">Join Telegram Channel</button>
             <button class="btn-main wa-btn" onclick="window.open('https://whatsapp.com', '_blank')">Join WhatsApp Group</button>
         </div>
@@ -181,19 +184,19 @@
     <div id="p-admin" class="content">
         <div class="action-box" style="border-color: #ef4444;">
             <h3 style="color:#ef4444">🛡️ Owner Admin Log</h3>
-            <p style="font-size: 11px; color: #94a3b8;">Enter PIN (Default: 786):</p>
-            <input type="password" id="pin" placeholder="Enter PIN" style="width:100%; padding:8px; background:#0b0e14; color:#fff; border:1px solid #444; border-radius:6px; margin-bottom:8px; font-size:12px;">
+            <p style="font-size: 11px; color: #cbd5e1;">Enter PIN (Default: 786):</p>
+            <input type="password" id="pin" placeholder="Enter PIN" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:6px; margin-bottom:8px; font-size:12px;">
             <button class="btn-main" style="background:#ef4444; color:#fff;" onclick="adminLogin()">Login Panel</button>
             
-            <div id="adminPanelBody" style="display:none; margin-top:10px; border-top:1px solid #22304a; padding-top:8px;">
-                <p style="color:#22c55e; font-size:11px; font-weight:bold;">✅ Admin Access Granted!</p>
-                <button class="btn-main" style="background:#22c55e; color:#000;" onclick="addBonus()">🎁 Add 1,000,000 Bonus Coins</button>
+            <div id="adminPanelBody" style="display:none; margin-top:10px; border-top:1px solid #3b82f6; padding-top:8px;">
+                <p style="color:#4ade80; font-size:11px; font-weight:bold;">✅ Admin Access Granted!</p>
+                <button class="btn-main" style="background:#4ade80; color:#000;" onclick="addBonus()">🎁 Add 1,000,000 Bonus Coins</button>
             </div>
         </div>
     </div>
 
     <div class="nav">
-        <button class="nav-b active" id="nb-home" onclick="navTo('home')">🪙 FZL</button>
+        <button class="nav-b active" id="nb-home" onclick="navTo('home')">💎 FZL</button>
         <button class="nav-b" id="nb-levels" onclick="navTo('levels')">⭐ Levels</button>
         <button class="nav-b" id="nb-friends" onclick="navTo('friends')">👥 Friends</button>
         <button class="nav-b" id="nb-social" onclick="navTo('social')">🌐 Socials</button>
@@ -293,139 +296,5 @@
                     
                     createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, earnedPoints);
                 } else {
-                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
-                }
-            });
-
-            tigerBtn.addEventListener('touchstart', (e) => {
-                let numTouches = e.touches.length;
-                let earnedPoints = numTouches;
-                if (earnedPoints < 1) earnedPoints = 1;
-
-                if (energy >= earnedPoints) {
-                    score += earnedPoints;
-                    energy -= earnedPoints;
-                    updateUI();
-                    saveData();
-                    playCoinSound();
-
-                    let multDisp = document.getElementById('multDisplay');
-                    if (multDisp) multDisp.innerText = `Active Multiplier: ${earnedPoints}X (${numTouches} Fingers)`;
-
-                    for (let i = 0; i < e.touches.length; i++) {
-                        let touch = e.touches[i];
-                        createFlyingAnimations(touch.clientX, touch.clientY, 1);
-                    }
-                } else {
-                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
-                }
-                e.preventDefault();
-            }, { passive: false });
-        }
-
-        function createFlyingAnimations(x, y, count) {
-            for (let i = 0; i < count; i++) {
-                let flyEl = document.createElement('div');
-                flyEl.className = 'fly-coin';
-                flyEl.innerHTML = '₿+1';
-                
-                let offsetX = (Math.random() - 0.5) * 80;
-                let offsetY = (Math.random() - 0.5) * 40;
-                
-                flyEl.style.left = (x + offsetX) + 'px';
-                flyEl.style.top = (y + offsetY) + 'px';
-                
-                if (homePage) homePage.appendChild(flyEl);
-
-                setTimeout(() => {
-                    flyEl.remove();
-                }, 800);
-            }
-        }
-
-        function updateUI() {
-            let scoreEl = document.getElementById('score');
-            if (scoreEl) scoreEl.innerText = score.toLocaleString();
-            
-            let energyEl = document.getElementById('energy');
-            if (energyEl) energyEl.innerText = energy;
-            
-            let pct = Math.floor((energy / maxEnergy) * 100);
-            let energyPctEl = document.getElementById('energyPct');
-            if (energyPctEl) energyPctEl.innerText = pct + '%';
-            
-            let energyBarEl = document.getElementById('energyBar');
-            if (energyBarEl) energyBarEl.style.width = pct + '%';
-            
-            let lvlEl = document.getElementById('lvl');
-            if (lvlEl) lvlEl.innerText = level;
-            
-            let curLvlTextEl = document.getElementById('curLvlText');
-            if (curLvlTextEl) curLvlTextEl.innerText = level;
-            
-            let progressFillEl = document.getElementById('progressFill');
-            if (progressFillEl) progressFillEl.style.width = Math.min(level * 2, 100) + '%';
-        }
-
-        setInterval(() => {
-            if (energy < maxEnergy) {
-                energy += 15;
-                if (energy > maxEnergy) energy = maxEnergy;
-                updateUI();
-                saveData();
-            }
-        }, 1000);
-
-        function claimDaily() {
-            let lastClaimTime = parseInt(localStorage.getItem('fzl_last_claim')) || 0;
-            let currentTime = new Date().getTime();
-            let threeDaysMs = 3 * 24 * 60 * 60 * 1000;
-
-            if (currentTime - lastClaimTime < threeDaysMs) {
-                let remainingTime = threeDaysMs - (currentTime - lastClaimTime);
-                let remainingDays = Math.floor(remainingTime / (24 * 60 * 60 * 1000));
-                let remainingHours = Math.floor((remainingTime % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-                
-                alert(`⏳ Daily reward is locked! You can claim again in ${remainingDays} days and ${remainingHours} hours.`);
-                return;
-            }
-
-            score += 1000;
-            localStorage.setItem('fzl_last_claim', currentTime);
-            updateUI();
-            saveData();
-            playCoinSound();
-            alert('🎉 Success! 3-Day Daily Reward of 1,000 coins claimed successfully.');
-        }
-
-        function upgradeLevel() {
-            let cost = 200000;
-            if (score >= cost) {
-                score -= cost;
-                level += 1;
-                updateUI();
-                saveData();
-                alert('🎉 Fantastic! Your tiger level has been upgraded to ' + level + '.');
-                navTo('home');
-            } else {
-                alert('❌ Insufficient coins! You need 200,000 coins for this level upgrade.');
-            }
-        }
-
-        function shareTelegram() {
-            let text = encodeURIComponent("🔥 Join FZL Coin Bot and start mining coins with me! Link: https://t.me/fzl_coin_bot");
-            window.open(`https://t.me/share/url?url=https://t.me/fzl_coin_bot&text=${text}`, '_blank');
-        }
-
-        function shareWhatsApp() {
-            let text = encodeURIComponent("🔥 Come join FZL Coin Bot and earn free crypto coins! Click here to start: https://t.me/fzl_coin_bot");
-            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-        }
-
-        function adminLogin() {
-            let pinInput = document.getElementById('pin');
-            let p = pinInput ? pinInput.value : '';
-            if (p === '786') {
-                let panelBody = document.getElementById('adminPanelBody');
-                if (panelBody) panelBody.style.display = 'block';
-    
+                    alert('
+        
