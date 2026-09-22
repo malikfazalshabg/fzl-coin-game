@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Ultimate VIP Cloud Edition</title>
-    <!-- Firebase SDK -->
+    <title>FZL Coin Bot - 100% Working VIP Edition</title>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     
@@ -219,7 +219,7 @@
     </div>
 
     <script>
-        // Firebase Setup
+        // Firebase Cloud Database Initialization
         const firebaseConfig = {
             apiKey: "AIzaSyDummyKeyForFZLCoinBot-Demo",
             authDomain: "fzl-coin-bot.firebaseapp.com",
@@ -238,7 +238,6 @@
         let lastClaim = 0;
         let soundOn = true;
         let audioCtx = null;
-        let isDataLoaded = false;
 
         const binanceCoinUrl = "https://cryptologos.cc/logos/binance-coin-bnb-logo.png";
 
@@ -273,12 +272,10 @@
                 } else {
                     saveCloudData();
                 }
-                isDataLoaded = true;
                 updateUI();
             });
 
         } catch (e) {
-            isDataLoaded = true;
             updateUI();
         }
 
@@ -293,8 +290,12 @@
         }
 
         function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
         function playCoinSound() {
@@ -311,13 +312,13 @@
                 osc1.type = 'square';
                 osc2.type = 'triangle';
                 
-                osc1.frequency.setValueAtTime(1500, now);
-                osc1.frequency.exponentialRampToValueAtTime(3500, now + 0.1);
+                osc1.frequency.setValueAtTime(1200, now);
+                osc1.frequency.exponentialRampToValueAtTime(3000, now + 0.12);
                 
-                osc2.frequency.setValueAtTime(3000, now);
-                osc2.frequency.exponentialRampToValueAtTime(6000, now + 0.1);
+                osc2.frequency.setValueAtTime(2400, now);
+                osc2.frequency.exponentialRampToValueAtTime(5000, now + 0.12);
 
-                gain.gain.setValueAtTime(1.0, now);
+                gain.gain.setValueAtTime(0.8, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
 
                 osc1.connect(gain);
@@ -347,10 +348,12 @@
         const homePage = document.getElementById('p-home');
 
         if (tigerBtn) {
-            tigerBtn.addEventListener('pointerdown', (e) => {
+            // Touch & Click Event Handler to guarantee 100% responsiveness
+            const handleTap = (e) => {
+                initAudio();
                 let count = 1;
-                if (e.pointerType === 'touch' && window.navigator.maxTouchPoints > 1) {
-                    count = Math.min(window.navigator.maxTouchPoints, 5);
+                if (e.changedTouches && e.changedTouches.length > 1) {
+                    count = Math.min(e.changedTouches.length, 5);
                 }
 
                 if (energy >= count) {
@@ -363,9 +366,17 @@
                     let multDisp = document.getElementById('multDisplay');
                     if (multDisp) multDisp.innerText = `Active Multiplier: ${count}X (${count} Finger)`;
 
-                    createFlyingAnimations(e.clientX || (window.innerWidth / 2), e.clientY || (window.innerHeight / 2), count);
+                    let clientX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : window.innerWidth / 2);
+                    let clientY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : window.innerHeight / 2);
+                    createFlyingAnimations(clientX, clientY, count);
                 }
-            });
+            };
+
+            tigerBtn.addEventListener('click', handleTap);
+            tigerBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleTap(e);
+            }, { passive: false });
         }
 
         function createFlyingAnimations(x, y, mult) {
@@ -379,7 +390,6 @@
             let flyEl = document.createElement('div');
             flyEl.className = 'fly-coin';
             flyEl.style.background = colors[Math.floor(Math.random() * colors.length)];
-
             flyEl.innerHTML = `<img src="${binanceCoinUrl}" alt="BNB"> +${mult}X`;
 
             let offsetX = (Math.random() - 0.5) * 100;
@@ -409,24 +419,8 @@
             document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
+        // Energy Regeneration Loop
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 15;
-                if (energy > maxEnergy) energy = maxEnergy;
-                updateUI();
-                saveCloudData();
-            }
-        }, 1000);
-
-        function claimDaily() {
-            let now = new Date().getTime();
-            if (now - lastClaim < 259200000) {
-                alert('⏳ Daily reward is locked! Try again after 3 days.');
-                return;
-            }
-            score += 1000;
-            lastClaim = now;
-            updateUI();
-            saveCloudData();
-            playCoinSound();
-          
+                if (energy > maxEnergy) energy = maxEner
