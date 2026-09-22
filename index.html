@@ -22,7 +22,6 @@
         }
         .badge { background: #1a2233; padding: 5px 10px; border-radius: 20px; border: 1px solid #2a364f; display: flex; align-items: center; gap: 6px; }
         
-        /* Content Pages */
         .content {
             flex: 1; display: none; flex-direction: column;
             align-items: center; justify-content: flex-start; padding: 12px; text-align: center;
@@ -34,7 +33,6 @@
         .progress-line { width: 100%; background: #1a2233; height: 6px; border-radius: 3px; margin-top: 4px; overflow: hidden; }
         .progress-fill { width: 2%; height: 100%; background: #f3ba2f; }
 
-        /* Top Action Cards Grid */
         .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 360px; margin-bottom: 10px; }
         .top-card { background: #151b2b; border: 1px solid #22304a; border-radius: 10px; padding: 10px 5px; cursor: pointer; text-align: center; transition: 0.2s; }
         .top-card:active { transform: scale(0.95); background: #1f293d; }
@@ -42,10 +40,8 @@
         .top-card-sub { font-size: 9px; color: #94a3b8; }
 
         .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 36px; color: #f3ba2f; font-weight: bold; margin: 5px 0; }
-        
         .mult-display { font-size: 12px; color: #22c55e; font-weight: bold; margin: 4px 0; background: #151b2b; padding: 4px 10px; border-radius: 15px; border: 1px solid #22304a; display: inline-block; }
 
-        /* Tiger Button */
         .tiger-wrapper { position: relative; margin: 15px 0; display: flex; justify-content: center; align-items: center; }
         .tiger-btn {
             width: 160px; height: 160px; background: radial-gradient(circle, #3a250c 0%, #150d05 100%);
@@ -56,7 +52,6 @@
         }
         .tiger-btn:active { transform: scale(0.92); }
 
-        /* Flying Golden Coin Animation Elements */
         .fly-coin {
             position: absolute;
             width: 36px;
@@ -80,12 +75,10 @@
             100% { transform: translateY(-130px) scale(1.2); opacity: 0; }
         }
 
-        /* Energy Bar */
         .energy-wrap { width: 100%; max-width: 320px; background: #151b2b; border: 1px solid #22304a; border-radius: 6px; height: 10px; overflow: hidden; margin-top: 8px; }
         .energy-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #f3ba2f, #fb923c); transition: width 0.2s; }
         .energy-text { display: flex; justify-content: space-between; width: 100%; max-width: 320px; font-size: 11px; color: #94a3b8; margin-top: 4px; }
 
-        /* Footer Nav */
         .nav {
             display: flex; justify-content: space-around;
             background: #121620; padding: 8px 0; border-top: 2px solid #1f293d;
@@ -93,7 +86,6 @@
         .nav-b { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 2px; align-items: center; }
         .nav-b.active { color: #f3ba2f; }
 
-        /* Action Boxes / Modals */
         .action-box { background: #151b2b; border: 1px solid #22304a; padding: 15px; border-radius: 10px; width: 100%; max-width: 350px; margin-bottom: 12px; text-align: left; }
         .action-box h3 { margin-top: 0; color: #f3ba2f; font-size: 15px; }
         .btn-main { background: #f3ba2f; color: #000; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; width: 100%; font-size: 12px; }
@@ -103,7 +95,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header">
         <div class="badge">
             <span>🥉</span>
@@ -115,15 +106,12 @@
         </div>
     </div>
 
-    <!-- Page 1: FZL (Main Home & Tap) -->
     <div id="p-home" class="content">
-        <!-- Level Progress -->
         <div class="progress-bar-container">
             <span>Bronze > Level <span id="curLvlText">1</span>/50</span>
             <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
         </div>
 
-        <!-- Top 3 Action Cards -->
         <div class="cards-grid">
             <div class="top-card" onclick="claimDaily()">
                 <div class="top-card-title">🎁 Daily reward</div>
@@ -139,21 +127,17 @@
             </div>
         </div>
 
-        <!-- Coin Score -->
         <div class="score-box">
             <span>🪙</span>
             <span id="score">0</span>
         </div>
 
-        <!-- Multiplier Dynamic Indicator -->
         <div class="mult-display" id="multDisplay">Active Multiplier: 1X (1 Finger)</div>
 
-        <!-- Tiger Button -->
         <div class="tiger-wrapper" id="tigerWrapper">
             <div class="tiger-btn" id="tigerBtn">🐅</div>
         </div>
 
-        <!-- Energy Bar -->
         <div class="energy-text">
             <span>⚡ <span id="energy">1500</span> / 1500</span>
             <span id="energyPct">100%</span>
@@ -163,7 +147,6 @@
         </div>
     </div>
 
-    <!-- Page 2: Levels -->
     <div id="p-levels" class="content">
         <div class="action-box">
             <h3>⭐ Tiger Level Upgrade</h3>
@@ -173,7 +156,6 @@
         </div>
     </div>
 
-    <!-- Page 3: Friends -->
     <div id="p-friends" class="content">
         <div class="action-box">
             <h3>👥 Friends Invite System</h3>
@@ -187,7 +169,6 @@
         </div>
     </div>
 
-    <!-- Page 4: Socials -->
     <div id="p-social" class="content">
         <div class="action-box">
             <h3>🌐 Social Media Channels</h3>
@@ -197,7 +178,6 @@
         </div>
     </div>
 
-    <!-- Page 5: Admin Panel -->
     <div id="p-admin" class="content">
         <div class="action-box" style="border-color: #ef4444;">
             <h3 style="color:#ef4444">🛡️ Owner Admin Log</h3>
@@ -212,7 +192,6 @@
         </div>
     </div>
 
-    <!-- Footer Navigation -->
     <div class="nav">
         <button class="nav-b active" id="nb-home" onclick="navTo('home')">🪙 FZL</button>
         <button class="nav-b" id="nb-levels" onclick="navTo('levels')">⭐ Levels</button>
@@ -286,7 +265,9 @@
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-b').forEach(b => b.classList.remove('active'));
             
-            document.getElementById('p-' + page).classList.add('active');
+            let targetPage = document.getElementById('p-' + page);
+            if (targetPage) targetPage.classList.add('active');
+            
             let navBtn = document.getElementById('nb-' + page);
             if (navBtn) navBtn.classList.add('active');
         }
@@ -294,54 +275,59 @@
         const tigerBtn = document.getElementById('tigerBtn');
         const homePage = document.getElementById('p-home');
 
-        tigerBtn.addEventListener('pointerdown', (e) => {
-            initAudio();
-            let currentMultiplier = window.navigator.maxTouchPoints > 1 ? Math.min(window.navigator.maxTouchPoints, 6) : 1;
-            let earnedPoints = currentMultiplier;
+        if (tigerBtn) {
+            tigerBtn.addEventListener('pointerdown', (e) => {
+                initAudio();
+                let currentMultiplier = window.navigator.maxTouchPoints > 1 ? Math.min(window.navigator.maxTouchPoints, 6) : 1;
+                let earnedPoints = currentMultiplier;
 
-            if (energy >= earnedPoints) {
-                score += earnedPoints;
-                energy -= earnedPoints;
-                updateUI();
-                saveData();
-                playCoinSound();
+                if (energy >= earnedPoints) {
+                    score += earnedPoints;
+                    energy -= earnedPoints;
+                    updateUI();
+                    saveData();
+                    playCoinSound();
 
-                document.getElementById('multDisplay').innerText = `Active Multiplier: ${currentMultiplier}X (${currentMultiplier} Fingers)`;
-                createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, earnedPoints);
-            } else {
-                alert('⚠️ Energy depleted! Please wait for auto-recharge.');
-            }
-        });
-
-        tigerBtn.addEventListener('touchstart', (e) => {
-            let numTouches = e.touches.length;
-            let earnedPoints = numTouches;
-            if (earnedPoints < 1) earnedPoints = 1;
-
-            if (energy >= earnedPoints) {
-                score += earnedPoints;
-                energy -= earnedPoints;
-                updateUI();
-                saveData();
-                playCoinSound();
-
-                document.getElementById('multDisplay').innerText = `Active Multiplier: ${earnedPoints}X (${numTouches} Fingers)`;
-
-                for (let i = 0; i < e.touches.length; i++) {
-                    let touch = e.touches[i];
-                    createFlyingAnimations(touch.clientX, touch.clientY, 1);
+                    let multDisp = document.getElementById('multDisplay');
+                    if (multDisp) multDisp.innerText = `Active Multiplier: ${currentMultiplier}X (${currentMultiplier} Fingers)`;
+                    
+                    createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, earnedPoints);
+                } else {
+                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
                 }
-            } else {
-                alert('⚠️ Energy depleted! Please wait for auto-recharge.');
-            }
-            e.preventDefault();
-        }, { passive: false });
+            });
+
+            tigerBtn.addEventListener('touchstart', (e) => {
+                let numTouches = e.touches.length;
+                let earnedPoints = numTouches;
+                if (earnedPoints < 1) earnedPoints = 1;
+
+                if (energy >= earnedPoints) {
+                    score += earnedPoints;
+                    energy -= earnedPoints;
+                    updateUI();
+                    saveData();
+                    playCoinSound();
+
+                    let multDisp = document.getElementById('multDisplay');
+                    if (multDisp) multDisp.innerText = `Active Multiplier: ${earnedPoints}X (${numTouches} Fingers)`;
+
+                    for (let i = 0; i < e.touches.length; i++) {
+                        let touch = e.touches[i];
+                        createFlyingAnimations(touch.clientX, touch.clientY, 1);
+                    }
+                } else {
+                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
+                }
+                e.preventDefault();
+            }, { passive: false });
+        }
 
         function createFlyingAnimations(x, y, count) {
             for (let i = 0; i < count; i++) {
                 let flyEl = document.createElement('div');
                 flyEl.className = 'fly-coin';
-                flyEl.innerHTML = '₿+1'; // Golden coin shape with symbol matching the uploaded image
+                flyEl.innerHTML = '₿+1';
                 
                 let offsetX = (Math.random() - 0.5) * 80;
                 let offsetY = (Math.random() - 0.5) * 40;
@@ -349,7 +335,7 @@
                 flyEl.style.left = (x + offsetX) + 'px';
                 flyEl.style.top = (y + offsetY) + 'px';
                 
-                homePage.appendChild(flyEl);
+                if (homePage) homePage.appendChild(flyEl);
 
                 setTimeout(() => {
                     flyEl.remove();
@@ -358,17 +344,29 @@
         }
 
         function updateUI() {
-            document.getElementById('score').innerText = score.toLocaleString();
-            document.getElementById('energy').innerText = energy;
+            let scoreEl = document.getElementById('score');
+            if (scoreEl) scoreEl.innerText = score.toLocaleString();
+            
+            let energyEl = document.getElementById('energy');
+            if (energyEl) energyEl.innerText = energy;
+            
             let pct = Math.floor((energy / maxEnergy) * 100);
-            document.getElementById('energyPct').innerText = pct + '%';
-            document.getElementById('energyBar').style.width = pct + '%';
-            document.getElementById('lvl').innerText = level;
-            document.getElementById('curLvlText').innerText = level;
-            document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
+            let energyPctEl = document.getElementById('energyPct');
+            if (energyPctEl) energyPctEl.innerText = pct + '%';
+            
+            let energyBarEl = document.getElementById('energyBar');
+            if (energyBarEl) energyBarEl.style.width = pct + '%';
+            
+            let lvlEl = document.getElementById('lvl');
+            if (lvlEl) lvlEl.innerText = level;
+            
+            let curLvlTextEl = document.getElementById('curLvlText');
+            if (curLvlTextEl) curLvlTextEl.innerText = level;
+            
+            let progressFillEl = document.getElementById('progressFill');
+            if (progressFillEl) progressFillEl.style.width = Math.min(level * 2, 100) + '%';
         }
 
-        // Auto energy recharge
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 15;
@@ -425,15 +423,9 @@
         }
 
         function adminLogin() {
-            let p = document.getElementById('pin').value;
+            let pinInput = document.getElementById('pin');
+            let p = pinInput ? pinInput.value : '';
             if (p === '786') {
-                document.getElementById('adminPanelBody').style.display = 'block';
-                alert('✅ Owner Malak, Admin Panel opened successfully!');
-            } else {
-                alert('❌ Incorrect PIN! Access denied.');
-            }
-        }
-
-        function addBonus() {
-            score += 1000000;
-     
+                let panelBody = document.getElementById('adminPanelBody');
+                if (panelBody) panelBody.style.display = 'block';
+    
