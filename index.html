@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Pro Anime Edition</title>
+    <title>FZL Coin Bot - Pro Edition</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         body {
@@ -15,19 +15,6 @@
             justify-content: space-between;
             height: 100vh; overflow: hidden;
         }
-        /* Onboarding Intro Slides Styling */
-        #onboarding-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f172a; z-index: 9999; display: flex; flex-direction: column;
-            justify-content: space-between; align-items: center; padding: 30px 20px; text-align: center;
-        }
-        .slide-container { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .slide-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #38bdf8; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 50px; background: #1e293b; box-shadow: 0 0 20px rgba(56,189,248,0.5); }
-        .slide-title { font-size: 22px; font-weight: bold; color: #38bdf8; margin-bottom: 10px; }
-        .slide-desc { font-size: 13px; color: #cbd5e1; max-width: 300px; line-height: 1.5; }
-        .intro-btns { display: flex; gap: 10px; width: 100%; max-width: 320px; }
-        .intro-btn { flex: 1; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 4px 15px rgba(37,99,235,0.4); }
-
         .header {
             background: rgba(15, 23, 42, 0.95); padding: 10px 15px;
             display: flex; justify-content: space-between; align-items: center;
@@ -111,17 +98,6 @@
 </head>
 <body>
 
-    <div id="onboarding-screen">
-        <div class="slide-container">
-            <div class="slide-img" id="slideIcon">🐅</div>
-            <div class="slide-title" id="slideTitle">Welcome to FZL Coin Bot</div>
-            <div class="slide-desc" id="slideDesc">Tap on the branded tiger, collect massive crypto coins, and build your mining empire!</div>
-        </div>
-        <div class="intro-btns">
-            <button class="intro-btn" onclick="nextSlide()" id="nextBtn">Next ➔</button>
-        </div>
-    </div>
-
     <div class="header">
         <div class="badge">
             <span>🛡️</span>
@@ -133,7 +109,7 @@
         </div>
     </div>
 
-    <div id="p-home" class="content">
+    <div id="p-home" class="content active">
         <div class="progress-bar-container">
             <span>Elite Rank > Level <span id="curLvlText">1</span>/50 (Cost: <span id="lvlCost">200K</span>)</span>
             <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
@@ -179,7 +155,7 @@
             <h3>⭐ Elite Rank Upgrade System</h3>
             <p style="font-size: 12px; color: #cbd5e1;">Current Level: <span style="color:#38bdf8; font-weight:bold;" id="uiLevelDisplay">1</span></p>
             <p style="font-size: 12px; color: #cbd5e1;">Required Coins: <span style="color:#fbbf24; font-weight:bold;" id="uiLevelCost">200,000 Coins</span></p>
-            <p style="font-size: 12px; color: #4ade80;">Hard work pays off! Upgrade your level to increase your elite status and power.</p>
+            <p style="font-size: 12px; color: #4ade80;">Hard work pays off! Upgrade your level to increase your elite status.</p>
             <button class="btn-main" onclick="upgradeLevel()">🚀 Upgrade Level Now</button>
         </div>
     </div>
@@ -229,37 +205,13 @@
     </div>
 
     <script>
-        // ڈیٹا پرسٹینس (localStorage) تاکہ ایپ بند کر کے آن کرنے پر بھی کوئنز ختم نہ ہوں
+        // ڈیٹا پرسٹینس (localStorage) - ایپ بند کرنے کے بعد بھی کوئنز محفوظ رہیں گے
         let score = parseInt(localStorage.getItem('fzl_score')) || 0;
         let energy = parseInt(localStorage.getItem('fzl_energy')) || 1500;
         let maxEnergy = 1500;
         let level = parseInt(localStorage.getItem('fzl_level')) || 1;
         let soundOn = true;
         let audioCtx = null;
-
-        // آن بورڈنگ سلائیڈز کا ڈیٹا
-        let currentSlideIndex = 0;
-        const slides = [
-            { icon: "🐅", title: "Branded Tiger Mining", desc: "Tap on the high-quality branded tiger to mine your crypto coins with style!" },
-            { icon: "⭐", title: "Level Up & Elite Rank", desc: "Progress through 50 hard levels. Upgrade your rank as you gather more coins!" },
-            { icon: "🎁", title: "3-Day Reward System", desc: "Earn fair rewards! Claim 1,000 coins strictly every 3 days through pure dedication." },
-            { icon: "🚀", title: "Ready to Play?", desc: "Your progress is permanently saved. Let's start tapping and building your empire!" }
-        ];
-
-        function nextSlide() {
-            currentSlideIndex++;
-            if (currentSlideIndex < slides.length) {
-                document.getElementById('slideIcon').innerText = slides[currentSlideIndex].icon;
-                document.getElementById('slideTitle').innerText = slides[currentSlideIndex].title;
-                document.getElementById('slideDesc').innerText = slides[currentSlideIndex].desc;
-                if (currentSlideIndex === slides.length - 1) {
-                    document.getElementById('nextBtn').innerText = "Start App 🚀";
-                }
-            } else {
-                document.getElementById('onboarding-screen').style.display = 'none';
-                navTo('home');
-            }
-        }
 
         function saveData() {
             localStorage.setItem('fzl_score', score);
@@ -370,4 +322,29 @@
                         createFlyingAnimations(touch.clientX, touch.clientY, 1);
                     }
                 } else {
-                    alert('
+                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
+                }
+                e.preventDefault();
+            }, { passive: false });
+        }
+
+        function createFlyingAnimations(x, y, count) {
+            for (let i = 0; i < count; i++) {
+                let flyEl = document.createElement('div');
+                flyEl.className = 'fly-coin';
+                flyEl.innerHTML = '+1';
+                
+                let offsetX = (Math.random() - 0.5) * 80;
+                let offsetY = (Math.random() - 0.5) * 40;
+                
+                flyEl.style.left = (x + offsetX) + 'px';
+                flyEl.style.top = (y + offsetY) + 'px';
+                
+                if (homePage) homePage.appendChild(flyEl);
+
+                setTimeout(() => {
+                    flyEl.remove();
+                }, 800);
+            }
+        }
+                                                                                                                                 
