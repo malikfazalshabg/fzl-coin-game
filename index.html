@@ -1,217 +1,121 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Pro Edition</title>
+    <title>FZL Coin Bot</title>
     <style>
-        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
         body {
-            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a; color: #ffffff;
+            font-family: Arial, sans-serif;
             margin: 0; padding: 0;
             display: flex; flex-direction: column;
             justify-content: space-between;
             height: 100vh; overflow: hidden;
         }
         .header {
-            background: rgba(15, 23, 42, 0.95); padding: 10px 15px;
+            background: #1e293b; padding: 10px 15px;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid #3b82f6; font-size: 13px; font-weight: bold;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-            z-index: 10;
         }
-        .badge { background: linear-gradient(45deg, #1d4ed8, #2563eb); padding: 6px 12px; border-radius: 20px; border: 1px solid #60a5fa; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(37,99,235,0.4); cursor: pointer; }
-        
+        .badge { background: #2563eb; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
         .content {
             flex: 1; display: none; flex-direction: column;
-            align-items: center; justify-content: flex-start; padding: 12px; text-align: center;
-            overflow-y: auto; position: relative;
+            align-items: center; justify-content: flex-start; padding: 15px; text-align: center;
+            overflow-y: auto;
         }
         .content.active { display: flex; }
-        
-        .progress-bar-container { width: 100%; max-width: 350px; text-align: left; font-size: 11px; color: #93c5fd; margin-bottom: 10px; font-weight: bold; }
-        .progress-line { width: 100%; background: #1e293b; height: 8px; border-radius: 4px; margin-top: 4px; overflow: hidden; border: 1px solid #3b82f6; }
-        .progress-fill { width: 2%; height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); box-shadow: 0 0 10px #3b82f6; }
-
-        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 360px; margin-bottom: 10px; }
-        .top-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #3b82f6; border-radius: 12px; padding: 10px 5px; cursor: pointer; text-align: center; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .top-card:active { transform: scale(0.95); background: #3b82f6; }
-        .top-card-title { font-size: 11px; font-weight: bold; color: #60a5fa; margin-bottom: 2px; }
-        .top-card-sub { font-size: 9px; color: #cbd5e1; }
-
-        .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 38px; color: #38bdf8; font-weight: bold; margin: 5px 0; text-shadow: 0 0 15px rgba(56,189,248,0.5); }
-        .mult-display { font-size: 12px; color: #4ade80; font-weight: bold; margin: 4px 0; background: rgba(30,41,59,0.8); padding: 4px 12px; border-radius: 15px; border: 1px solid #4ade80; display: inline-block; box-shadow: 0 0 10px rgba(74,222,128,0.2); }
-
-        .tiger-wrapper { position: relative; margin: 15px 0; display: flex; justify-content: center; align-items: center; }
+        .score-box { font-size: 38px; color: #38bdf8; font-weight: bold; margin: 15px 0; }
         .tiger-btn {
-            width: 170px; height: 170px; background: radial-gradient(circle, #f59e0b 0%, #78350f 70%, #150d05 100%);
+            width: 160px; height: 160px; background: #f59e0b;
             border: 6px solid #fbbf24; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 85px; cursor: pointer; box-shadow: 0 0 40px rgba(251,191,36,0.6), inset 0 0 20px rgba(255,255,255,0.4);
-            transition: transform 0.05s;
+            font-size: 80px; cursor: pointer; margin: 20px 0;
+            box-shadow: 0 0 30px rgba(251,191,36,0.5);
         }
-        .tiger-btn:active { transform: scale(0.92); }
-
-        /* कलरफुल और डीपी वाले उड़ने वाले कोइन्स */
-        .fly-coin {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #ffffff;
-            pointer-events: none;
-            animation: flyUp 0.8s ease-out forwards;
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.4);
-        }
-        .fly-coin img {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 1px solid #fff;
-        }
-        @keyframes flyUp {
-            0% { transform: translateY(0) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-130px) scale(1.2); opacity: 0; }
-        }
-
-        .energy-wrap { width: 100%; max-width: 320px; background: #1e293b; border: 1px solid #3b82f6; border-radius: 6px; height: 12px; overflow: hidden; margin-top: 8px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
-        .energy-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #3b82f6, #38bdf8); transition: width 0.2s; box-shadow: 0 0 10px #38bdf8; }
-        .energy-text { display: flex; justify-content: space-between; width: 100%; max-width: 320px; font-size: 11px; color: #93c5fd; margin-top: 4px; font-weight: bold; }
-
+        .tiger-btn:active { transform: scale(0.95); }
         .nav {
             display: flex; justify-content: space-around;
-            background: rgba(15, 23, 42, 0.95); padding: 8px 0; border-top: 2px solid #3b82f6;
-            box-shadow: 0 -4px 20px rgba(59, 130, 246, 0.3);
-            z-index: 10;
+            background: #1e293b; padding: 10px 0; border-top: 2px solid #3b82f6;
         }
-        .nav-b { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 2px; align-items: center; transition: 0.2s; }
-        .nav-b.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.6); }
-
-        .action-box { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #3b82f6; padding: 15px; border-radius: 12px; width: 100%; max-width: 350px; margin-bottom: 12px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .action-box h3 { margin-top: 0; color: #60a5fa; font-size: 15px; }
-        .btn-main { background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; width: 100%; font-size: 12px; box-shadow: 0 4px 15px rgba(37,99,235,0.4); transition: 0.2s; }
-        .btn-main:active { transform: scale(0.97); }
-        .tg-btn { background: linear-gradient(90deg, #0284c7, #0ea5e9); }
-        .wa-btn { background: linear-gradient(90deg, #16a34a, #22c55e); }
+        .nav-b { background: none; border: none; color: #94a3b8; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .nav-b.active { color: #38bdf8; }
+        .action-box { background: #1e293b; border: 1px solid #3b82f6; padding: 15px; border-radius: 10px; width: 100%; max-width: 350px; margin-top: 10px; text-align: left; }
+        .btn-main { background: #2563eb; color: #fff; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="badge">
-            <span>🛡️</span>
-            <span>Malak (Lvl <span id="lvl">1</span>)</span>
-        </div>
-        <div style="display: flex; gap: 8px;">
-            <div class="badge" onclick="toggleSound()" id="soundIndicator">🔊 Sound: ON</div>
-            <div class="badge" style="color: #38bdf8;" onclick="navTo('social')">🌐 Socials</div>
-        </div>
+        <div class="badge">Malak (Lvl <span id="lvl">1</span>)</div>
+        <div class="badge" onclick="navTo('social')">Socials</div>
     </div>
 
+    <!-- Home Tab -->
     <div id="p-home" class="content active">
-        <div class="progress-bar-container">
-            <span>Elite Rank > Level <span id="curLvlText">1</span>/50 (Cost: <span id="lvlCost">200K</span>)</span>
-            <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
-        </div>
+        <div style="font-size: 12px; color: #93c5fd; margin-bottom: 10px;">Elite Rank > Level <span id="curLvlText">1</span></div>
+        
+        <div class="score-box">🪙 <span id="score">0</span></div>
 
-        <div class="cards-grid">
-            <div class="top-card" onclick="claimDaily()">
-                <div class="top-card-title">🎁 Daily Reward</div>
-                <div class="top-card-sub">Claim 1,000 (3 Days)</div>
-            </div>
-            <div class="top-card" onclick="navTo('levels')">
-                <div class="top-card-title">⭐ Level Up</div>
-                <div class="top-card-sub" id="cardCostText">Cost: 200K</div>
-            </div>
-            <div class="top-card" onclick="navTo('friends')">
-                <div class="top-card-title">👥 Friends</div>
-                <div class="top-card-sub">Invite & Earn</div>
-            </div>
-        </div>
+        <div class="tiger-btn" id="tigerBtn">🐅</div>
 
-        <div class="score-box">
-            <span>🪙</span>
-            <span id="score">0</span>
-        </div>
-
-        <div class="mult-display" id="multDisplay">Active Multiplier: 1X (1 Finger)</div>
-
-        <div class="tiger-wrapper">
-            <div class="tiger-btn" id="tigerBtn">🐅</div>
-        </div>
-
-        <div class="energy-text">
-            <span>⚡ <span id="energy">1500</span> / 1500</span>
-            <span id="energyPct">100%</span>
-        </div>
-        <div class="energy-wrap">
-            <div class="energy-fill" id="energyBar"></div>
+        <div style="font-size: 12px; color: #93c5fd; margin-top: 10px;">
+            ⚡ Energy: <span id="energy">1500</span> / 1500
         </div>
     </div>
 
+    <!-- Levels Tab -->
     <div id="p-levels" class="content">
         <div class="action-box">
-            <h3>⭐ Elite Rank Upgrade System</h3>
-            <p style="font-size: 12px; color: #cbd5e1;">Current Level: <span style="color:#38bdf8; font-weight:bold;" id="uiLevelDisplay">1</span></p>
-            <p style="font-size: 12px; color: #cbd5e1;">Required Coins: <span style="color:#fbbf24; font-weight:bold;" id="uiLevelCost">200,000 Coins</span></p>
-            <button class="btn-main" onclick="upgradeLevel()">🚀 Upgrade Level Now</button>
+            <h3>Elite Rank Upgrade</h3>
+            <p style="font-size: 12px;">Required: <span id="uiLevelCost">200,000 Coins</span></p>
+            <button class="btn-main" onclick="upgradeLevel()">Upgrade Level</button>
         </div>
     </div>
 
+    <!-- Friends Tab -->
     <div id="p-friends" class="content">
         <div class="action-box">
-            <h3>👥 Friends Invite System</h3>
-            <p style="font-size: 12px; color: #cbd5e1;">Invite your friends and earn 25,000 coins for every referral!</p>
-            <button class="btn-main tg-btn" onclick="shareTelegram()">📢 Send Request on Telegram</button>
-            <button class="btn-main wa-btn" onclick="shareWhatsApp()">💬 Share Link on WhatsApp</button>
+            <h3>Friends Invite</h3>
+            <p style="font-size: 12px;">Earn 25,000 coins per invite!</p>
+            <button class="btn-main" onclick="alert('Invite link copied!')">Share Link</button>
         </div>
     </div>
 
+    <!-- Socials Tab -->
     <div id="p-social" class="content">
         <div class="action-box">
-            <h3>🌐 Official Community</h3>
-            <button class="btn-main tg-btn" onclick="window.open('https://t.me', '_blank')">Join Telegram Channel</button>
-            <button class="btn-main wa-btn" onclick="window.open('https://whatsapp.com', '_blank')">Join WhatsApp Group</button>
+            <h3>Community</h3>
+            <button class="btn-main" onclick="window.open('https://t.me', '_blank')">Join Telegram</button>
         </div>
     </div>
 
+    <!-- Admin Tab -->
     <div id="p-admin" class="content">
-        <div class="action-box" style="border-color: #ef4444;">
-            <h3 style="color:#ef4444">🛡️ Owner Admin Log</h3>
-            <input type="password" id="pin" placeholder="Enter PIN (786)" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:6px; margin-bottom:8px; font-size:12px;">
-            <button class="btn-main" style="background:#ef4444; color:#fff;" onclick="adminLogin()">Login Panel</button>
-            
-            <div id="adminPanelBody" style="display:none; margin-top:10px; border-top:1px solid #3b82f6; padding-top:8px;">
-                <button class="btn-main" style="background:#4ade80; color:#000;" onclick="addBonus()">🎁 Add 1,000,000 Bonus Coins</button>
+        <div class="action-box">
+            <h3>Admin Panel</h3>
+            <input type="password" id="pin" placeholder="PIN (786)" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:5px; margin-bottom:8px;">
+            <button class="btn-main" onclick="adminLogin()">Login</button>
+            <div id="adminPanelBody" style="display:none; margin-top:10px;">
+                <button class="btn-main" style="background:#16a34a;" onclick="addBonus()">Add 1,000,000 Coins</button>
             </div>
         </div>
     </div>
 
+    <!-- Navigation Bar -->
     <div class="nav">
-        <button class="nav-b active" id="nb-home" onclick="navTo('home')">🪙 FZL</button>
-        <button class="nav-b" id="nb-levels" onclick="navTo('levels')">⭐ Levels</button>
-        <button class="nav-b" id="nb-friends" onclick="navTo('friends')">👥 Friends</button>
-        <button class="nav-b" id="nb-social" onclick="navTo('social')">🌐 Socials</button>
-        <button class="nav-b" id="nb-admin" onclick="navTo('admin')">🛡️ Admin</button>
+        <button class="nav-b active" id="nb-home" onclick="navTo('home')">Home</button>
+        <button class="nav-b" id="nb-levels" onclick="navTo('levels')">Levels</button>
+        <button class="nav-b" id="nb-friends" onclick="navTo('friends')">Friends</button>
+        <button class="nav-b" id="nb-social" onclick="navTo('social')">Socials</button>
+        <button class="nav-b" id="nb-admin" onclick="navTo('admin')">Admin</button>
     </div>
 
     <script>
         let score = parseInt(localStorage.getItem('fzl_score')) || 0;
         let energy = parseInt(localStorage.getItem('fzl_energy')) || 1500;
-        let maxEnergy = 1500;
         let level = parseInt(localStorage.getItem('fzl_level')) || 1;
-        let soundOn = true;
-        let audioCtx = null;
-
-        const coinDpUrl = "https://cdn-icons-png.flaticon.com/512/1384/1384047.png";
 
         function saveData() {
             localStorage.setItem('fzl_score', score);
@@ -219,177 +123,57 @@
             localStorage.setItem('fzl_level', level);
         }
 
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        function playCoinSound() {
-            if (!soundOn) return;
-            try {
-                initAudio();
-                if (!audioCtx) return;
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(2500, audioCtx.currentTime + 0.12);
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.15);
-            } catch (e) {}
-        }
-
-        function toggleSound() {
-            soundOn = !soundOn;
-            document.getElementById('soundIndicator').innerText = soundOn ? "🔊 Sound: ON" : "🔇 Sound: OFF";
-        }
-
         function navTo(page) {
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-b').forEach(b => b.classList.remove('active'));
-            let targetPage = document.getElementById('p-' + page);
-            if (targetPage) targetPage.classList.add('active');
-            let navBtn = document.getElementById('nb-' + page);
-            if (navBtn) navBtn.classList.add('active');
+            document.getElementById('p-' + page).classList.add('active');
+            document.getElementById('nb-' + page).classList.add('active');
         }
 
-        const tigerBtn = document.getElementById('tigerBtn');
-        const homePage = document.getElementById('p-home');
-
-        // यूनिवर्सल टच और क्लिक इवेंट लिसनर (अब किसी भी मोबाइल पर 100% काम करेगा)
-        if (tigerBtn) {
-            tigerBtn.addEventListener('pointerdown', (e) => {
-                let count = 1;
-                // अगर मल्टी-टच सपोर्ट है तो उंगलियों की गिनती सेट करें
-                if (e.pointerType === 'touch' && window.navigator.maxTouchPoints > 1) {
-                    count = Math.min(window.navigator.maxTouchPoints, 5);
-                }
-                
-                if (energy >= count) {
-                    score += count;
-                    energy -= count;
-                    updateUI();
-                    saveData();
-                    playCoinSound();
-
-                    let multDisp = document.getElementById('multDisplay');
-                    if (multDisp) multDisp.innerText = `Active Multiplier: ${count}X (${count} Finger)`;
-
-                    createFlyingAnimations(e.clientX || (window.innerWidth / 2), e.clientY || (window.innerHeight / 2), count);
-                } else {
-                    // ऊर्जा खत्म होने पर बार-बार अलर्ट आने से रोकने के लिए इसे हटा दिया गया है ताकि गेम स्मूथ चले
-                }
-            });
-        }
-
-        // उड़ने वाले कोइन्स और डीपी का एनिमेशन
-        function createFlyingAnimations(x, y, mult) {
-            const colors = [
-                'linear-gradient(45deg, #f59e0b, #d97706)', 
-                'linear-gradient(45deg, #3b82f6, #1d4ed8)', 
-                'linear-gradient(45deg, #10b981, #059669)', 
-                'linear-gradient(45deg, #ec4899, #be185d)'  
-            ];
-
-            let flyEl = document.createElement('div');
-            flyEl.className = 'fly-coin';
-            let randomColor = colors[Math.floor(Math.random() * colors.length)];
-            flyEl.style.background = randomColor;
-
-            flyEl.innerHTML = `<img src="${coinDpUrl}" alt="Coin"> +${mult}X`;
-
-            let offsetX = (Math.random() - 0.5) * 80;
-            let offsetY = (Math.random() - 0.5) * 40;
-            flyEl.style.left = (x + offsetX - 30) + 'px';
-            flyEl.style.top = (y + offsetY - 30) + 'px';
-
-            if (homePage) homePage.appendChild(flyEl);
-            setTimeout(() => flyEl.remove(), 800);
-        }
-
-        function getLevelCost() { return level * 200000; }
+        document.getElementById('tigerBtn').addEventListener('click', () => {
+            if (energy > 0) {
+                score += 1;
+                energy -= 1;
+                updateUI();
+                saveData();
+            }
+        });
 
         function updateUI() {
-            document.getElementById('score').innerText = score.toLocaleString();
+            document.getElementById('score').innerText = score;
             document.getElementById('energy').innerText = energy;
-            let pct = Math.floor((energy / maxEnergy) * 100);
-            document.getElementById('energyPct').innerText = pct + '%';
-            document.getElementById('energyBar').style.width = pct + '%';
             document.getElementById('lvl').innerText = level;
             document.getElementById('curLvlText').innerText = level;
-            let currentCost = getLevelCost();
-            document.getElementById('lvlCost').innerText = (currentCost / 1000) + 'K';
-            document.getElementById('cardCostText').innerText = 'Cost: ' + (currentCost / 1000) + 'K';
-            document.getElementById('uiLevelDisplay').innerText = level;
-            document.getElementById('uiLevelCost').innerText = currentCost.toLocaleString() + ' Coins';
-            document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
-        // एनर्जी ऑटो-रीचार्ज (हर सेकंड)
         setInterval(() => {
-            if (energy < maxEnergy) {
-                energy += 15;
-                if (energy > maxEnergy) energy = maxEnergy;
+            if (energy < 1500) {
+                energy += 10;
+                if (energy > 1500) energy = 1500;
                 updateUI();
                 saveData();
             }
         }, 1000);
 
-        function claimDaily() {
-            let lastClaimTime = parseInt(localStorage.getItem('fzl_last_claim')) || 0;
-            let currentTime = new Date().getTime();
-            let threeDaysMs = 3 * 24 * 60 * 60 * 1000;
-
-            if (currentTime - lastClaimTime < threeDaysMs) {
-                alert('⏳ Daily reward is locked! You can claim coins again after 3 days.');
-                return;
-            }
-
-            score += 1000;
-            localStorage.setItem('fzl_last_claim', currentTime);
-            updateUI();
-            saveData();
-            playCoinSound();
-            alert('🎉 Success! Daily reward claimed successfully.');
-        }
-
         function upgradeLevel() {
-            let cost = getLevelCost();
+            let cost = level * 200000;
             if (score >= cost) {
                 score -= cost;
                 level += 1;
                 updateUI();
                 saveData();
-                alert('🎉 Fantastic! Level upgraded to ' + level);
-                navTo('home');
+                alert('Level upgraded to ' + level);
             } else {
-                alert('❌ Insufficient coins!');
+                alert('Not enough coins!');
             }
         }
 
-        function shareTelegram() {
-            window.open(`https://t.me/share/url?url=https://t.me/fzl_coin_bot&text=Join%20FZL%20Coin%20Bot`, '_blank');
-        }
-
-        function shareWhatsApp() {
-            window.open(`https://api.whatsapp.com/send?text=Join%20FZL%20Coin%20Bot`, '_blank');
-        }
-
         function adminLogin() {
-            let p = document.getElementById('pin').value;
-            if (p === '786') {
+            if (document.getElementById('pin').value === '786') {
                 document.getElementById('adminPanelBody').style.display = 'block';
-                alert('✅ Admin Panel Unlocked!');
+                alert('Unlocked!');
             } else {
-                alert('❌ Incorrect PIN!');
+                alert('Wrong PIN!');
             }
         }
 
@@ -397,12 +181,10 @@
             score += 1000000;
             updateUI();
             saveData();
-            alert('🎁 1,000,000 bonus coins added!');
+            alert('Bonus added!');
         }
 
         updateUI();
-        navTo('home');
     </script>
 </body>
-    </html>
-                
+</html>
