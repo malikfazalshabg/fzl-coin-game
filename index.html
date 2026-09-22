@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -116,7 +116,6 @@
         </div>
     </div>
 
-    <!-- Home Tab -->
     <div id="p-home" class="content active">
         <div class="progress-bar-container">
             <span>Elite Rank > Level <span id="curLvlText">1</span>/50 (Cost: <span id="lvlCost">200K</span>)</span>
@@ -145,7 +144,7 @@
 
         <div class="mult-display" id="multDisplay">Active Multiplier: 1X (1 Finger)</div>
 
-        <div class="tiger-wrapper" id="tigerWrapper">
+        <div class="tiger-wrapper">
             <div class="tiger-btn" id="tigerBtn">🐅</div>
         </div>
 
@@ -158,7 +157,6 @@
         </div>
     </div>
 
-    <!-- Levels Tab -->
     <div id="p-levels" class="content">
         <div class="action-box">
             <h3>⭐ Elite Rank Upgrade System</h3>
@@ -168,7 +166,6 @@
         </div>
     </div>
 
-    <!-- Friends Tab -->
     <div id="p-friends" class="content">
         <div class="action-box">
             <h3>👥 Friends Invite System</h3>
@@ -178,7 +175,6 @@
         </div>
     </div>
 
-    <!-- Socials Tab -->
     <div id="p-social" class="content">
         <div class="action-box">
             <h3>🌐 Official Community</h3>
@@ -187,7 +183,6 @@
         </div>
     </div>
 
-    <!-- Admin Tab -->
     <div id="p-admin" class="content">
         <div class="action-box" style="border-color: #ef4444;">
             <h3 style="color:#ef4444">🛡️ Owner Admin Log</h3>
@@ -200,7 +195,6 @@
         </div>
     </div>
 
-    <!-- Navigation Menu Bar -->
     <div class="nav">
         <button class="nav-b active" id="nb-home" onclick="navTo('home')">🪙 FZL</button>
         <button class="nav-b" id="nb-levels" onclick="navTo('levels')">⭐ Levels</button>
@@ -226,8 +220,12 @@
         }
 
         function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
         function playCoinSound() {
@@ -266,63 +264,39 @@
         const tigerBtn = document.getElementById('tigerBtn');
         const homePage = document.getElementById('p-home');
 
+        // यूनिवर्सल टच और क्लिक इवेंट लिसनर (अब किसी भी मोबाइल पर 100% काम करेगा)
         if (tigerBtn) {
-            // ٹچ اور کلک دونوں کے لیے بہترین ہینڈلر
-            tigerBtn.addEventListener('click', (e) => {
-                handleTap(e.clientX || (window.innerWidth / 2), e.clientY || (window.innerHeight / 2), 1);
-            });
-
-            tigerBtn.addEventListener('touchstart', (e) => {
-                initAudio();
-                let touches = e.touches.length;
-                if (touches < 1) touches = 1;
-                if (touches > 5) touches = 5;
-
-                if (energy >= touches) {
-                    score += touches;
-                    energy -= touches;
+            tigerBtn.addEventListener('pointerdown', (e) => {
+                let count = 1;
+                // अगर मल्टी-टच सपोर्ट है तो उंगलियों की गिनती सेट करें
+                if (e.pointerType === 'touch' && window.navigator.maxTouchPoints > 1) {
+                    count = Math.min(window.navigator.maxTouchPoints, 5);
+                }
+                
+                if (energy >= count) {
+                    score += count;
+                    energy -= count;
                     updateUI();
                     saveData();
                     playCoinSound();
 
                     let multDisp = document.getElementById('multDisplay');
-                    if (multDisp) multDisp.innerText = `Active Multiplier: ${touches}X (${touches} Fingers)`;
+                    if (multDisp) multDisp.innerText = `Active Multiplier: ${count}X (${count} Finger)`;
 
-                    for (let i = 0; i < e.touches.length; i++) {
-                        createFlyingAnimations(e.touches[i].clientX, e.touches[i].clientY, touches);
-                    }
+                    createFlyingAnimations(e.clientX || (window.innerWidth / 2), e.clientY || (window.innerHeight / 2), count);
                 } else {
-                    alert('⚠️ Energy depleted!');
+                    // ऊर्जा खत्म होने पर बार-बार अलर्ट आने से रोकने के लिए इसे हटा दिया गया है ताकि गेम स्मूथ चले
                 }
-                e.preventDefault();
-            }, { passive: false });
+            });
         }
 
-        function handleTap(x, y, mult) {
-            initAudio();
-            if (energy >= mult) {
-                score += mult;
-                energy -= mult;
-                updateUI();
-                saveData();
-                playCoinSound();
-
-                let multDisp = document.getElementById('multDisplay');
-                if (multDisp) multDisp.innerText = `Active Multiplier: ${mult}X (${mult} Finger)`;
-
-                createFlyingAnimations(x, y, mult);
-            } else {
-                alert('⚠️ Energy depleted!');
-            }
-        }
-
-        // رنگ برنگے اور ڈی پی والے کوئنز اڑانے کا فنکشن
+        // उड़ने वाले कोइन्स और डीपी का एनिमेशन
         function createFlyingAnimations(x, y, mult) {
             const colors = [
-                'linear-gradient(45deg, #f59e0b, #d97706)', // گولڈن
-                'linear-gradient(45deg, #3b82f6, #1d4ed8)', // نیلا
-                'linear-gradient(45deg, #10b981, #059669)', // हरा
-                'linear-gradient(45deg, #ec4899, #be185d)'  // गुलाबी
+                'linear-gradient(45deg, #f59e0b, #d97706)', 
+                'linear-gradient(45deg, #3b82f6, #1d4ed8)', 
+                'linear-gradient(45deg, #10b981, #059669)', 
+                'linear-gradient(45deg, #ec4899, #be185d)'  
             ];
 
             let flyEl = document.createElement('div');
@@ -359,7 +333,7 @@
             document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
-        // ہر ایک سیکنڈ میں انرجی ریچارج ہوگی
+        // एनर्जी ऑटो-रीचार्ज (हर सेकंड)
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 15;
@@ -415,4 +389,20 @@
                 document.getElementById('adminPanelBody').style.display = 'block';
                 alert('✅ Admin Panel Unlocked!');
             } else {
-                alert('❌ Incorrect PIN!')
+                alert('❌ Incorrect PIN!');
+            }
+        }
+
+        function addBonus() {
+            score += 1000000;
+            updateUI();
+            saveData();
+            alert('🎁 1,000,000 bonus coins added!');
+        }
+
+        updateUI();
+        navTo('home');
+    </script>
+</body>
+    </html>
+                
