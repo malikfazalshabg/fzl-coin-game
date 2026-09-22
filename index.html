@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Pro Edition</title>
+    <title>FZL Coin Bot - Full Cloud Edition</title>
+    <!-- Firebase SDK لود کرنے کے لیے -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         body {
@@ -54,7 +58,6 @@
         }
         .tiger-btn:active { transform: scale(0.92); }
 
-        /* بڑے سائز کے اڑنے والے کوئنز */
         .fly-coin {
             position: absolute;
             display: flex;
@@ -108,7 +111,7 @@
             <span>Malak (Lvl <span id="lvl">1</span>)</span>
         </div>
         <div style="display: flex; gap: 6px; align-items: center;">
-            <div class="badge" style="background: #047857; border-color: #34d399;">👥 <span id="liveUsers">1,482</span> Online</div>
+            <div class="badge" style="background: #047857; border-color: #34d399;">👥 <span id="liveUsers">1</span> Online</div>
             <div class="badge" onclick="toggleSound()" id="soundIndicator">🔊 Sound: ON</div>
         </div>
     </div>
@@ -205,19 +208,81 @@
     </div>
 
     <script>
-        let score = parseInt(localStorage.getItem('fzl_score')) || 0;
-        let energy = parseInt(localStorage.getItem('fzl_energy')) || 1500;
+        // ======= فائر بیس کی کنفیگریشن (Firebase Setup) =======
+        const firebaseConfig = {
+            apiKey: "AIzaSyDummyKeyForFZLCoinBot-Demo",
+            authDomain: "fzl-coin-bot.firebaseapp.com",
+            databaseURL: "https://fzl-coin-bot-default-rtdb.firebaseio.com/",
+            projectId: "fzl-coin-bot",
+            storageBucket: "fzl-coin-bot.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+
+        let db, userId, userRef;
+        let score = 0;
+        let energy = 1500;
         let maxEnergy = 1500;
-        let level = parseInt(localStorage.getItem('fzl_level')) || 1;
+        let level = 1;
+        let lastClaim = 0;
         let soundOn = true;
         let audioCtx = null;
+        let isDataLoaded = false;
 
         const coinDpUrl = "https://cdn-icons-png.flaticon.com/512/1384/1384047.png";
 
-        function saveData() {
-            localStorage.setItem('fzl_score', score);
-            localStorage.setItem('fzl_energy', energy);
-            localStorage.setItem('fzl_level', level);
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            
+            // یوزر کے لیے منفرد کلاؤڈ آئی ڈی بنانا (یا براؤزر میں محفوظ رکھنا)
+            userId = localStorage.getItem('fzl_cloud_uid');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substring(2, 11);
+                localStorage.setItem('fzl_cloud_uid', userId);
+            }
+
+            // لائیو آن لائن کاؤنटर کے لیے
+            let onlineRef = db.ref('onlineUsers/' + userId);
+            onlineRef.set(true);
+            onlineRef.onDisconnect().remove();
+
+            db.ref('onlineUsers').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById('liveUsers').innerText = snapshot.numChildren().toLocaleString();
+                }
+            });
+
+            // یوزر کا سارا ڈیٹا کلاؤڈ (ڈیٹا بیس) سے سننا اور مطابقت کرنا
+            userRef = db.ref('users/' + userId);
+            userRef.on('value', (snapshot) => {
+                let data = snapshot.val();
+                if (data) {
+                    score = data.score || 0;
+                    energy = data.energy !== undefined ? data.energy : 1500;
+                    level = data.level || 1;
+                    lastClaim = data.lastClaim || 0;
+                } else {
+                    // اگر پہلی بار آیا ہے تو کلاؤڈ پر ڈیفالٹ ڈیٹا سیव کر دیں
+                    saveCloudData();
+                }
+                isDataLoaded = true;
+                updateUI();
+            });
+
+        } catch (e) {
+            alert('Cloud connection warning! Working in offline mode.');
+        }
+
+        // ڈیٹا کو فائر بیس کلاؤڈ پر سیو کرنے کا فنکشن
+        function saveCloudData() {
+            if (!userRef) return;
+            userRef.set({
+                score: score,
+                energy: energy,
+                level: level,
+                lastClaim: lastClaim
+            });
         }
 
         function initAudio() {
@@ -225,7 +290,6 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        // بہت ہی تیز اور بلند آواز والے اصلی سکے (Loud & Clear Coin Sound)
         function playCoinSound() {
             if (!soundOn) return;
             try {
@@ -246,7 +310,6 @@
                 osc2.frequency.setValueAtTime(3000, now);
                 osc2.frequency.exponentialRampToValueAtTime(6000, now + 0.1);
 
-                // والیم کو زیادہ (High Gain) کیا گیا ہے تاکہ آواز تیز آئے
                 gain.gain.setValueAtTime(1.0, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
 
@@ -278,6 +341,7 @@
 
         if (tigerBtn) {
             tigerBtn.addEventListener('pointerdown', (e) => {
+                if (!isDataLoaded) return;
                 let count = 1;
                 if (e.pointerType === 'touch' && window.navigator.maxTouchPoints > 1) {
                     count = Math.min(window.navigator.maxTouchPoints, 5);
@@ -287,7 +351,7 @@
                     score += count;
                     energy -= count;
                     updateUI();
-                    saveData();
+                    saveCloudData(); // کلاؤڈ پر فوری اپڈیٹ
                     playCoinSound();
 
                     let multDisp = document.getElementById('multDisplay');
@@ -339,30 +403,28 @@
             document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
+        // انرجی خود بخود کلاؤڈ پر ریفل ہو گی
         setInterval(() => {
-            if (energy < maxEnergy) {
+            if (isDataLoaded && energy < maxEnergy) {
                 energy += 15;
                 if (energy > maxEnergy) energy = maxEnergy;
                 updateUI();
-                saveData();
+                saveCloudData();
             }
-            let randomUsers = 1450 + Math.floor(Math.random() * 80);
-            document.getElementById('liveUsers').innerText = randomUsers.toLocaleString();
         }, 1000);
 
         function claimDaily() {
-            let last = parseInt(localStorage.getItem('fzl_last_claim')) || 0;
             let now = new Date().getTime();
-            if (now - last < 259200000) {
+            if (now - lastClaim < 259200000) {
                 alert('⏳ Daily reward is locked! Try again after 3 days.');
                 return;
             }
             score += 1000;
-            localStorage.setItem('fzl_last_claim', now);
+            lastClaim = now;
             updateUI();
-            saveData();
+            saveCloudData();
             playCoinSound();
-            alert('🎉 Success! 1,000 coins claimed.');
+            alert('🎉 Success! 1,000 coins claimed on cloud.');
         }
 
         function upgradeLevel() {
@@ -371,35 +433,5 @@
                 score -= cost;
                 level += 1;
                 updateUI();
-                saveData();
-                playCoinSound();
-                alert('🎉 Level Upgraded to ' + level);
-                navTo('home');
-            } else {
-                alert('❌ Insufficient coins!');
-            }
-        }
-
-        function adminLogin() {
-            if (document.getElementById('pin').value === '786') {
-                document.getElementById('adminPanelBody').style.display = 'block';
-                alert('✅ Admin Unlocked!');
-            } else {
-                alert('❌ Wrong PIN!');
-            }
-        }
-
-        function addBonus() {
-            score += 1000000;
-            updateUI();
-            saveData();
-            playCoinSound();
-            alert('🎁 1,000,000 Coins Added!');
-        }
-
-        updateUI();
-        navTo('home');
-    </script>
-</body>
-    </html>
-                                                                
+                saveCloudData();
+                
