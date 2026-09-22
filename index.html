@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Full VIP Cloud & Video Edition</title>
+    <title>FZL Coin Bot - Ultimate VIP Cloud Edition</title>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -181,7 +181,7 @@
         </div>
     </div>
 
-    <!-- Socials & Video Tab (Second/Other Page) -->
+    <!-- Socials & Video Tab -->
     <div id="p-social" class="content">
         <div class="action-box">
             <h3>🎬 Live Promotional Video</h3>
@@ -278,7 +278,8 @@
             });
 
         } catch (e) {
-            alert('Cloud connection warning! Working in offline mode.');
+            isDataLoaded = true;
+            updateUI();
         }
 
         function saveCloudData() {
@@ -347,7 +348,6 @@
 
         if (tigerBtn) {
             tigerBtn.addEventListener('pointerdown', (e) => {
-                if (!isDataLoaded) return;
                 let count = 1;
                 if (e.pointerType === 'touch' && window.navigator.maxTouchPoints > 1) {
                     count = Math.min(window.navigator.maxTouchPoints, 5);
@@ -410,7 +410,7 @@
         }
 
         setInterval(() => {
-            if (isDataLoaded && energy < maxEnergy) {
+            if (energy < maxEnergy) {
                 energy += 15;
                 if (energy > maxEnergy) energy = maxEnergy;
                 updateUI();
@@ -425,4 +425,8 @@
                 return;
             }
             score += 1000;
-            lastClaim 
+            lastClaim = now;
+            updateUI();
+            saveCloudData();
+            playCoinSound();
+          
