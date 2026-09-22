@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Complete Pakistani Banks, JazzCash, EasyPaisa & PayPal Payouts</title>
+    <title>FZL Coin - Official Live Web App</title>
+    <!-- فائر بیس (Firebase) کی اصل لائبریریاں -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     
@@ -36,7 +37,6 @@
         .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 28px; color: #fbbf24; font-weight: bold; margin: 6px 0; text-shadow: 0 0 15px rgba(251,191,36,0.5); }
         .score-box img { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fbbf24; }
 
-        /* Neon Lion Circle Design */
         .lion-wrapper {
             position: relative; margin: 8px 0; display: flex; justify-content: center; align-items: center;
             width: 190px; height: 190px;
@@ -54,7 +54,6 @@
         }
         .lion-btn:active { transform: scale(0.92); }
 
-        /* Flying Coins */
         .fly-coin {
             position: absolute; display: flex; align-items: center; gap: 6px;
             padding: 6px 14px; border-radius: 30px; font-size: 15px; font-weight: bold; color: #fff;
@@ -66,33 +65,17 @@
             100% { transform: translateY(-130px) scale(1.3); opacity: 0; }
         }
 
-        /* Modals & Cards */
         .social-modal {
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 2px solid #fbbf24; border-radius: 14px; padding: 12px;
             width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             margin-top: 4px; text-align: left;
         }
-        .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
-        .social-btn {
-            border: none; padding: 9px; border-radius: 8px; font-weight: bold; color: #fff; cursor: pointer;
-            font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-decoration: none;
-        }
-        .social-btn:active { transform: scale(0.95); }
-
-        .wallet-card {
-            background: rgba(30, 41, 59, 0.9);
-            border: 1px solid #334155; border-radius: 10px; padding: 10px;
-            margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;
-        }
-
         .input-box {
             width: 100%; background: #090d16; border: 1px solid #fbbf24; color: #fff;
             padding: 6px 8px; border-radius: 6px; font-size: 10px; margin-bottom: 6px;
         }
 
-        /* Navigation Footer */
         .nav {
             display: flex; justify-content: space-around;
             background: rgba(15, 23, 42, 0.95); padding: 5px 0; border-top: 2px solid #1e3a8a;
@@ -104,49 +87,41 @@
 </head>
 <body>
 
+    <!-- ہیڈر سیکشن -->
     <div class="header">
         <div class="badge" onclick="checkAdminSecret()">
             <span>🦁</span>
             <span>FZL VIP CEO</span>
         </div>
         <div style="display: flex; gap: 5px; align-items: center;">
-            <div class="badge" style="background: #065f46; border-color: #10b981;">👥 <span id="liveUsers">1</span> Online</div>
-            <div class="badge" onclick="toggleSound()" id="soundIndicator">🔊 HIGH</div>
+            <div class="badge" style="background: #065f46; border-color: #10b981;">👥 <span id="liveUsers">1</span> آن لائن</div>
+            <div class="badge" onclick="toggleSound()" id="soundIndicator">🔊 آن</div>
         </div>
     </div>
 
-    <!-- Exchange Tab -->
+    <!-- ایکسچینج ٹیب -->
     <div id="p-exchange" class="content active">
         <div style="display: flex; gap: 6px; width: 100%; max-width: 340px; margin-top: 4px;">
-            <div class="badge" style="flex:1; justify-content:center; background:#1e293b; border-color:#38bdf8;" onclick="window.open('https://accounts.google.com', '_blank')">🌐 Google Login</div>
-            <div class="badge" style="flex:1; justify-content:center; background:#1e293b; border-color:#fbbf24;" onclick="window.open('https://www.binance.com', '_blank')">🟡 BINANCE</div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; width: 100%; max-width: 340px; margin: 6px 0; gap: 5px;">
-            <div style="background:#1e293b; border:1px solid #334155; padding:4px; border-radius:6px; flex:1; font-size:8px;">PROFIT / HOUR<br><b style="color:#4ade80;">+150.8K</b></div>
-            <div style="background:#1e293b; border:1px solid #334155; padding:4px; border-radius:6px; flex:1; font-size:8px;">DAILY CIPHER<br><b style="color:#38bdf8;">•-••</b></div>
-            <div style="background:#1e293b; border:1px solid #334155; padding:4px; border-radius:6px; flex:1; font-size:8px;">DAILY COMBO<br><b style="color:#fbbf24;">3 / 3</b></div>
+            <div class="badge" style="flex:1; justify-content:center; background:#1e293b; border-color:#38bdf8;" onclick="navTo('launchpad')">🟡 بائنانس لانچ پیڈ</div>
+            <div class="badge" style="flex:1; justify-content:center; background:#1e293b; border-color:#fbbf24;" onclick="window.open('https://www.binance.com', '_blank')">🌐 بائنانس مین نیٹ</div>
         </div>
         
-        <div class="score-box">
+        <div class="score-box" style="margin-top: 20px;">
             <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Coin">
-            <span id="score">846611</span>
+            <span id="score">0</span>
         </div>
 
         <div class="lion-wrapper">
             <div class="lion-btn" onclick="navTo('mine')">🦁</div>
         </div>
+        <p style="font-size: 9px; color: #94a3b8; margin-top: 4px;">بائنانس لسٹنگ کے لیے FZL کوئن مائن کرنے کے لیے شیر پر کلک کریں!</p>
     </div>
 
-    <!-- Mine Tab -->
+    <!-- مائننگ ٹیب (Tap to Earn) -->
     <div id="p-mine" class="content">
-        <div class="score-box" style="margin-top: 4px;">
+        <div class="score-box" style="margin-top: 10px;">
             <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Coin">
-            <span id="scoreMine">846611</span>
-        </div>
-
-        <div id="multiplierBadge" style="font-size: 10px; color: #fff; background: linear-gradient(45deg, #f59e0b, #ef4444); padding: 2px 10px; border-radius: 20px; font-weight: bold; margin-bottom: 3px;">
-            Active Multiplier: +1x1
+            <span id="scoreMine">0</span>
         </div>
 
         <div class="lion-wrapper">
@@ -154,164 +129,71 @@
         </div>
 
         <div style="width: 100%; max-width: 290px; font-size: 9.5px; color: #93c5fd; text-align: left; font-weight: bold; margin-top: 2px;">
-            <span>⚡ Energy: <span id="energy">1000</span> / 1000</span>
+            <span>⚡ انرجی: <span id="energy">1000</span> / 1000</span>
             <div style="width: 100%; background: #1e293b; height: 5px; border-radius: 3px; margin-top: 2px; overflow: hidden; border: 1px solid #fbbf24;">
                 <div id="energyBar" style="width: 100%; height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
             </div>
         </div>
     </div>
 
-    <!-- User Wallet Tab (Normal users view balances, Withdraw is locked) -->
+    <!-- بائنانس لانچ پیڈ ہب -->
+    <div id="p-launchpad" class="content">
+        <div class="social-modal" style="text-align: center;">
+            <h3 style="color:#fbbf24; margin-top:0; font-size:13px;">🟡 بائنانس لانچ پیڈ اور FZL ہب</h3>
+            <div style="background: rgba(245,158,11,0.1); border: 1px solid #fbbf24; padding: 7px; border-radius: 8px; margin-bottom: 6px; text-align: left;">
+                <div style="font-size: 9px; color: #fbbf24; font-weight: bold;">🪙 ٹوکن کا نام: FZL Coin (FZL)</div>
+                <div style="font-size: 9px; color: #38bdf8; font-weight: bold; margin-top: 2px;">🔗 نیٹ ورک: Binance Smart Chain (BEP-20)</div>
+                <div style="font-size: 9px; color: #4ade80; font-weight: bold; margin-top: 2px;">📊 کل سپلائی: 1,000,000,000 FZL</div>
+                <div style="font-size: 9px; color: #cbd5e1; font-weight: bold; margin-top: 2px;">📝 کانٹریکٹ: <span style="font-size:8px; color:#fbbf24;">0x71C...FZL2027</span></div>
+            </div>
+            <button style="width:100%; background:linear-gradient(45deg, #f59e0b, #d97706); color:#000; border:none; padding:7px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="alert('✅ بائنانس لسٹنگ کیو سے کامیابی سے جڑ گیا ہے!')">🚀 بائنانس ہب سے مطابقت پذیر کریں (Sync)</button>
+        </div>
+    </div>
+
+    <!-- والٹ ٹیب -->
     <div id="p-wallet" class="content">
         <div class="social-modal" style="text-align: center;">
-            <h3 style="color:#fbbf24; margin-top:0; font-size:14px;">💳 Asset Wallet</h3>
-            <p style="font-size: 9.5px; color: #cbd5e1; margin-bottom: 8px;">Your verified social earnings & balances:</p>
-            
-            <div class="wallet-card">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 22px;">🇵🇰</span>
-                    <div style="text-align: left;">
-                        <div style="font-size: 10px; color: #94a3b8; font-weight: bold;">PKR Earnings</div>
-                        <div style="font-size: 15px; font-weight: bold; color: #4ade80;" id="pkrBalance">Rs. 24,500</div>
-                    </div>
-                </div>
-                <button style="background: #334155; color: #94a3b8; border: none; padding: 6px 10px; border-radius: 6px; font-size: 9px; cursor: not-allowed;">Locked</button>
-            </div>
-
-            <div class="wallet-card" style="margin-bottom: 0;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 22px;">🪙</span>
-                    <div style="text-align: left;">
-                        <div style="font-size: 10px; color: #94a3b8; font-weight: bold;">USDT / PayPal Profit</div>
-                        <div style="font-size: 15px; font-weight: bold; color: #fbbf24;" id="usdtBalance">$ 88.50</div>
-                    </div>
-                </div>
-                <button style="background: #334155; color: #94a3b8; border: none; padding: 6px 10px; border-radius: 6px; font-size: 9px; cursor: not-allowed;">Locked</button>
-            </div>
-            <p style="font-size: 8px; color: #ef4444; margin-top: 8px; text-align:center;">*Direct Withdrawals & Payouts are restricted to Admin Panel only.</p>
+            <h3 style="color:#fbbf24; margin-top:0; font-size:14px;">💳 لائیو مائن شدہ والٹ</h3>
+            <div style="font-size: 16px; font-weight: bold; color: #fbbf24; margin: 15px 0;" id="walletScore">0 FZL</div>
+            <p style="font-size: 9px; color: #94a3b8;">آپ کے مائن کیے گئے ٹوکنز محفوظ طریقے سے کلاؤڈ ڈیٹا بیس کے ساتھ مطابقت پذیر ہیں۔</p>
         </div>
     </div>
 
-    <!-- Friends & Social Traffic Stats Tab -->
-    <div id="p-friends" class="content">
-        <div class="social-modal">
-            <h3 style="color:#fbbf24; margin-top:0; font-size:14px;">👥 Social Traffic & Referrals</h3>
-            <p style="font-size: 9.5px; color: #cbd5e1;">People joined via your social media link:</p>
-            
-            <div style="background: rgba(56,189,248,0.1); border: 1px solid #38bdf8; padding: 8px; border-radius: 8px; margin-bottom: 8px; text-align: center;">
-                <span style="font-size: 11px; color: #38bdf8; font-weight: bold;">Total Traffic Joined: <span id="totalReferrals" style="color:#fff; font-size:14px;">142</span> Users</span>
-            </div>
-
-            <input type="text" id="refLink" value="https://t.me/FZLKombatBot?start=ref_social" readonly class="input-box" style="text-align:center;">
-            <button style="width:100%; background:linear-gradient(45deg, #f59e0b, #d97706); color:#fff; border:none; padding:7px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10.5px;" onclick="shareOrCopyLink()">📋 Copy Social Invite Link</button>
-        </div>
-    </div>
-
-    <!-- Earn Tab -->
-    <div id="p-earn" class="content">
-        <div class="social-modal">
-            <h3 style="color:#fbbf24; margin-top:0; font-size:14px;">🎁 Social Media Tasks</h3>
-            <p style="font-size: 10px; color: #fff; margin-bottom: 6px;">👉 Subscribe YouTube Channel (+100k Coins & Profit)</p>
-            <button style="width:100%; background:linear-gradient(45deg, #f59e0b, #d97706); color:#fff; border:none; padding:7px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10.5px;" onclick="window.open('https://youtube.com', '_blank')">Claim Task & Open YouTube</button>
-        </div>
-    </div>
-
-    <!-- SECURED ADMIN PANEL & PAYOUT HUB (ONLY FOR YOU) -->
+    <!-- ایڈمن پینل -->
     <div id="p-admin" class="content">
         <div class="social-modal" style="text-align: center;">
-            <div style="font-size: 15px; font-weight: bold; color: #fbbf24; margin-bottom: 4px;">🔐 Exclusive Admin & Payout Hub</div>
-            <div style="background: rgba(16,185,129,0.1); border: 1px solid #10b981; padding: 6px; border-radius: 8px; margin-bottom: 6px;">
-                <span style="color: #10b981; font-weight: bold; font-size: 10px;">✅ Authorized CEO Access Active</span>
-            </div>
-
-            <div style="text-align: left; font-size: 9.5px; color: #38bdf8; font-weight: bold; margin-bottom: 3px;">🏦 Select Payout Option (Pakistani Banks / Wallets / PayPal):</div>
-            <select id="payoutMethod" class="input-box">
-                <optgroup label="Mobile Wallets (Pakistan)">
-                    <option value="JazzCash">JazzCash Mobile Account</option>
-                    <option value="EasyPaisa">EasyPaisa Mobile Account</option>
-                    <option value="SadaPay">SadaPay Wallet</option>
-                    <option value="NayaPay">NayaPay Wallet</option>
-                </optgroup>
-                <optgroup label="Pakistani Commercial Banks">
-                    <option value="HBL">Habib Bank Limited (HBL)</option>
-                    <option value="Meezan">Meezan Bank Limited</option>
-                    <option value="UBL">United Bank Limited (UBL)</option>
-                    <option value="ABL">Allied Bank Limited (ABL)</option>
-                    <option value="MCB">Muslim Commercial Bank (MCB)</option>
-                    <option value="Alfalah">Bank Alfalah</option>
-                    <option value="Faysal">Faysal Bank</option>
-                    <option value="Askari">Askari Bank</option>
-                    <option value="BOP">Bank of Punjab (BOP)</option>
-                    <option value="JS">JS Bank</option>
-                </optgroup>
-                <optgroup label="International / Crypto">
-                    <option value="PayPal">PayPal Account (Email/ID)</option>
-                    <option value="BinanceUSDT">Binance USDT (TRC20)</option>
-                </optgroup>
-            </select>
-            
-            <input type="text" id="accountTitle" placeholder="Account Holder Name" class="input-box">
-            <input type="text" id="accountNumber" placeholder="Account Number / IBAN / PayPal Email" class="input-box">
-
-            <div style="display: flex; gap: 6px; margin-bottom: 6px;">
-                <button style="flex:1; background:#10b981; color:#fff; border:none; padding:7px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="adminWithdraw('PKR')">Withdraw PKR</button>
-                <button style="flex:1; background:#f59e0b; color:#000; border:none; padding:7px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="adminWithdraw('USDT')">Withdraw USD / PayPal</button>
-            </div>
-
-            <button style="width:100%; background:#3b82f6; color:#fff; border:none; padding:6px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px; margin-bottom:4px;" onclick="alert('Database & Cloud Server Synchronized!')">🔄 Sync Cloud Database</button>
-            <button style="width:100%; background:#ef4444; color:#fff; border:none; padding:6px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="navTo('exchange')">🔒 Close Admin Panel</button>
+            <div style="font-size: 15px; font-weight: bold; color: #fbbf24; margin-bottom: 4px;">🔐 ایڈمن ہب (malik123)</div>
+            <input type="text" id="accountTitle" placeholder="اکاؤنٹ ہولڈر کا نام" class="input-box">
+            <input type="text" id="accountNumber" placeholder="جاز کیش / بائنانس / بینک نمبر" class="input-box">
+            <button style="width:100%; background:#10b981; color:#fff; border:none; padding:6px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px; margin-bottom:4px;" onclick="alert('✅ پے آؤٹ کی درخواست ڈیٹا بیس میں محفوظ ہو گئی ہے!')">پست اور پے آؤٹ محفوظ کریں</button>
+            <button style="width:100%; background:#ef4444; color:#fff; border:none; padding:6px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="navTo('exchange')">ایڈمن بند کریں</button>
         </div>
     </div>
 
-    <!-- Social & Airdrop Hub -->
-    <div id="p-socials" class="content">
-        <div class="social-modal">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 3px; margin-bottom: 4px;">
-                <span style="font-size: 12px; font-weight: bold; color: #fbbf24;">🌐 Global Social & Binance Hub</span>
-                <span style="font-size: 12px; cursor: pointer; color: #94a3b8;" onclick="navTo('exchange')">✕</span>
-            </div>
-            <div style="font-size: 8.5px; color: #93c5fd; margin-bottom: 5px; text-align: left;">Connect with official networks & Binance ecosystem:</div>
-            
-            <div class="social-grid">
-                <a href="https://telegram.org" target="_blank" class="social-btn" style="background: #0088cc;">📢 Telegram</a>
-                <a href="https://youtube.com" target="_blank" class="social-btn" style="background: #ff0000;">▶️ YouTube</a>
-                <a href="https://whatsapp.com" target="_blank" class="social-btn" style="background: #25d366;">💬 WhatsApp</a>
-                <a href="https://twitter.com" target="_blank" class="social-btn" style="background: #1da1f2;">✖️ Twitter/X</a>
-                <a href="https://instagram.com" target="_blank" class="social-btn" style="background: linear-gradient(45deg, #f09433, #dc2743);">📸 Instagram</a>
-                <a href="https://www.binance.com" target="_blank" class="social-btn" style="background: linear-gradient(45deg, #f59e0b, #d97706); color: #000;">🟡 Binance Wallet</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation Footer -->
+    <!-- نیچے نیویگیشن بار -->
     <div class="nav">
-        <button class="nav-b active" id="nb-exchange" onclick="navTo('exchange')">🟡 Exchange</button>
-        <button class="nav-b" id="nb-mine" onclick="navTo('mine')">⛏️ Mine</button>
-        <button class="nav-b" id="nb-wallet" onclick="navTo('wallet')">💳 Wallet</button>
-        <button class="nav-b" id="nb-friends" onclick="navTo('friends')">👥 Friends</button>
-        <button class="nav-b" id="nb-earn" onclick="navTo('earn')">🎁 Earn</button>
-        <button class="nav-b" id="nb-socials" onclick="navTo('socials')">🌐 Social</button>
+        <button class="nav-b active" id="nb-exchange" onclick="navTo('exchange')">🟡 ایکسچینج</button>
+        <button class="nav-b" id="nb-mine" onclick="navTo('mine')">⛏️ مائن</button>
+        <button class="nav-b" id="nb-launchpad" onclick="navTo('launchpad')">🚀 لانچ پیڈ</button>
+        <button class="nav-b" id="nb-wallet" onclick="navTo('wallet')">💳 والٹ</button>
     </div>
 
     <script>
+        // 👉 [یہاں اپنی اصل فائر بیس کنفیگریشن درج کریں جو آپ نے فائر بیس کنسول سے بنائی ہے]
         const firebaseConfig = {
-            apiKey: "AIzaSyDummyKeyForFZLCoinBot-Demo",
-            authDomain: "fzl-coin-bot.firebaseapp.com",
-            databaseURL: "https://fzl-coin-bot-default-rtdb.firebaseio.com/",
-            projectId: "fzl-coin-bot"
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "your-project.firebaseapp.com",
+            databaseURL: "https://your-project-default-rtdb.firebaseio.com/",
+            projectId: "your-project"
         };
 
         let db, userId, userRef;
-        let score = 846611;
+        let score = 0;
         let energy = 1000;
         let maxEnergy = 1000;
-        let pkrBal = 24500;
-        let usdtBal = 88.50;
-        let referralsCount = 142;
         let soundOn = true;
         let audioCtx = null;
         let bnbLogo = "https://cryptologos.cc/logos/binance-coin-bnb-logo.png";
-        let tapCount = 0;
 
         try {
             firebase.initializeApp(firebaseConfig);
@@ -333,4 +215,121 @@
             userRef.on('value', (snapshot) => {
                 let data = snapshot.val();
                 if (data) {
-                    score = data.score !== undefined ? data.score : 84661
+                    score = data.score !== undefined ? data.score : 0;
+                    energy = data.energy !== undefined ? data.energy : 1000;
+                }
+                updateUI();
+            });
+        } catch (e) {
+            updateUI();
+        }
+
+        function saveCloudData() {
+            if (!userRef) return;
+            userRef.set({ score, energy });
+        }
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound() {
+            if (!soundOn) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                let now = audioCtx.currentTime;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.exponentialRampToValueAtTime(3000, now + 0.15);
+                gain.gain.setValueAtTime(1.0, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.18);
+            } catch (e) {}
+        }
+
+        function toggleSound() {
+            soundOn = !soundOn;
+            document.getElementById('soundIndicator').innerText = soundOn ? "🔊 آن" : "🔇 بند";
+        }
+
+        function navTo(page) {
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-b').forEach(b => b.classList.remove('active'));
+            document.getElementById('p-' + page).classList.add('active');
+            if(document.getElementById('nb-' + page)) {
+                document.getElementById('nb-' + page).classList.add('active');
+            }
+        }
+
+        function checkAdminSecret() {
+            let pass = prompt("ایڈمن پاس ورڈ درج کریں:");
+            if (pass === 'malik123') {
+                navTo('admin');
+            } else if (pass !== null) {
+                alert('❌ غلط پاس ورڈ!');
+            }
+        }
+
+        const lionBtn = document.getElementById('lionBtn');
+        const minePage = document.getElementById('p-mine');
+
+        if (lionBtn) {
+            const handleTap = (e) => {
+                initAudio();
+                if (energy >= 1) {
+                    score += 1;
+                    energy -= 1;
+                    updateUI();
+                    saveCloudData();
+                    playSound();
+
+                    let clientX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : window.innerWidth / 2);
+                    let clientY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : window.innerHeight / 2);
+                    createFlyingCoins(clientX, clientY);
+                }
+            };
+            lionBtn.addEventListener('click', handleTap);
+            lionBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(e); }, { passive: false });
+        }
+
+        function createFlyingCoins(x, y) {
+            let flyEl = document.createElement('div');
+            flyEl.className = 'fly-coin';
+            flyEl.style.background = '#f59e0b';
+            flyEl.innerHTML = `<img src="${bnbLogo}" width="22" height="22" style="border-radius:50%; border: 1px solid #fff;"> +1 FZL`;
+            flyEl.style.left = (x - 40) + 'px';
+            flyEl.style.top = (y - 40) + 'px';
+            if (minePage) minePage.appendChild(flyEl);
+            setTimeout(() => flyEl.remove(), 800);
+        }
+
+        function updateUI() {
+            document.getElementById('score').innerText = score.toLocaleString();
+            document.getElementById('scoreMine').innerText = score.toLocaleString();
+            document.getElementById('walletScore').innerText = score.toLocaleString() + " FZL";
+            document.getElementById('energy').innerText = energy;
+            let pct = Math.floor((energy / maxEnergy) * 100);
+            document.getElementById('energyBar').style.width = pct + '%';
+        }
+
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy += 10;
+                if (energy > maxEnergy) energy = maxEnergy;
+                updateUI();
+                saveCloudData();
+            }
+        }, 1000);
+
+        navTo('exchange');
+    </script>
+</body>
+    </html>
+                
