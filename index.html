@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Ultimate Edition</title>
+    <title>FZL Coin Bot - Ultimate Fixed Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -162,6 +162,29 @@
             gap: 6px;
         }
 
+        /* Multiplier Selector Row (1x, 2x, 3x, 4x) */
+        .multiplier-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .mult-btn {
+            background: #151b2b;
+            border: 1px solid #22304a;
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .mult-btn.active {
+            background: #f3ba2f;
+            color: #000;
+            border-color: #f3ba2f;
+        }
+
         .tap-section {
             display: flex;
             flex-direction: column;
@@ -171,8 +194,8 @@
             position: relative;
         }
         .tiger-circle-glow {
-            width: 220px;
-            height: 220px;
+            width: 200px;
+            height: 200px;
             background: radial-gradient(circle, rgba(243, 186, 47, 0.3) 0%, rgba(15, 23, 42, 0) 70%);
             border-radius: 50%;
             display: flex;
@@ -184,8 +207,8 @@
             box-shadow: 0 0 35px rgba(243, 186, 47, 0.3);
         }
         .tiger-avatar-box {
-            width: 160px;
-            height: 160px;
+            width: 140px;
+            height: 140px;
             background: linear-gradient(135deg, #2a1b0c, #120904);
             border-radius: 50%;
             display: flex;
@@ -201,13 +224,13 @@
             transform: scale(0.92);
         }
         .tiger-face {
-            font-size: 60px;
+            font-size: 55px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
         .vip-crown-badge {
             position: absolute;
             top: -12px;
-            font-size: 24px;
+            font-size: 22px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
 
@@ -356,7 +379,7 @@
         </div>
     </div>
 
-    <!-- AUDIO ELEMENT (Background Game Music) -->
+    <!-- AUDIO ELEMENT -->
     <audio id="bgMusic" loop>
         <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mp3">
     </audio>
@@ -384,6 +407,14 @@
             </div>
         </div>
 
+        <!-- Multiplier Buttons Selector (1x, 2x, 3x, 4x) -->
+        <div class="multiplier-row">
+            <button class="mult-btn active" id="btn-m1" onclick="setMultiplier(1)">1X Tap</button>
+            <button class="mult-btn" id="btn-m2" onclick="setMultiplier(2)">2X Tap</button>
+            <button class="mult-btn" id="btn-m3" onclick="setMultiplier(3)">3X Tap</button>
+            <button class="mult-btn" id="btn-m4" onclick="setMultiplier(4)">4X Tap</button>
+        </div>
+
         <div class="tap-section" id="tapArea">
             <div class="tiger-circle-glow" onclick="tapTiger(event)">
                 <div class="tiger-avatar-box" id="tigerBox">
@@ -404,7 +435,7 @@
         </div>
     </div>
 
-    <!-- PAGE 2: LEVELS (50 Levels & VIP Crowns) -->
+    <!-- PAGE 2: LEVELS -->
     <div id="page-levels" class="page-content">
         <div class="section-title">⭐ 50 Tiger Evolution & VIP Crowns</div>
         <div style="background: #151b2b; border: 1px solid #f3ba2f; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 15px;">
@@ -413,24 +444,17 @@
             <p style="font-size: 13px; color: #94a3b8;" id="pageLevelDesc">Next level requires: <span id="upgradeCostDisplay" style="color:#f3ba2f; font-weight:bold;">200,000</span> FZL Coins</p>
             <button class="action-btn" style="padding: 10px 20px; font-size: 13px; margin-top: 10px;" onclick="upgradeLevel()">🚀 Upgrade Level</button>
         </div>
-        <div style="background: #151b2b; padding: 12px; border-radius: 10px; font-size: 12px; color: #e2e8f0;">
-            <p><b>👑 Features:</b></p>
-            <ul>
-                <li>Total 50 unique levels and color changes!</li>
-                <li>VIP Crowns automatically unlock at higher milestones.</li>
-            </ul>
-        </div>
     </div>
 
-    <!-- PAGE 3: FRIENDS LIST & SOCIAL INVITE -->
+    <!-- PAGE 3: FRIENDS & SOCIAL INVITE -->
     <div id="page-friends" class="page-content">
         <div class="section-title">👥 Friend List & Direct Sharing</div>
         <div style="margin-bottom: 12px; background: #151b2b; padding: 12px; border-radius: 10px; border: 1px solid #22304a;">
             <h4 style="margin:0 0 6px 0; color:#f3ba2f;">🚀 Invite Friends & Earn 25,000 Coins</h4>
-            <p style="font-size: 11px; color:#94a3b8; margin:0 0 10px 0;">Share your link instantly via Telegram or WhatsApp:</p>
+            <p style="font-size: 11px; color:#94a3b8; margin:0 0 10px 0;">Share instantly via Telegram or WhatsApp:</p>
             <div style="display: flex; gap: 8px;">
-                <button class="action-btn tg-btn" style="flex:1; padding:10px;" onclick="inviteViaTelegram()">📢 Share on Telegram</button>
-                <button class="action-btn wa-btn" style="flex:1; padding:10px;" onclick="inviteViaWhatsApp()">💬 Share on WhatsApp</button>
+                <button class="action-btn tg-btn" style="flex:1; padding:10px;" onclick="inviteViaTelegram()">📢 Telegram</button>
+                <button class="action-btn wa-btn" style="flex:1; padding:10px;" onclick="inviteViaWhatsApp()">💬 WhatsApp</button>
             </div>
         </div>
 
@@ -453,42 +477,28 @@
         </div>
     </div>
 
-    <!-- PAGE 4: SOCIAL MEDIA ATTACHMENTS -->
+    <!-- PAGE 4: SOCIAL MEDIA -->
     <div id="page-social" class="page-content">
         <div class="section-title">🌐 Social Media Channels</div>
         <div class="social-grid">
             <div class="social-item">
                 <div>
                     <h4>📢 Telegram Channel</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Join official community</p>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Join community</p>
                 </div>
                 <button class="action-btn tg-btn" onclick="window.open('https://telegram.org', '_blank')">Visit</button>
             </div>
             <div class="social-item">
                 <div>
-                    <h4>💬 WhatsApp Group / Channel</h4>
+                    <h4>💬 WhatsApp Group</h4>
                     <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Connect on WhatsApp</p>
                 </div>
                 <button class="action-btn wa-btn" onclick="window.open('https://whatsapp.com', '_blank')">Join</button>
             </div>
-            <div class="social-item">
-                <div>
-                    <h4>🐦 Twitter / X Updates</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Latest news & airdrops</p>
-                </div>
-                <button class="action-btn" onclick="window.open('https://twitter.com', '_blank')">Follow</button>
-            </div>
-            <div class="social-item">
-                <div>
-                    <h4>▶️ YouTube Channel</h4>
-                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Watch tutorial & guides</p>
-                </div>
-                <button class="action-btn" style="background:#ef4444; color:#fff;" onclick="window.open('https://youtube.com', '_blank')">Watch</button>
-            </div>
         </div>
     </div>
 
-    <!-- PAGE 5: ADMIN & PROFILE (Secure Owner Log) -->
+    <!-- PAGE 5: ADMIN & PROFILE -->
     <div id="page-profile" class="page-content">
         <div class="section-title">🛡️ CEO Profile & Secure Admin Log</div>
         <div style="background: #151b2b; padding: 15px; border-radius: 12px; font-size: 13px; margin-bottom: 10px;">
@@ -499,14 +509,11 @@
 
         <div class="admin-box">
             <h4 style="margin:0 0 8px 0; color:#ef4444;">🔒 Owner Admin Log</h4>
-            <p style="font-size: 11px; color:#94a3b8; margin-bottom: 8px;">Enter admin pin to access control logs and security settings:</p>
             <input type="password" id="adminPin" class="admin-input" placeholder="Enter Admin PIN (Default: 786)">
             <button class="action-btn" style="background:#ef4444; color:#fff; width:100%;" onclick="verifyAdmin()">Open Admin Log</button>
             
             <div id="adminPanelContent" style="display:none; margin-top: 10px; border-top: 1px solid #22304a; padding-top: 10px;">
                 <p style="color:#22c55e; font-size:12px; font-weight:bold;">✅ Admin Log Unlocked Successfully!</p>
-                <p style="font-size:11px;">Active Users Online: <b>1,420</b></p>
-                <p style="font-size:11px;">Server Status: <b>Secure & Protected</b></p>
                 <button class="action-btn" style="background:#22c55e; color:#000; width:100%; margin-top:5px;" onclick="addAdminBonus()">Give 1M Bonus Coins</button>
             </div>
         </div>
@@ -533,7 +540,8 @@
 
     <script>
         let score = 0;
-        let tapPower = 1;
+        let baseTapPower = 1;
+        let multiplier = 1;
         let energy = 1500;
         let maxEnergy = 1500;
         let currentLevel = 1;
@@ -543,4 +551,9 @@
             { name: "Bronze I", color: "#cd7f32", emoji: "🐯", crown: "" },
             { name: "Bronze II", color: "#c18c5d", emoji: "🐅", crown: "" },
             { name: "Bronze III", color: "#b59b68", emoji: "🐱", crown: "" },
-            { name: "Bronze IV", col
+            { name: "Bronze IV", color: "#a8a272", emoji: "🐯", crown: "" },
+            { name: "Bronze V", color: "#9ca97c", emoji: "🐅", crown: "" },
+            { name: "Silver I", color: "#c0c0c0", emoji: "🐆", crown: "" },
+            { name: "Silver II", color: "#b8c4c4", emoji: "🐅", crown: "" },
+            { name: "Silver III", color: "#b0c8c8", emoji: "🐯", crown: "" },
+            { name: "Silver IV", color: "#a8cccc", emoji: "🐆", crown: "" },
