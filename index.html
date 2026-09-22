@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Coin Bot - Ultimate Edition</title>
+    <title>FZL Coin Bot - Pro Edition</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         body {
@@ -43,7 +43,6 @@
 
         .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 36px; color: #f3ba2f; font-weight: bold; margin: 5px 0; }
         
-        /* Multiplier status display */
         .mult-display { font-size: 12px; color: #22c55e; font-weight: bold; margin: 4px 0; background: #151b2b; padding: 4px 10px; border-radius: 15px; border: 1px solid #22304a; display: inline-block; }
 
         /* Tiger Button */
@@ -57,20 +56,28 @@
         }
         .tiger-btn:active { transform: scale(0.92); }
 
-        /* Flying Floating Animation Elements */
-        .fly-text {
+        /* Flying Golden Coin Animation Elements */
+        .fly-coin {
             position: absolute;
+            width: 36px;
+            height: 36px;
+            background: radial-gradient(circle, #ffe259 0%, #ffa751 100%);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
             font-weight: bold;
-            font-size: 20px;
-            color: #f3ba2f;
+            color: #111;
             pointer-events: none;
             animation: flyUp 0.8s ease-out forwards;
             z-index: 100;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            box-shadow: 0 4px 10px rgba(243,186,47,0.6);
         }
         @keyframes flyUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-120px) scale(1.3); opacity: 0; }
+            0% { transform: translateY(0) scale(0.6); opacity: 1; }
+            100% { transform: translateY(-130px) scale(1.2); opacity: 0; }
         }
 
         /* Energy Bar */
@@ -120,7 +127,7 @@
         <div class="cards-grid">
             <div class="top-card" onclick="claimDaily()">
                 <div class="top-card-title">🎁 Daily reward</div>
-                <div class="top-card-sub">Claim 5,000</div>
+                <div class="top-card-sub" id="dailySubText">Claim 1,000 (3 Days)</div>
             </div>
             <div class="top-card" onclick="navTo('levels')">
                 <div class="top-card-title">⭐ Level Up</div>
@@ -141,7 +148,7 @@
         <!-- Multiplier Dynamic Indicator -->
         <div class="mult-display" id="multDisplay">Active Multiplier: 1X (1 Finger)</div>
 
-        <!-- Tiger Clicker -->
+        <!-- Tiger Button -->
         <div class="tiger-wrapper" id="tigerWrapper">
             <div class="tiger-btn" id="tigerBtn">🐅</div>
         </div>
@@ -215,14 +222,19 @@
     </div>
 
     <script>
-        let score = 0;
-        let energy = 1500;
+        let score = parseInt(localStorage.getItem('fzl_score')) || 0;
+        let energy = parseInt(localStorage.getItem('fzl_energy')) || 1500;
         let maxEnergy = 1500;
-        let level = 1;
+        let level = parseInt(localStorage.getItem('fzl_level')) || 1;
         let soundOn = true;
         let audioCtx = null;
 
-        // Initialize Web Audio context on user interaction
+        function saveData() {
+            localStorage.setItem('fzl_score', score);
+            localStorage.setItem('fzl_energy', energy);
+            localStorage.setItem('fzl_level', level);
+        }
+
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -279,57 +291,42 @@
             if (navBtn) navBtn.classList.add('active');
         }
 
-        // Multi-touch & Multi-finger tap handler with flying coins and stars animation
         const tigerBtn = document.getElementById('tigerBtn');
         const homePage = document.getElementById('p-home');
 
         tigerBtn.addEventListener('pointerdown', (e) => {
             initAudio();
-            // e.pointerId allows multiple fingers/touches tracking
-            let fingersCount = e.clientX ? 1 : 1; 
-            // We can detect active touches if available
-            let activeTouches = e.isPrimary ? 1 : 1;
-            
-            // To support true multi-finger count simulation based on event touches length if available
-            let touchCount = (e.pointerType === 'touch') ? 1 : 1;
-            
-            // Let's use multi-touch points count dynamically
             let currentMultiplier = window.navigator.maxTouchPoints > 1 ? Math.min(window.navigator.maxTouchPoints, 6) : 1;
-            
-            // Simulating multiplier based on interaction or standard multi-finger tap
             let earnedPoints = currentMultiplier;
 
             if (energy >= earnedPoints) {
                 score += earnedPoints;
                 energy -= earnedPoints;
                 updateUI();
+                saveData();
                 playCoinSound();
 
-                // Display dynamic Multiplier text
                 document.getElementById('multDisplay').innerText = `Active Multiplier: ${currentMultiplier}X (${currentMultiplier} Fingers)`;
-
-                // Create flying coins & stars animation elements
                 createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, earnedPoints);
             } else {
                 alert('⚠️ Energy depleted! Please wait for auto-recharge.');
             }
         });
 
-        // Touch event listener for precise multi-finger count
         tigerBtn.addEventListener('touchstart', (e) => {
             let numTouches = e.touches.length;
-            let earnedPoints = numTouches; // 1 finger = 1X, 2 fingers = 2X, 3 fingers = 3X, etc.
+            let earnedPoints = numTouches;
             if (earnedPoints < 1) earnedPoints = 1;
 
             if (energy >= earnedPoints) {
                 score += earnedPoints;
                 energy -= earnedPoints;
                 updateUI();
+                saveData();
                 playCoinSound();
 
                 document.getElementById('multDisplay').innerText = `Active Multiplier: ${earnedPoints}X (${numTouches} Fingers)`;
 
-                // Trigger flying animation for each touch point
                 for (let i = 0; i < e.touches.length; i++) {
                     let touch = e.touches[i];
                     createFlyingAnimations(touch.clientX, touch.clientY, 1);
@@ -343,9 +340,8 @@
         function createFlyingAnimations(x, y, count) {
             for (let i = 0; i < count; i++) {
                 let flyEl = document.createElement('div');
-                flyEl.className = 'fly-text';
-                // Randomly choose between coin emoji and star emoji
-                flyEl.innerHTML = Math.random() > 0.5 ? '🪙 +1' : '⭐ +1';
+                flyEl.className = 'fly-coin';
+                flyEl.innerHTML = '₿+1'; // Golden coin shape with symbol matching the uploaded image
                 
                 let offsetX = (Math.random() - 0.5) * 80;
                 let offsetY = (Math.random() - 0.5) * 40;
@@ -367,6 +363,9 @@
             let pct = Math.floor((energy / maxEnergy) * 100);
             document.getElementById('energyPct').innerText = pct + '%';
             document.getElementById('energyBar').style.width = pct + '%';
+            document.getElementById('lvl').innerText = level;
+            document.getElementById('curLvlText').innerText = level;
+            document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
         // Auto energy recharge
@@ -375,14 +374,30 @@
                 energy += 15;
                 if (energy > maxEnergy) energy = maxEnergy;
                 updateUI();
+                saveData();
             }
         }, 1000);
 
         function claimDaily() {
-            score += 5000;
+            let lastClaimTime = parseInt(localStorage.getItem('fzl_last_claim')) || 0;
+            let currentTime = new Date().getTime();
+            let threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+
+            if (currentTime - lastClaimTime < threeDaysMs) {
+                let remainingTime = threeDaysMs - (currentTime - lastClaimTime);
+                let remainingDays = Math.floor(remainingTime / (24 * 60 * 60 * 1000));
+                let remainingHours = Math.floor((remainingTime % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                
+                alert(`⏳ Daily reward is locked! You can claim again in ${remainingDays} days and ${remainingHours} hours.`);
+                return;
+            }
+
+            score += 1000;
+            localStorage.setItem('fzl_last_claim', currentTime);
             updateUI();
+            saveData();
             playCoinSound();
-            alert('🎉 Success! Daily reward of 5,000 coins claimed successfully.');
+            alert('🎉 Success! 3-Day Daily Reward of 1,000 coins claimed successfully.');
         }
 
         function upgradeLevel() {
@@ -390,10 +405,8 @@
             if (score >= cost) {
                 score -= cost;
                 level += 1;
-                document.getElementById('lvl').innerText = level;
-                document.getElementById('curLvlText').innerText = level;
-                document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
                 updateUI();
+                saveData();
                 alert('🎉 Fantastic! Your tiger level has been upgraded to ' + level + '.');
                 navTo('home');
             } else {
@@ -423,14 +436,4 @@
 
         function addBonus() {
             score += 1000000;
-            updateUI();
-            playCoinSound();
-            alert('🎁 1,000,000 bonus coins successfully added!');
-        }
-
-        // Default open page
-        navTo('home');
-    </script>
-</body>
-    </html>
-            
+     
