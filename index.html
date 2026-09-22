@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL VIP Brand Ecosystem | Official App</title>
+    <title>FZL Brand VIP - Global Ecosystem</title>
     
-    <!-- Professional Open Graph Meta Tags for Social Media Preview -->
-    <meta property="og:title" content="FZL VIP Brand Coin | Tap & Mine the Future">
+    <!-- PWA Web App Manifest Meta for Permanent Mobile Home Screen Installation -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0d0b21">
+    
+    <meta property="og:title" content="FZL Brand VIP Coin | Tap & Mine the Future">
     <meta property="og:description" content="The ultimate 7-Color VIP crypto mining ecosystem. Connect, tap, and share globally!">
     <meta property="og:image" content="https://cryptologos.cc/logos/binance-coin-bnb-logo.png">
-    <meta property="og:url" content="">
 
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -51,7 +55,7 @@
         }
         .content.active { display: flex; }
 
-        /* Brand Top Score Box */
+        /* Top Rainbow Score Box */
         .score-box {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             font-size: 34px; color: #fbbf24; font-weight: 800; margin: 10px 0;
@@ -81,7 +85,6 @@
         }
         .lion-btn:active { transform: scale(0.92); }
 
-        /* Rainbow Flying Coins Animation */
         .fly-coin {
             position: absolute; display: flex; align-items: center; gap: 6px;
             color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 15px; font-weight: 800;
@@ -221,6 +224,7 @@
     </div>
 
     <script>
+        // 👉 [یہاں اپنی اصلی فائر بیس کنفیگریشن درج کریں تاکہ آن لائن یوزرز اور ڈیٹا لائیو سنک ہو سکے]
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY_HERE",
             authDomain: "your-project.firebaseapp.com",
@@ -229,7 +233,7 @@
         };
 
         let db, userId, userRef;
-        let score = 0;
+        let score = parseInt(localStorage.getItem('fzl_local_score')) || 0;
         let energy = 1000;
         let maxEnergy = 1000;
         let soundOn = true;
@@ -260,7 +264,9 @@
             userRef.on('value', (snapshot) => {
                 let data = snapshot.val();
                 if (data) {
-                    score = data.score !== undefined ? data.score : 0;
+                    if (data.score !== undefined && data.score >= score) {
+                        score = data.score;
+                    }
                     energy = data.energy !== undefined ? data.energy : 1000;
                 }
                 updateUI();
@@ -270,6 +276,7 @@
         }
 
         function saveCloudData() {
+            localStorage.setItem('fzl_local_score', score);
             if (!userRef) return;
             userRef.set({ score, energy });
         }
@@ -383,5 +390,4 @@
         navTo('exchange');
     </script>
 </body>
-    </html>
-            
+</html>
