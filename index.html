@@ -20,8 +20,9 @@
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid #3b82f6; font-size: 13px; font-weight: bold;
             box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            z-index: 10;
         }
-        .badge { background: linear-gradient(45deg, #1d4ed8, #2563eb); padding: 6px 12px; border-radius: 20px; border: 1px solid #60a5fa; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(37,99,235,0.4); }
+        .badge { background: linear-gradient(45deg, #1d4ed8, #2563eb); padding: 6px 12px; border-radius: 20px; border: 1px solid #60a5fa; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(37,99,235,0.4); cursor: pointer; }
         
         .content {
             flex: 1; display: none; flex-direction: column;
@@ -89,6 +90,7 @@
             display: flex; justify-content: space-around;
             background: rgba(15, 23, 42, 0.95); padding: 8px 0; border-top: 2px solid #3b82f6;
             box-shadow: 0 -4px 20px rgba(59, 130, 246, 0.3);
+            z-index: 10;
         }
         .nav-b { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; gap: 2px; align-items: center; transition: 0.2s; }
         .nav-b.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.6); }
@@ -109,11 +111,12 @@
             <span>Malak (Lvl <span id="lvl">1</span>)</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <div class="badge" onclick="toggleSound()" id="soundIndicator" style="cursor: pointer;">🔊 Sound: ON</div>
-            <div class="badge" style="color: #38bdf8; cursor:pointer;" onclick="navTo('social')">🌐 Socials</div>
+            <div class="badge" onclick="toggleSound()" id="soundIndicator">🔊 Sound: ON</div>
+            <div class="badge" style="color: #38bdf8;" onclick="navTo('social')">🌐 Socials</div>
         </div>
     </div>
 
+    <!-- Home Tab -->
     <div id="p-home" class="content active">
         <div class="progress-bar-container">
             <span>Elite Rank > Level <span id="curLvlText">1</span>/50 (Cost: <span id="lvlCost">200K</span>)</span>
@@ -155,6 +158,7 @@
         </div>
     </div>
 
+    <!-- Levels Tab -->
     <div id="p-levels" class="content">
         <div class="action-box">
             <h3>⭐ Elite Rank Upgrade System</h3>
@@ -164,6 +168,7 @@
         </div>
     </div>
 
+    <!-- Friends Tab -->
     <div id="p-friends" class="content">
         <div class="action-box">
             <h3>👥 Friends Invite System</h3>
@@ -173,6 +178,7 @@
         </div>
     </div>
 
+    <!-- Socials Tab -->
     <div id="p-social" class="content">
         <div class="action-box">
             <h3>🌐 Official Community</h3>
@@ -181,6 +187,7 @@
         </div>
     </div>
 
+    <!-- Admin Tab -->
     <div id="p-admin" class="content">
         <div class="action-box" style="border-color: #ef4444;">
             <h3 style="color:#ef4444">🛡️ Owner Admin Log</h3>
@@ -193,6 +200,7 @@
         </div>
     </div>
 
+    <!-- Navigation Menu Bar -->
     <div class="nav">
         <button class="nav-b active" id="nb-home" onclick="navTo('home')">🪙 FZL</button>
         <button class="nav-b" id="nb-levels" onclick="navTo('levels')">⭐ Levels</button>
@@ -209,7 +217,6 @@
         let soundOn = true;
         let audioCtx = null;
 
-        // आपकी कॉइन डीपी का यूआरएल
         const coinDpUrl = "https://cdn-icons-png.flaticon.com/512/1384/1384047.png";
 
         function saveData() {
@@ -260,42 +267,29 @@
         const homePage = document.getElementById('p-home');
 
         if (tigerBtn) {
-            tigerBtn.addEventListener('pointerdown', (e) => {
-                initAudio();
-                let currentMultiplier = window.navigator.maxTouchPoints > 1 ? Math.min(window.navigator.maxTouchPoints, 5) : 1;
-                if (energy >= currentMultiplier) {
-                    score += currentMultiplier;
-                    energy -= currentMultiplier;
-                    updateUI();
-                    saveData();
-                    playCoinSound();
-
-                    let multDisp = document.getElementById('multDisplay');
-                    if (multDisp) multDisp.innerText = `Active Multiplier: ${currentMultiplier}X (${currentMultiplier} Fingers)`;
-
-                    createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, currentMultiplier);
-                } else {
-                    alert('⚠️ Energy depleted!');
-                }
+            // ٹچ اور کلک دونوں کے لیے بہترین ہینڈلر
+            tigerBtn.addEventListener('click', (e) => {
+                handleTap(e.clientX || (window.innerWidth / 2), e.clientY || (window.innerHeight / 2), 1);
             });
 
             tigerBtn.addEventListener('touchstart', (e) => {
-                let numTouches = e.touches.length;
-                if (numTouches < 1) numTouches = 1;
-                if (numTouches > 5) numTouches = 5;
+                initAudio();
+                let touches = e.touches.length;
+                if (touches < 1) touches = 1;
+                if (touches > 5) touches = 5;
 
-                if (energy >= numTouches) {
-                    score += numTouches;
-                    energy -= numTouches;
+                if (energy >= touches) {
+                    score += touches;
+                    energy -= touches;
                     updateUI();
                     saveData();
                     playCoinSound();
 
                     let multDisp = document.getElementById('multDisplay');
-                    if (multDisp) multDisp.innerText = `Active Multiplier: ${numTouches}X (${numTouches} Fingers)`;
+                    if (multDisp) multDisp.innerText = `Active Multiplier: ${touches}X (${touches} Fingers)`;
 
                     for (let i = 0; i < e.touches.length; i++) {
-                        createFlyingAnimations(e.touches[i].clientX, e.touches[i].clientY, numTouches);
+                        createFlyingAnimations(e.touches[i].clientX, e.touches[i].clientY, touches);
                     }
                 } else {
                     alert('⚠️ Energy depleted!');
@@ -304,11 +298,29 @@
             }, { passive: false });
         }
 
-        // प्यारे प्यारे रंगों और कॉइन डीपी के साथ उड़ने वाले कोइन्स
+        function handleTap(x, y, mult) {
+            initAudio();
+            if (energy >= mult) {
+                score += mult;
+                energy -= mult;
+                updateUI();
+                saveData();
+                playCoinSound();
+
+                let multDisp = document.getElementById('multDisplay');
+                if (multDisp) multDisp.innerText = `Active Multiplier: ${mult}X (${mult} Finger)`;
+
+                createFlyingAnimations(x, y, mult);
+            } else {
+                alert('⚠️ Energy depleted!');
+            }
+        }
+
+        // رنگ برنگے اور ڈی پی والے کوئنز اڑانے کا فنکشن
         function createFlyingAnimations(x, y, mult) {
             const colors = [
-                'linear-gradient(45deg, #f59e0b, #d97706)', // गोल्डन
-                'linear-gradient(45deg, #3b82f6, #1d4ed8)', // नीला
+                'linear-gradient(45deg, #f59e0b, #d97706)', // گولڈن
+                'linear-gradient(45deg, #3b82f6, #1d4ed8)', // نیلا
                 'linear-gradient(45deg, #10b981, #059669)', // हरा
                 'linear-gradient(45deg, #ec4899, #be185d)'  // गुलाबी
             ];
@@ -347,6 +359,7 @@
             document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
         }
 
+        // ہر ایک سیکنڈ میں انرجی ریچارج ہوگی
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 15;
@@ -402,8 +415,4 @@
                 document.getElementById('adminPanelBody').style.display = 'block';
                 alert('✅ Admin Panel Unlocked!');
             } else {
-                alert('❌ Incorrect PIN!');
-            }
-        }
-
-        function addBonu
+                alert('❌ Incorrect PIN!')
