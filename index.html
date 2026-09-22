@@ -53,27 +53,32 @@
         }
         .tiger-btn:active { transform: scale(0.92); }
 
+        /* कलरफुल और डीपी वाले उड़ने वाले कोइन्स */
         .fly-coin {
             position: absolute;
-            width: 38px;
-            height: 38px;
-            background: radial-gradient(circle, #fbbf24 0%, #d97706 100%);
-            border: 2px solid #fff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 13px;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: bold;
-            color: #000;
+            color: #ffffff;
             pointer-events: none;
             animation: flyUp 0.8s ease-out forwards;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(251,191,36,0.8);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .fly-coin img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #fff;
         }
         @keyframes flyUp {
-            0% { transform: translateY(0) scale(0.6); opacity: 1; }
-            100% { transform: translateY(-140px) scale(1.3); opacity: 0; }
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-130px) scale(1.2); opacity: 0; }
         }
 
         .energy-wrap { width: 100%; max-width: 320px; background: #1e293b; border: 1px solid #3b82f6; border-radius: 6px; height: 12px; overflow: hidden; margin-top: 8px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
@@ -155,7 +160,6 @@
             <h3>⭐ Elite Rank Upgrade System</h3>
             <p style="font-size: 12px; color: #cbd5e1;">Current Level: <span style="color:#38bdf8; font-weight:bold;" id="uiLevelDisplay">1</span></p>
             <p style="font-size: 12px; color: #cbd5e1;">Required Coins: <span style="color:#fbbf24; font-weight:bold;" id="uiLevelCost">200,000 Coins</span></p>
-            <p style="font-size: 12px; color: #4ade80;">Hard work pays off! Upgrade your level to increase your elite status.</p>
             <button class="btn-main" onclick="upgradeLevel()">🚀 Upgrade Level Now</button>
         </div>
     </div>
@@ -163,20 +167,15 @@
     <div id="p-friends" class="content">
         <div class="action-box">
             <h3>👥 Friends Invite System</h3>
-            <p style="font-size: 12px; color: #cbd5e1;">Invite your friends and earn 25,000 coins for every successful referral!</p>
+            <p style="font-size: 12px; color: #cbd5e1;">Invite your friends and earn 25,000 coins for every referral!</p>
             <button class="btn-main tg-btn" onclick="shareTelegram()">📢 Send Request on Telegram</button>
             <button class="btn-main wa-btn" onclick="shareWhatsApp()">💬 Share Link on WhatsApp</button>
-        </div>
-        <div class="action-box">
-            <h3 style="font-size: 13px;">Connected Squad (0)</h3>
-            <p style="font-size: 11px; color: #94a3b8;">Your squad list is currently empty.</p>
         </div>
     </div>
 
     <div id="p-social" class="content">
         <div class="action-box">
             <h3>🌐 Official Community</h3>
-            <p style="font-size: 12px; color: #cbd5e1;">Join our official channels for live updates:</p>
             <button class="btn-main tg-btn" onclick="window.open('https://t.me', '_blank')">Join Telegram Channel</button>
             <button class="btn-main wa-btn" onclick="window.open('https://whatsapp.com', '_blank')">Join WhatsApp Group</button>
         </div>
@@ -185,12 +184,10 @@
     <div id="p-admin" class="content">
         <div class="action-box" style="border-color: #ef4444;">
             <h3 style="color:#ef4444">🛡️ Owner Admin Log</h3>
-            <p style="font-size: 11px; color: #cbd5e1;">Enter PIN (Default: 786):</p>
-            <input type="password" id="pin" placeholder="Enter PIN" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:6px; margin-bottom:8px; font-size:12px;">
+            <input type="password" id="pin" placeholder="Enter PIN (786)" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #3b82f6; border-radius:6px; margin-bottom:8px; font-size:12px;">
             <button class="btn-main" style="background:#ef4444; color:#fff;" onclick="adminLogin()">Login Panel</button>
             
             <div id="adminPanelBody" style="display:none; margin-top:10px; border-top:1px solid #3b82f6; padding-top:8px;">
-                <p style="color:#4ade80; font-size:11px; font-weight:bold;">✅ Admin Access Granted!</p>
                 <button class="btn-main" style="background:#4ade80; color:#000;" onclick="addBonus()">🎁 Add 1,000,000 Bonus Coins</button>
             </div>
         </div>
@@ -205,13 +202,15 @@
     </div>
 
     <script>
-        // ڈیٹا پرسٹینس (localStorage) - ایپ بند کرنے کے بعد بھی کوئنز محفوظ رہیں گے
         let score = parseInt(localStorage.getItem('fzl_score')) || 0;
         let energy = parseInt(localStorage.getItem('fzl_energy')) || 1500;
         let maxEnergy = 1500;
         let level = parseInt(localStorage.getItem('fzl_level')) || 1;
         let soundOn = true;
         let audioCtx = null;
+
+        // आपकी कॉइन डीपी का यूआरएल
+        const coinDpUrl = "https://cdn-icons-png.flaticon.com/512/1384/1384047.png";
 
         function saveData() {
             localStorage.setItem('fzl_score', score);
@@ -220,12 +219,8 @@
         }
 
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function playCoinSound() {
@@ -233,31 +228,17 @@
             try {
                 initAudio();
                 if (!audioCtx) return;
-
-                let osc1 = audioCtx.createOscillator();
-                let osc2 = audioCtx.createOscillator();
-                let gainNode = audioCtx.createGain();
-
-                osc1.type = 'sine';
-                osc2.type = 'triangle';
-
-                osc1.frequency.setValueAtTime(987.77, audioCtx.currentTime);
-                osc1.frequency.exponentialRampToValueAtTime(2637.02, audioCtx.currentTime + 0.1);
-
-                osc2.frequency.setValueAtTime(1318.51, audioCtx.currentTime);
-                osc2.frequency.exponentialRampToValueAtTime(3135.96, audioCtx.currentTime + 0.1);
-
-                gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
-
-                osc1.connect(gainNode);
-                osc2.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                osc1.start();
-                osc2.start();
-                osc1.stop(audioCtx.currentTime + 0.18);
-                osc2.stop(audioCtx.currentTime + 0.18);
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(2500, audioCtx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
             } catch (e) {}
         }
 
@@ -269,10 +250,8 @@
         function navTo(page) {
             document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-b').forEach(b => b.classList.remove('active'));
-            
             let targetPage = document.getElementById('p-' + page);
             if (targetPage) targetPage.classList.add('active');
-            
             let navBtn = document.getElementById('nb-' + page);
             if (navBtn) navBtn.classList.add('active');
         }
@@ -283,68 +262,148 @@
         if (tigerBtn) {
             tigerBtn.addEventListener('pointerdown', (e) => {
                 initAudio();
-                let currentMultiplier = window.navigator.maxTouchPoints > 1 ? Math.min(window.navigator.maxTouchPoints, 6) : 1;
-                let earnedPoints = currentMultiplier;
-
-                if (energy >= earnedPoints) {
-                    score += earnedPoints;
-                    energy -= earnedPoints;
+                let currentMultiplier = window.navigator.maxTouchPoints > 1 ? Math.min(window.navigator.maxTouchPoints, 5) : 1;
+                if (energy >= currentMultiplier) {
+                    score += currentMultiplier;
+                    energy -= currentMultiplier;
                     updateUI();
                     saveData();
                     playCoinSound();
 
                     let multDisp = document.getElementById('multDisplay');
                     if (multDisp) multDisp.innerText = `Active Multiplier: ${currentMultiplier}X (${currentMultiplier} Fingers)`;
-                    
-                    createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, earnedPoints);
+
+                    createFlyingAnimations(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, currentMultiplier);
                 } else {
-                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
+                    alert('⚠️ Energy depleted!');
                 }
             });
 
             tigerBtn.addEventListener('touchstart', (e) => {
                 let numTouches = e.touches.length;
-                let earnedPoints = numTouches;
-                if (earnedPoints < 1) earnedPoints = 1;
+                if (numTouches < 1) numTouches = 1;
+                if (numTouches > 5) numTouches = 5;
 
-                if (energy >= earnedPoints) {
-                    score += earnedPoints;
-                    energy -= earnedPoints;
+                if (energy >= numTouches) {
+                    score += numTouches;
+                    energy -= numTouches;
                     updateUI();
                     saveData();
                     playCoinSound();
 
                     let multDisp = document.getElementById('multDisplay');
-                    if (multDisp) multDisp.innerText = `Active Multiplier: ${earnedPoints}X (${numTouches} Fingers)`;
+                    if (multDisp) multDisp.innerText = `Active Multiplier: ${numTouches}X (${numTouches} Fingers)`;
 
                     for (let i = 0; i < e.touches.length; i++) {
-                        let touch = e.touches[i];
-                        createFlyingAnimations(touch.clientX, touch.clientY, 1);
+                        createFlyingAnimations(e.touches[i].clientX, e.touches[i].clientY, numTouches);
                     }
                 } else {
-                    alert('⚠️ Energy depleted! Please wait for auto-recharge.');
+                    alert('⚠️ Energy depleted!');
                 }
                 e.preventDefault();
             }, { passive: false });
         }
 
-        function createFlyingAnimations(x, y, count) {
-            for (let i = 0; i < count; i++) {
-                let flyEl = document.createElement('div');
-                flyEl.className = 'fly-coin';
-                flyEl.innerHTML = '+1';
-                
-                let offsetX = (Math.random() - 0.5) * 80;
-                let offsetY = (Math.random() - 0.5) * 40;
-                
-                flyEl.style.left = (x + offsetX) + 'px';
-                flyEl.style.top = (y + offsetY) + 'px';
-                
-                if (homePage) homePage.appendChild(flyEl);
+        // प्यारे प्यारे रंगों और कॉइन डीपी के साथ उड़ने वाले कोइन्स
+        function createFlyingAnimations(x, y, mult) {
+            const colors = [
+                'linear-gradient(45deg, #f59e0b, #d97706)', // गोल्डन
+                'linear-gradient(45deg, #3b82f6, #1d4ed8)', // नीला
+                'linear-gradient(45deg, #10b981, #059669)', // हरा
+                'linear-gradient(45deg, #ec4899, #be185d)'  // गुलाबी
+            ];
 
-                setTimeout(() => {
-                    flyEl.remove();
-                }, 800);
+            let flyEl = document.createElement('div');
+            flyEl.className = 'fly-coin';
+            let randomColor = colors[Math.floor(Math.random() * colors.length)];
+            flyEl.style.background = randomColor;
+
+            flyEl.innerHTML = `<img src="${coinDpUrl}" alt="Coin"> +${mult}X`;
+
+            let offsetX = (Math.random() - 0.5) * 80;
+            let offsetY = (Math.random() - 0.5) * 40;
+            flyEl.style.left = (x + offsetX - 30) + 'px';
+            flyEl.style.top = (y + offsetY - 30) + 'px';
+
+            if (homePage) homePage.appendChild(flyEl);
+            setTimeout(() => flyEl.remove(), 800);
+        }
+
+        function getLevelCost() { return level * 200000; }
+
+        function updateUI() {
+            document.getElementById('score').innerText = score.toLocaleString();
+            document.getElementById('energy').innerText = energy;
+            let pct = Math.floor((energy / maxEnergy) * 100);
+            document.getElementById('energyPct').innerText = pct + '%';
+            document.getElementById('energyBar').style.width = pct + '%';
+            document.getElementById('lvl').innerText = level;
+            document.getElementById('curLvlText').innerText = level;
+            let currentCost = getLevelCost();
+            document.getElementById('lvlCost').innerText = (currentCost / 1000) + 'K';
+            document.getElementById('cardCostText').innerText = 'Cost: ' + (currentCost / 1000) + 'K';
+            document.getElementById('uiLevelDisplay').innerText = level;
+            document.getElementById('uiLevelCost').innerText = currentCost.toLocaleString() + ' Coins';
+            document.getElementById('progressFill').style.width = Math.min(level * 2, 100) + '%';
+        }
+
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy += 15;
+                if (energy > maxEnergy) energy = maxEnergy;
+                updateUI();
+                saveData();
+            }
+        }, 1000);
+
+        function claimDaily() {
+            let lastClaimTime = parseInt(localStorage.getItem('fzl_last_claim')) || 0;
+            let currentTime = new Date().getTime();
+            let threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+
+            if (currentTime - lastClaimTime < threeDaysMs) {
+                alert('⏳ Daily reward is locked! You can claim coins again after 3 days.');
+                return;
+            }
+
+            score += 1000;
+            localStorage.setItem('fzl_last_claim', currentTime);
+            updateUI();
+            saveData();
+            playCoinSound();
+            alert('🎉 Success! Daily reward claimed successfully.');
+        }
+
+        function upgradeLevel() {
+            let cost = getLevelCost();
+            if (score >= cost) {
+                score -= cost;
+                level += 1;
+                updateUI();
+                saveData();
+                alert('🎉 Fantastic! Level upgraded to ' + level);
+                navTo('home');
+            } else {
+                alert('❌ Insufficient coins!');
             }
         }
-                                                                                                                                 
+
+        function shareTelegram() {
+            window.open(`https://t.me/share/url?url=https://t.me/fzl_coin_bot&text=Join%20FZL%20Coin%20Bot`, '_blank');
+        }
+
+        function shareWhatsApp() {
+            window.open(`https://api.whatsapp.com/send?text=Join%20FZL%20Coin%20Bot`, '_blank');
+        }
+
+        function adminLogin() {
+            let p = document.getElementById('pin').value;
+            if (p === '786') {
+                document.getElementById('adminPanelBody').style.display = 'block';
+                alert('✅ Admin Panel Unlocked!');
+            } else {
+                alert('❌ Incorrect PIN!');
+            }
+        }
+
+        function addBonu
