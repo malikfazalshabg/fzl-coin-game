@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL VIP Coin - Official Global Ecosystem</title>
+    <title>FZL VIP Brand Ecosystem | Official App</title>
     
-    <!-- VIP Social Media Meta Tags (Instagram, Facebook, Twitter Preview Support) -->
-    <meta property="og:title" content="FZL VIP Coin | Tap & Mine the Future">
-    <meta property="og:description" content="The ultimate VIP crypto mining ecosystem. Connect, tap, and list on Binance!">
+    <!-- Professional Open Graph Meta Tags for Social Media Preview -->
+    <meta property="og:title" content="FZL VIP Brand Coin | Tap & Mine the Future">
+    <meta property="og:description" content="The ultimate 7-Color VIP crypto mining ecosystem. Connect, tap, and share globally!">
     <meta property="og:image" content="https://cryptologos.cc/logos/binance-coin-bnb-logo.png">
     <meta property="og:url" content="">
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     
-    <!-- Google Fonts for VIP Look -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
@@ -29,9 +27,8 @@
             height: 100vh; overflow: hidden;
         }
 
-        /* VIP Header */
         .header {
-            background: rgba(15, 13, 35, 0.85); backdrop-filter: blur(12px);
+            background: rgba(15, 13, 35, 0.95); backdrop-filter: blur(12px);
             padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 10;
         }
@@ -47,7 +44,6 @@
             display: flex; align-items: center; gap: 5px; cursor: pointer;
         }
 
-        /* Content Areas */
         .content {
             flex: 1; display: none; flex-direction: column;
             align-items: center; justify-content: flex-start; padding: 12px; text-align: center;
@@ -55,25 +51,24 @@
         }
         .content.active { display: flex; }
 
-        /* Luxury Crown & Score */
-        .crown-intro { font-size: 32px; filter: drop-shadow(0 0 10px #fbbf24); margin-bottom: 2px; animation: floatCrown 3s ease-in-out infinite; }
-        @keyframes floatCrown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
+        /* Brand Top Score Box */
         .score-box {
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 36px; color: #fbbf24; font-weight: 800; margin: 4px 0;
+            font-size: 34px; color: #fbbf24; font-weight: 800; margin: 10px 0;
             text-shadow: 0 0 25px rgba(251,191,36,0.6);
+            background: rgba(20, 18, 45, 0.9); border: 2px solid;
+            border-image: linear-gradient(to right, #ef4444, #f97316, #eab308, #10b981, #06b6d4, #6366f1, #ec4899) 1;
+            padding: 8px 22px; border-radius: 40px; box-shadow: 0 0 25px rgba(251,191,36,0.4);
         }
-        .score-box img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fbbf24; box-shadow: 0 0 15px #fbbf24; }
+        .score-box img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fbbf24; }
 
-        /* VIP Lion Mining Button */
         .lion-wrapper {
             position: relative; margin: 15px 0; display: flex; justify-content: center; align-items: center;
             width: 210px; height: 210px;
             background: radial-gradient(circle, rgba(245,158,11,0.2) 0%, rgba(56,189,248,0.1) 60%, transparent 85%);
             border-radius: 50%;
             box-shadow: 0 0 50px rgba(245, 158, 11, 0.4), inset 0 0 25px rgba(56, 189, 248, 0.3);
-            border: 2px solid rgba(251, 191, 36, 0.4);
+            border: 2px dashed #ec4899;
         }
         .lion-btn {
             width: 145px; height: 145px; 
@@ -86,20 +81,18 @@
         }
         .lion-btn:active { transform: scale(0.92); }
 
-        /* Floating Coins Animation */
+        /* Rainbow Flying Coins Animation */
         .fly-coin {
             position: absolute; display: flex; align-items: center; gap: 6px;
-            background: linear-gradient(135deg, #f59e0b, #d97706); color: #000;
-            padding: 6px 14px; border-radius: 30px; font-size: 15px; font-weight: 800;
-            pointer-events: none; animation: flyUp 0.8s ease-out forwards; z-index: 100;
+            color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 15px; font-weight: 800;
+            pointer-events: none; animation: flyToTop 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards; z-index: 100;
             box-shadow: 0 8px 25px rgba(0,0,0,0.8); border: 2px solid #fff;
         }
-        @keyframes flyUp {
-            0% { transform: translateY(0) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-140px) scale(1.2); opacity: 0; }
+        @keyframes flyToTop {
+            0% { transform: translateY(0) scale(0.6); opacity: 1; }
+            100% { transform: translateY(-220px) scale(1.1); opacity: 0; }
         }
 
-        /* VIP Glass Cards / Modals */
         .vip-card {
             background: rgba(20, 18, 45, 0.85); backdrop-filter: blur(15px);
             border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 18px; padding: 16px;
@@ -110,34 +103,36 @@
             width: 100%; background: rgba(5, 5, 10, 0.9); border: 1px solid rgba(251, 191, 36, 0.4); color: #fff;
             padding: 10px 12px; border-radius: 10px; font-size: 12px; margin-bottom: 10px; outline: none;
         }
-        .vip-input:focus { border-color: #fbbf24; box-shadow: 0 0 10px rgba(251,191,36,0.4); }
-
         .vip-btn {
             width: 100%; background: linear-gradient(135deg, #f59e0b, #d97706); color: #000;
             border: none; padding: 10px; border-radius: 10px; font-weight: 800; cursor: pointer;
             font-size: 12px; text-transform: uppercase; box-shadow: 0 5px 20px rgba(245,158,11,0.4);
-            transition: 0.2s;
         }
-        .vip-btn:active { transform: scale(0.97); }
 
-        /* Bottom Navigation Bar */
+        .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; margin-top: 10px; }
+        .social-btn {
+            padding: 12px; border-radius: 10px; border: none; color: #fff; font-weight: 700; font-size: 11px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: 0.2s;
+        }
+        .social-btn:active { transform: scale(0.95); }
+
         .nav {
             display: flex; justify-content: space-around;
             background: rgba(12, 10, 30, 0.95); backdrop-filter: blur(15px);
             padding: 8px 0; border-top: 1px solid rgba(251, 191, 36, 0.2);
             box-shadow: 0 -10px 30px rgba(0,0,0,0.8); z-index: 10;
         }
-        .nav-b { background: none; border: none; color: #64748b; font-size: 9px; cursor: pointer; font-weight: 700; display: flex; flex-direction: column; gap: 3px; align-items: center; transition: 0.2s; }
+        .nav-b { background: none; border: none; color: #64748b; font-size: 9px; cursor: pointer; font-weight: 700; display: flex; flex-direction: column; gap: 3px; align-items: center; }
         .nav-b.active { color: #fbbf24; text-shadow: 0 0 12px rgba(251,191,36,0.8); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-    <!-- VIP Header -->
     <div class="header">
         <div class="vip-badge" onclick="checkAdminSecret()">
             <span>👑</span>
-            <span>FZL VIP CEO</span>
+            <span>FZL BRAND VIP</span>
         </div>
         <div style="display: flex; gap: 6px; align-items: center;">
             <div class="stat-badge" style="border-color: #10b981; color: #34d399;">👥 <span id="liveUsers">1</span> Active</div>
@@ -147,15 +142,9 @@
 
     <!-- Exchange Tab -->
     <div id="p-exchange" class="content active">
-        <div class="crown-intro">👑</div>
-        <div style="font-size: 12px; color: #cbd5e1; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">Global VIP Ecosystem</div>
+        <div style="font-size: 12px; color: #ec4899; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-top: 5px;">👑 FZL Brand Ecosystem & 7X Hub</div>
         
-        <div style="display: flex; gap: 8px; width: 100%; max-width: 360px; margin-top: 12px;">
-            <div class="stat-badge" style="flex:1; justify-content:center; background:rgba(56,189,248,0.1); border-color:#38bdf8; color:#38bdf8; padding:8px;" onclick="navTo('launchpad')">🟡 Binance Launchpad</div>
-            <div class="stat-badge" style="flex:1; justify-content:center; background:rgba(251,191,36,0.1); border-color:#fbbf24; color:#fbbf24; padding:8px;" onclick="window.open('https://www.binance.com', '_blank')">🌐 Mainnet Live</div>
-        </div>
-        
-        <div class="score-box" style="margin-top: 25px;">
+        <div class="score-box">
             <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Coin">
             <span id="score">0</span>
         </div>
@@ -163,12 +152,14 @@
         <div class="lion-wrapper">
             <div class="lion-btn" onclick="navTo('mine')">🦁</div>
         </div>
-        <p style="font-size: 10px; color: #94a3b8; margin-top: 6px; font-weight: 600;">Tap the VIP Lion to mine FZL Coin instantly!</p>
+        <p style="font-size: 10px; color: #94a3b8; margin-top: 6px; font-weight: 600;">Tap to mine rainbow brand coins directly to top box!</p>
     </div>
 
     <!-- Mine Tab (Tap to Earn) -->
     <div id="p-mine" class="content">
-        <div class="score-box" style="margin-top: 10px;">
+        <div style="font-size: 11px; font-weight: 800; color: #f43f5e; margin-top: 4px;" id="multiplierText">⚡ Active Multiplier: 1X</div>
+
+        <div class="score-box">
             <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Coin">
             <span id="scoreMine">0</span>
         </div>
@@ -180,46 +171,48 @@
         <div style="width: 100%; max-width: 300px; font-size: 11px; color: #93c5fd; text-align: left; font-weight: 700; margin-top: 5px;">
             <span>⚡ Energy: <span id="energy">1000</span> / 1000</span>
             <div style="width: 100%; background: rgba(255,255,255,0.05); height: 6px; border-radius: 4px; margin-top: 4px; overflow: hidden; border: 1px solid rgba(251,191,36,0.3);">
-                <div id="energyBar" style="width: 100%; height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24); box-shadow: 0 0 10px #fbbf24;"></div>
+                <div id="energyBar" style="width: 100%; height: 100%; background: linear-gradient(90deg, #f59e0b, #ec4899); box-shadow: 0 0 10px #ec4899;"></div>
             </div>
         </div>
     </div>
 
-    <!-- Binance Launchpad Hub -->
+    <!-- Launchpad & Social Hub -->
     <div id="p-launchpad" class="content">
         <div class="vip-card" style="text-align: center;">
-            <h3 style="color:#fbbf24; margin-top:0; font-size:15px; font-weight:800;">🟡 Binance Launchpad & VIP Hub</h3>
-            <div style="background: rgba(245,158,11,0.08); border: 1px solid rgba(251,191,36,0.3); padding: 10px; border-radius: 10px; margin-bottom: 10px; text-align: left;">
-                <div style="font-size: 10px; color: #fbbf24; font-weight: 700;">🪙 Token Name: FZL VIP Coin (FZL)</div>
-                <div style="font-size: 10px; color: #38bdf8; font-weight: 700; margin-top: 3px;">🔗 Network: Binance Smart Chain (BEP-20)</div>
-                <div style="font-size: 10px; color: #4ade80; font-weight: 700; margin-top: 3px;">📊 Total Supply: 1,000,000,000 FZL</div>
-                <div style="font-size: 10px; color: #cbd5e1; font-weight: 700; margin-top: 3px;">📝 Contract: <span style="font-size:9px; color:#fbbf24;">0x71C...FZL2027VIP</span></div>
+            <h3 style="color:#fbbf24; margin-top:0; font-size:14px; font-weight:800;">🌐 Global Brand & Social Hub</h3>
+            <p style="font-size: 10px; color: #94a3b8;">Share your brand link & connect everywhere:</p>
+            
+            <div class="social-grid">
+                <button class="social-btn" style="background: #229ed9;" onclick="window.open('https://telegram.org', '_blank')">📢 Telegram</button>
+                <button class="social-btn" style="background: #ff0000;" onclick="window.open('https://youtube.com', '_blank')">▶️ YouTube</button>
+                <button class="social-btn" style="background: #25d366;" onclick="window.open('https://whatsapp.com', '_blank')">💬 WhatsApp</button>
+                <button class="social-btn" style="background: #1da1f2;" onclick="window.open('https://twitter.com', '_blank')">🐦 Twitter/X</button>
+                <button class="social-btn" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743);" onclick="window.open('https://instagram.com', '_blank')">📸 Instagram</button>
+                <button class="social-btn" style="background: #f59e0b; color:#000;" onclick="window.open('https://www.binance.com', '_blank')">🟡 Binance Wallet</button>
             </div>
-            <button class="vip-btn" onclick="alert('✅ Successfully Synced with Binance Global Queue!')">🚀 Sync with Binance Ecosystem</button>
         </div>
     </div>
 
     <!-- Wallet Tab -->
     <div id="p-wallet" class="content">
         <div class="vip-card" style="text-align: center;">
-            <h3 style="color:#fbbf24; margin-top:0; font-size:16px; font-weight:800;">💳 Secure VIP Mined Wallet</h3>
-            <div style="font-size: 22px; font-weight: 800; color: #fbbf24; margin: 20px 0; text-shadow: 0 0 15px rgba(251,191,36,0.5);" id="walletScore">0 FZL</div>
-            <p style="font-size: 10px; color: #94a3b8; font-weight: 600;">Your mined tokens are securely stored in the high-security cloud database.</p>
+            <h3 style="color:#fbbf24; margin-top:0; font-size:16px; font-weight:800;">💳 Secure Brand Wallet</h3>
+            <div style="font-size: 22px; font-weight: 800; color: #ec4899; margin: 20px 0;" id="walletScore">0 FZL</div>
+            <button class="vip-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('✅ Brand App Link Copied! Share everywhere.');">🔗 Copy & Share Link</button>
         </div>
     </div>
 
     <!-- Admin Panel -->
     <div id="p-admin" class="content">
         <div class="vip-card" style="text-align: center;">
-            <div style="font-size: 16px; font-weight: 800; color: #fbbf24; margin-bottom: 8px;">🔐 VIP CEO Dashboard (malik123)</div>
+            <div style="font-size: 16px; font-weight: 800; color: #fbbf24; margin-bottom: 8px;">🔐 Brand CEO Dashboard (malik123)</div>
             <input type="text" id="accountTitle" placeholder="Account Holder Name" class="vip-input">
             <input type="text" id="accountNumber" placeholder="JazzCash / Binance / Bank Number" class="vip-input">
-            <button class="vip-btn" style="background: #10b981; color:#fff; margin-bottom:6px;" onclick="alert('✅ Payout Request Saved to Database!')">Save Payout Request</button>
+            <button class="vip-btn" style="background: #10b981; color:#fff; margin-bottom:6px;" onclick="alert('✅ Payout Request Saved!')">Save Payout Request</button>
             <button class="vip-btn" style="background: #ef4444; color:#fff;" onclick="navTo('exchange')">Close Admin</button>
         </div>
     </div>
 
-    <!-- VIP Navigation Bar -->
     <div class="nav">
         <button class="nav-b active" id="nb-exchange" onclick="navTo('exchange')"><span>🟡</span> Exchange</button>
         <button class="nav-b" id="nb-mine" onclick="navTo('mine')"><span>⛏️</span> Mine</button>
@@ -228,7 +221,6 @@
     </div>
 
     <script>
-        // 👉 [यहाँ अपनी असली Firebase Config डालें]
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY_HERE",
             authDomain: "your-project.firebaseapp.com",
@@ -243,6 +235,10 @@
         let soundOn = true;
         let audioCtx = null;
         let bnbLogo = "https://cryptologos.cc/logos/binance-coin-bnb-logo.png";
+
+        const rainbowColors = [
+            '#ef4444', '#f97316', '#eab308', '#10b981', '#06b6d4', '#6366f1', '#ec4899'
+        ];
 
         try {
             firebase.initializeApp(firebaseConfig);
@@ -283,7 +279,7 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        function playSound() {
+        function playSound(pitchMultiplier) {
             if (!soundOn) return;
             try {
                 initAudio();
@@ -291,15 +287,15 @@
                 let now = audioCtx.currentTime;
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1400, now);
-                osc.frequency.exponentialRampToValueAtTime(3200, now + 0.15);
-                gain.gain.setValueAtTime(1.0, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(700 * pitchMultiplier, now);
+                osc.frequency.exponentialRampToValueAtTime(2800 * pitchMultiplier, now + 0.15);
+                gain.gain.setValueAtTime(2.0, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start(now);
-                osc.stop(now + 0.18);
+                osc.stop(now + 0.2);
             } catch (e) {}
         }
 
@@ -318,7 +314,7 @@
         }
 
         function checkAdminSecret() {
-            let pass = prompt("Enter VIP CEO Password:");
+            let pass = prompt("Enter Brand CEO Password:");
             if (pass === 'malik123') {
                 navTo('admin');
             } else if (pass !== null) {
@@ -327,35 +323,43 @@
         }
 
         const lionBtn = document.getElementById('lionBtn');
-        const minePage = document.getElementById('p-mine');
 
         if (lionBtn) {
             const handleTap = (e) => {
                 initAudio();
                 if (energy >= 1) {
-                    score += 1;
-                    energy -= 1;
+                    let randomMultiplier = Math.floor(Math.random() * 7) + 1;
+                    if (energy < randomMultiplier) randomMultiplier = 1;
+
+                    score += randomMultiplier;
+                    energy -= randomMultiplier;
                     updateUI();
                     saveCloudData();
-                    playSound();
+                    playSound(randomMultiplier);
+
+                    let colorIndex = randomMultiplier - 1;
+                    let chosenColor = rainbowColors[colorIndex];
+
+                    document.getElementById('multiplierText').innerText = `⚡ Active Multiplier: ${randomMultiplier}X Rainbow`;
 
                     let clientX = e.clientX || (e.changedTouches ? e.changedTouches[0].clientX : window.innerWidth / 2);
                     let clientY = e.clientY || (e.changedTouches ? e.changedTouches[0].clientY : window.innerHeight / 2);
-                    createFlyingCoins(clientX, clientY);
+                    createRainbowFlyingCoins(clientX, clientY, randomMultiplier, chosenColor);
                 }
             };
             lionBtn.addEventListener('click', handleTap);
             lionBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(e); }, { passive: false });
         }
 
-        function createFlyingCoins(x, y) {
+        function createRainbowFlyingCoins(x, y, mult, color) {
             let flyEl = document.createElement('div');
             flyEl.className = 'fly-coin';
-            flyEl.innerHTML = `<img src="${bnbLogo}" width="22" height="22" style="border-radius:50%; border: 1px solid #fff;"> +1 FZL`;
+            flyEl.style.background = color;
+            flyEl.innerHTML = `<img src="${bnbLogo}" width="22" height="22" style="border-radius:50%; border: 1px solid #fff;"> +${mult} FZL`;
             flyEl.style.left = (x - 45) + 'px';
             flyEl.style.top = (y - 45) + 'px';
-            if (minePage) minePage.appendChild(flyEl);
-            setTimeout(() => flyEl.remove(), 800);
+            document.body.appendChild(flyEl);
+            setTimeout(() => flyEl.remove(), 700);
         }
 
         function updateUI() {
@@ -379,4 +383,5 @@
         navTo('exchange');
     </script>
 </body>
-</html>
+    </html>
+            
