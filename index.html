@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FZL Cat Kombat Bot</title>
+    <title>FZL Kombat - Ultimate Edition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -64,18 +64,6 @@
             gap: 6px;
             align-items: center;
         }
-        .icon-top-btn {
-            background: #1a2233;
-            border: 1px solid #2a3447;
-            color: #fff;
-            padding: 6px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
         .exchange-badge {
             background: #1f293d;
             padding: 4px 10px;
@@ -87,17 +75,16 @@
             color: #f3ba2f;
             border: 1px solid #334155;
             font-weight: bold;
+            cursor: pointer;
         }
-        .profit-badge {
+        .music-btn {
             background: #1a2233;
-            padding: 4px 8px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            color: #e2e8f0;
             border: 1px solid #2a3447;
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #fff;
         }
         .level-progress-container {
             display: flex;
@@ -116,19 +103,30 @@
             overflow: hidden;
         }
         .level-bar-fill {
-            width: 60%;
+            width: 2%;
             height: 100%;
             background: linear-gradient(90deg, #f3ba2f, #fb923c);
             border-radius: 3px;
         }
 
-        /* 3 Reward Cards Row */
+        /* Pages Container */
+        .page-content {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .page-content.active {
+            display: flex;
+        }
+
+        /* HOME PAGE */
         .cards-row {
             display: flex;
             justify-content: space-between;
-            padding: 6px 10px;
+            padding: 6px 0;
             gap: 6px;
-            background: #0f141f;
         }
         .reward-card {
             flex: 1;
@@ -138,22 +136,6 @@
             padding: 6px 4px;
             text-align: center;
             cursor: pointer;
-            position: relative;
-        }
-        .reward-card::after {
-            content: '✔';
-            position: absolute;
-            top: 3px;
-            right: 5px;
-            font-size: 9px;
-            color: #22c55e;
-            background: rgba(34, 197, 94, 0.15);
-            border-radius: 50%;
-            width: 12px;
-            height: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .reward-card-title {
             font-size: 10px;
@@ -163,13 +145,12 @@
         }
         .reward-card-time {
             font-size: 9px;
-            color: #94a3b8;
+            color: #22c55e;
         }
 
-        /* FZL Balance Display */
         .balance-container {
             text-align: center;
-            margin: 2px 0;
+            margin: 6px 0;
         }
         .coin-amount {
             font-size: 34px;
@@ -179,17 +160,6 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            text-shadow: 0 0 15px rgba(243, 186, 47, 0.3);
-        }
-
-        /* Main Tap Area with Shorts Sidebar Layout */
-        .tap-main-wrapper {
-            display: flex;
-            flex: 1;
-            position: relative;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10px;
         }
 
         .tap-section {
@@ -197,28 +167,26 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            flex: 1;
             position: relative;
-            width: 100%;
         }
-
-        /* Hamster Circle & Cute DP Design */
-        .hamster-circle-glow {
-            width: 230px;
-            height: 230px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(15, 23, 42, 0) 70%);
+        .tiger-circle-glow {
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(243, 186, 47, 0.3) 0%, rgba(15, 23, 42, 0) 70%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             cursor: pointer;
-            box-shadow: 0 0 40px rgba(37, 99, 235, 0.2);
-            border: 2px solid rgba(59, 130, 246, 0.4);
+            border: 2px solid rgba(243, 186, 47, 0.5);
+            box-shadow: 0 0 35px rgba(243, 186, 47, 0.3);
         }
-        .hamster-avatar-box {
-            width: 170px;
-            height: 170px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
+        .tiger-avatar-box {
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, #2a1b0c, #120904);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -226,147 +194,38 @@
             justify-content: center;
             border: 4px solid #f3ba2f;
             box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-            transition: transform 0.06s ease;
+            transition: transform 0.05s ease;
             position: relative;
         }
-        .hamster-avatar-box:active {
-            transform: scale(0.93);
+        .tiger-avatar-box:active {
+            transform: scale(0.92);
         }
-        .hamster-face {
-            font-size: 48px;
-            margin-top: 4px;
+        .tiger-face {
+            font-size: 60px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-        .hamster-suit-body {
-            background: linear-gradient(180deg, #2563eb, #1d4ed8);
-            width: 100px;
-            height: 55px;
-            border-radius: 35px 35px 10px 10px;
-            margin-top: -6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 2px solid #60a5fa;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
-        }
-        .hamster-collar {
-            width: 26px;
-            height: 10px;
-            background: #ffffff;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-        }
-        .hamster-tie {
-            width: 7px;
-            height: 26px;
-            background: #ef4444;
-            clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
-            margin-top: -2px;
-        }
-
-        /* Right Side YouTube Shorts Action Buttons */
-        .shorts-sidebar {
+        .vip-crown-badge {
             position: absolute;
-            right: 5px;
-            bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-            z-index: 5;
-        }
-        .short-action-btn {
-            background: none;
-            border: none;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            font-size: 11px;
-            gap: 2px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-        }
-        .short-action-btn span.icon {
-            font-size: 22px;
-            background: rgba(0, 0, 0, 0.4);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            top: -12px;
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
 
-        /* Bottom Channel Info Overlay */
-        .channel-info-overlay {
-            position: absolute;
-            left: 12px;
-            bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 5;
-            max-width: 65%;
-        }
-        .channel-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .channel-dp {
-            width: 30px;
-            height: 30px;
-            background: #f3ba2f;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            border: 1.5px solid #fff;
-        }
-        .channel-name {
-            font-size: 13px;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-        }
-        .subscribe-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .video-title {
-            font-size: 12px;
-            color: #e2e8f0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Flying FZL Coin Animation */
         .flying-coin {
             position: fixed;
             font-size: 22px;
             z-index: 9999;
             pointer-events: none;
-            animation: flyToBinance 0.65s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+            animation: flyToTop 0.6s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
         }
-        @keyframes flyToBinance {
+        @keyframes flyToTop {
             0% { transform: scale(1) translate(0, 0); opacity: 1; }
             100% { transform: scale(0.3) translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
-        /* Energy Bar */
         .energy-wrapper {
             width: 90%;
-            margin: 4px auto 8px auto;
+            margin: 10px auto 0 auto;
         }
         .energy-info {
             display: flex;
@@ -385,14 +244,63 @@
             border: 1px solid #2a3447;
         }
         .energy-fill {
-            width: 85%;
+            width: 100%;
             background: linear-gradient(90deg, #f3ba2f, #fbbf24);
             height: 100%;
             border-radius: 4px;
-            transition: width 0.2s;
         }
 
-        /* Bottom Navigation Footer */
+        /* STYLES FOR SOCIAL & FRIENDS */
+        .section-title {
+            font-size: 16px;
+            color: #f3ba2f;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .social-grid, .friends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .social-item, .friend-item {
+            background: #151b2b;
+            border: 1px solid #22304a;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .action-btn {
+            background: #f3ba2f;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* ADMIN PANEL STYLES */
+        .admin-box {
+            background: #151b2b;
+            border: 2px solid #ef4444;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .admin-input {
+            width: 100%;
+            padding: 8px;
+            background: #0b0e14;
+            border: 1px solid #22304a;
+            color: #fff;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        /* Navigation Footer */
         .nav-footer {
             display: flex;
             justify-content: space-around;
@@ -420,75 +328,6 @@
         .nav-btn.active, .nav-btn:hover {
             color: #ffffff;
         }
-        .nav-btn.center-add span.icon {
-            background: #ffffff;
-            color: #0b0e14;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        /* Modals Design */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-box {
-            background: #121620;
-            border: 2px solid #f3ba2f;
-            border-radius: 16px;
-            padding: 20px;
-            width: 88%;
-            max-width: 360px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-        }
-        .close-modal {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            color: #f3ba2f;
-            font-weight: bold;
-        }
-        .modal-box h3 {
-            margin-top: 0;
-            color: #f3ba2f;
-            font-size: 18px;
-        }
-        .modal-input {
-            width: 100%;
-            padding: 10px;
-            background: #1a2233;
-            border: 1px solid #334155;
-            color: #fff;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-size: 14px;
-        }
-        .modal-btn {
-            width: 100%;
-            padding: 10px;
-            background: #f3ba2f;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
@@ -496,141 +335,212 @@
     <!-- Header Section -->
     <div class="header">
         <div class="top-row">
-            <div class="user-profile" onclick="openModal('adminModal')">
-                <div class="user-avatar-sm">🐹</div>
-                <span>Malak (FZL CEO)</span>
+            <div class="user-profile" onclick="switchTab('profile')">
+                <div class="user-avatar-sm" id="headerTierIcon">🥉</div>
+                <span id="ceoName">Malak (Lvl <span id="currentLevelNum">1</span>)</span>
             </div>
             <div class="top-right-controls">
-                <div class="exchange-badge" id="binanceTarget" onclick="openModal('exchangeModal')">
-                    <span>🪙</span> <b>Binance</b>
+                <button class="music-btn" onclick="toggleMusic()" id="musicToggleBtn">🔊</button>
+                <div class="exchange-badge" onclick="switchTab('social')">
+                    <span>🌐</span> <b>Socials</b>
                 </div>
-                <div class="profit-badge" onclick="openModal('mineModal')">
-                    <span>🪙</span> +3.52K
-                </div>
-                <button class="icon-top-btn" onclick="openModal('settingsModal')">⚙️</button>
             </div>
         </div>
         <div class="level-progress-container">
-            <span>Epic &gt; 6/10</span>
+            <span id="tierName">Bronze &gt; Level <span id="lvlIndicator">1</span>/50</span>
             <div class="level-bar-bg">
-                <div class="level-bar-fill"></div>
+                <div class="level-bar-fill" id="levelBarFill"></div>
             </div>
         </div>
     </div>
 
-    <!-- 3 Reward Cards Row -->
-    <div class="cards-row">
-        <div class="reward-card" onclick="alert('Daily reward claimed successfully!')">
-            <div style="font-size: 15px;">📅</div>
-            <div class="reward-card-title">Daily reward</div>
-            <div class="reward-card-time">14:57</div>
-        </div>
-        <div class="reward-card" onclick="alert('Daily cipher active!')">
-            <div style="font-size: 15px;">🔐</div>
-            <div class="reward-card-title">Daily cipher</div>
-            <div class="reward-card-time">09:57</div>
-        </div>
-        <div class="reward-card" onclick="alert('Daily combo unlocked!')">
-            <div style="font-size: 15px;">🎁</div>
-            <div class="reward-card-title">Daily combo</div>
-            <div class="reward-card-time">02:57</div>
-        </div>
-    </div>
+    <!-- AUDIO ELEMENT (Background Game Music) -->
+    <audio id="bgMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mp3">
+    </audio>
 
-    <!-- FZL Coin Balance Display -->
-    <div class="balance-container">
-        <div class="coin-amount">
-            <span>🪙</span> <span id="scoreDisplay">2,022,689</span>
+    <!-- PAGE 1: HOME (TAP & EARN) -->
+    <div id="page-home" class="page-content active">
+        <div class="cards-row">
+            <div class="reward-card" onclick="claimDailyReward()">
+                <div class="reward-card-title">📅 Daily reward</div>
+                <div class="reward-card-time">Claim 5,000</div>
+            </div>
+            <div class="reward-card" onclick="switchTab('levels')">
+                <div class="reward-card-title">⭐ Level Up</div>
+                <div class="reward-card-time" id="nextLevelCostText">Cost: 200K</div>
+            </div>
+            <div class="reward-card" onclick="switchTab('friends')">
+                <div class="reward-card-title">👥 Friends</div>
+                <div class="reward-card-time">Invite & Earn</div>
+            </div>
         </div>
-    </div>
 
-    <!-- Main Tap Area & Shorts Interface -->
-    <div class="tap-main-wrapper">
+        <div class="balance-container">
+            <div class="coin-amount">
+                <span>🪙</span> <span id="scoreDisplay">0</span>
+            </div>
+        </div>
+
         <div class="tap-section" id="tapArea">
-            <div class="hamster-circle-glow" onclick="tapHamster(event)">
-                <div class="hamster-avatar-box">
-                    <div class="hamster-face">🐹</div>
-                    <div class="hamster-suit-body">
-                        <div class="hamster-collar"></div>
-                        <div class="hamster-tie"></div>
-                    </div>
+            <div class="tiger-circle-glow" onclick="tapTiger(event)">
+                <div class="tiger-avatar-box" id="tigerBox">
+                    <div class="vip-crown-badge" id="tigerCrown"></div>
+                    <div class="tiger-face" id="tigerEmoji">🐯</div>
                 </div>
             </div>
 
-            <!-- Energy Bar -->
             <div class="energy-wrapper">
                 <div class="energy-info">
-                    <span>⚡ <span id="energyText">3343</span> / 3500</span>
-                    <span>🔋 95%</span>
+                    <span>⚡ <span id="energyText">1500</span> / 1500</span>
+                    <span>🔋 100%</span>
                 </div>
                 <div class="energy-track">
                     <div class="energy-fill" id="energyFill"></div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Left Channel Info Overlay -->
-        <div class="channel-info-overlay">
-            <div class="channel-row">
-                <div class="channel-dp">🐹</div>
-                <span class="channel-name">@FZL_Official</span>
-                <button class="subscribe-btn" onclick="this.innerText='Subscribed'; this.style.background='#334155';">Subscribe</button>
+    <!-- PAGE 2: LEVELS (50 Levels & VIP Crowns) -->
+    <div id="page-levels" class="page-content">
+        <div class="section-title">⭐ 50 Tiger Evolution & VIP Crowns</div>
+        <div style="background: #151b2b; border: 1px solid #f3ba2f; border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 15px;">
+            <div style="font-size: 32px;" id="pageTigerEmoji">🐯</div>
+            <h3 style="color: #f3ba2f; margin: 8px 0;" id="pageTierTitle">Bronze Tier (Level 1)</h3>
+            <p style="font-size: 13px; color: #94a3b8;" id="pageLevelDesc">Next level requires: <span id="upgradeCostDisplay" style="color:#f3ba2f; font-weight:bold;">200,000</span> FZL Coins</p>
+            <button class="action-btn" style="padding: 10px 20px; font-size: 13px; margin-top: 10px;" onclick="upgradeLevel()">🚀 Upgrade Level</button>
+        </div>
+        <div style="background: #151b2b; padding: 12px; border-radius: 10px; font-size: 12px; color: #e2e8f0;">
+            <p><b>👑 Features:</b></p>
+            <ul>
+                <li>Total 50 unique levels and color changes!</li>
+                <li>VIP Crowns automatically unlock at higher milestones.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PAGE 3: FRIENDS LIST -->
+    <div id="page-friends" class="page-content">
+        <div class="section-title">👥 Friend List & Referrals</div>
+        <div class="friends-list">
+            <div class="friend-item">
+                <div>
+                    <h4>Ali Khan</h4>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#22c55e;">Level 5 • +25,000 coins</p>
+                </div>
+                <span style="font-size:12px; color:#f3ba2f;">Active</span>
             </div>
-            <div class="video-title">tap tap and earn FZL coins 💰💵.</div>
+            <div class="friend-item">
+                <div>
+                    <h4>Ahmed Raza</h4>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#22c55e;">Level 12 • +110,000 coins</p>
+                </div>
+                <span style="font-size:12px; color:#f3ba2f;">Active</span>
+            </div>
+        </div>
+        <button class="action-btn" style="margin-top: 15px; padding: 12px;" onclick="inviteFriend()">🔗 Invite Friend & Get 25,000 Coins</button>
+    </div>
+
+    <!-- PAGE 4: SOCIAL MEDIA ATTACHMENTS -->
+    <div id="page-social" class="page-content">
+        <div class="section-title">🌐 Social Media Channels</div>
+        <div class="social-grid">
+            <div class="social-item">
+                <div>
+                    <h4>📢 Telegram Channel</h4>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Join official community</p>
+                </div>
+                <button class="action-btn" onclick="window.open('https://telegram.org', '_blank')">Visit</button>
+            </div>
+            <div class="social-item">
+                <div>
+                    <h4>💬 Discord Server</h4>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Chat with players</p>
+                </div>
+                <button class="action-btn" onclick="window.open('https://discord.com', '_blank')">Join</button>
+            </div>
+            <div class="social-item">
+                <div>
+                    <h4>🐦 Twitter / X Updates</h4>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Latest news & airdrops</p>
+                </div>
+                <button class="action-btn" onclick="window.open('https://twitter.com', '_blank')">Follow</button>
+            </div>
+            <div class="social-item">
+                <div>
+                    <h4>▶️ YouTube Channel</h4>
+                    <p style="margin:2px 0 0 0; font-size:11px; color:#94a3b8;">Watch tutorial & guides</p>
+                </div>
+                <button class="action-btn" onclick="window.open('https://youtube.com', '_blank')">Watch</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: ADMIN & PROFILE (Secure Owner Log) -->
+    <div id="page-profile" class="page-content">
+        <div class="section-title">🛡️ CEO Profile & Secure Admin Log</div>
+        <div style="background: #151b2b; padding: 15px; border-radius: 12px; font-size: 13px; margin-bottom: 10px;">
+            <p><b>Name:</b> Malak</p>
+            <p><b>Current Level:</b> Level <span id="profileLevel">1</span> / 50</p>
+            <p><b>Status:</b> <span id="profileTierName">Bronze I</span></p>
         </div>
 
-        <!-- Right YouTube Shorts Sidebar Actions -->
-        <div class="shorts-sidebar">
-            <button class="short-action-btn" onclick="toggleLike(this)">
-                <span class="icon">👍</span>
-                <span id="likeCount">626K</span>
-            </button>
-            <button class="short-action-btn" onclick="openModal('commentsModal')">
-                <span class="icon">💬</span>
-                <span>9,015</span>
-            </button>
-            <button class="short-action-btn" onclick="alert('Post saved to favorites!')">
-                <span class="icon">🔖</span>
-                <span>Save</span>
-            </button>
-            <button class="short-action-btn" onclick="alert('Share link copied to clipboard!')">
-                <span class="icon">↗️</span>
-                <span>Share</span>
-            </button>
-            <button class="short-action-btn" onclick="openModal('boostModal')">
-                <span class="icon">🚀</span>
-                <span>Boost</span>
-            </button>
+        <div class="admin-box">
+            <h4 style="margin:0 0 8px 0; color:#ef4444;">🔒 Owner Admin Log</h4>
+            <p style="font-size: 11px; color:#94a3b8; margin-bottom: 8px;">Enter admin pin to access control logs and security settings:</p>
+            <input type="password" id="adminPin" class="admin-input" placeholder="Enter Admin PIN (Default: 786)">
+            <button class="action-btn" style="background:#ef4444; color:#fff; width:100%;" onclick="verifyAdmin()">Open Admin Log</button>
+            
+            <div id="adminPanelContent" style="display:none; margin-top: 10px; border-top: 1px solid #22304a; padding-top: 10px;">
+                <p style="color:#22c55e; font-size:12px; font-weight:bold;">✅ Admin Log Unlocked Successfully!</p>
+                <p style="font-size:11px;">Active Users Online: <b>1,420</b></p>
+                <p style="font-size:11px;">Server Status: <b>Secure & Protected</b></p>
+                <button class="action-btn" style="background:#22c55e; color:#000; width:100%; margin-top:5px;" onclick="addAdminBonus()">Give 1M Bonus Coins</button>
+            </div>
         </div>
     </div>
 
     <!-- Bottom Navigation Footer -->
     <div class="nav-footer">
-        <button class="nav-btn active" onclick="alert('Home feed active')">
-            <span class="icon">🏠</span> Home
+        <button class="nav-btn active" id="btn-home" onclick="switchTab('home')">
+            <span class="icon">🪙</span> FZL
         </button>
-        <button class="nav-btn" onclick="alert('Shorts feed active')">
-            <span class="icon">⚡</span> Shorts
+        <button class="nav-btn" id="btn-levels" onclick="switchTab('levels')">
+            <span class="icon">⭐</span> Levels
         </button>
-        <button class="nav-btn center-add" onclick="openModal('earnModal')">
-            <span class="icon">+</span>
+        <button class="nav-btn" id="btn-friends" onclick="switchTab('friends')">
+            <span class="icon">👥</span> Friends
         </button>
-        <button class="nav-btn" onclick="openModal('socialsModal')">
-            <span class="icon">📺</span> Subscriptions
+        <button class="nav-btn" id="btn-social" onclick="switchTab('social')">
+            <span class="icon">🌐</span> Socials
         </button>
-        <button class="nav-btn" onclick="openModal('adminModal')">
-            <span class="icon">👤</span> You
+        <button class="nav-btn" id="btn-profile" onclick="switchTab('profile')">
+            <span class="icon">🛡️</span> Admin
         </button>
     </div>
 
-    <!-- Modals -->
-    <div id="exchangeModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeModal('exchangeModal')">✕</span>
-            <h3>🏛️ Choose Exchange</h3>
-            <p style="color: #94a3b8; font-size: 13px;">Select your crypto exchange to list and withdraw FZL coins.</p>
-            <button class="modal-btn" style="background:#1e293b; color:#f3ba2f; border:1px solid #f3ba2f; margin-top:10px;">🟢 Binance (Connected)</button>
-        </div>
-    </div>
+    <script>
+        let score = 0;
+        let tapPower = 1;
+        let energy = 1500;
+        let maxEnergy = 1500;
+        let currentLevel = 1;
+        let musicPlaying = false;
 
-    <div id="mineModal" class="m
+        // 50 Levels Configuration with Colors, Emojis and VIP Crowns
+        const levelData = [
+            { name: "Bronze I", color: "#cd7f32", emoji: "🐯", crown: "" },
+            { name: "Bronze II", color: "#c18c5d", emoji: "🐅", crown: "" },
+            { name: "Bronze III", color: "#b59b68", emoji: "🐱", crown: "" },
+            { name: "Bronze IV", color: "#a8a272", emoji: "🐯", crown: "" },
+            { name: "Bronze V", color: "#9ca97c", emoji: "🐅", crown: "" },
+            { name: "Silver I", color: "#c0c0c0", emoji: "🐆", crown: "" },
+            { name: "Silver II", color: "#b8c4c4", emoji: "🐅", crown: "" },
+            { name: "Silver III", color: "#b0c8c8", emoji: "🐯", crown: "" },
+            { name: "Silver IV", color: "#a8cccc", emoji: "🐆", crown: "" },
+            { name: "Silver V", color: "#a0d0d0", emoji: "🐅", crown: "" },
+            { name: "Gold I", color: "#ffd700", emoji: "🦁", crown: "" },
+            { name: "Gold II", color: "#ffcc00", emoji: "🐯", crown: "" },
+            { name: "Gold III", color: "#ffc200", emoji: "🦁", crown: "" },
+            { name: "Gold IV", color: "#ffb700", emoji: "🐅", crown
